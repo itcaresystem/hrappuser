@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minWidth="300dp"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:minHeight="100dp">
+
+        <ride.happyy.user.widgets.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/label_say_thanks"
+            android:textColor="@color/white"
+            android:textSize="22sp"/>
+
+        <ride.happyy.user.widgets.CustomTextView
+            android:id="@+id/txt_feedback_page_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="60dp"
+            android:text="@string/sample_date"
+            android:textColor="@color/white"/>
+
+        <ride.happyy.user.widgets.CustomTextView
+            android:id="@+id/txt_feedback_page_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="130dp"
+            android:layout_marginTop="60dp"
+            android:text="@string/sample_time"
+            android:textColor="@color/white"/>
+
+        <ride.happyy.user.widgets.CustomTextView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="end"
+            android:layout_margin="20dp"/>
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/etxt_driver_feedback"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="20dp"
+            android:background="@android:color/transparent"
+            android:gravity="top"
+            android:hint="@string/hint_type_here"
+            android:minHeight="180dp"/>
+
+        <Button
+            android:id="@+id/btn_driver_feed_completed"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/btn_click_black_rectangle_with_semicircle_edge"
+            android:text="@string/btn_done"
+            android:textColor="@color/white"/>
+
+    </FrameLayout>
+
+</LinearLayout>
