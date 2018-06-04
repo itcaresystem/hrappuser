@@ -5,11 +5,7 @@ import android.graphics.Typeface;
 
 import java.util.HashMap;
 
-/**
- * Created by Jemsheer K D on 18 February, 2017.
- * Package in.techware.gocourt.conf
- * Project GoCourt
- */
+
 
 public class TypefaceCache {
 

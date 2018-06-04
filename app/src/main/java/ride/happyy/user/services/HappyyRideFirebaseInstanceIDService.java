@@ -13,7 +13,7 @@ import ride.happyy.user.listeners.BasicListener;
 import ride.happyy.user.model.BasicBean;
 import ride.happyy.user.net.DataManager;
 
-public class LaTaxiFirebaseInstanceIDService extends FirebaseInstanceIdService {
+public class HappyyRideFirebaseInstanceIDService extends FirebaseInstanceIdService {
     private static final String TAG = "LTFIService";
 
     @Override

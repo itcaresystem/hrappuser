@@ -50,8 +50,8 @@ import ride.happyy.user.util.TypefaceManager;
 public class App extends Application {
 
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
-    private static final String TWITTER_KEY = "55wuhXRUSBtQnrb1lQi7QrEVe";
-    private static final String TWITTER_SECRET = "ZKows9PlDO5BEnB5babyXLHYDVwkd76ux8IewkqrjUSEM3xHUX";
+    private static final String TWITTER_KEY = "aSvPSyxOkaQoM4HAQmAEREaKs";
+    private static final String TWITTER_SECRET = "ODsOrBLqPBNs9iuLczSHMwVbmKGUP3pHz8XvtOyeEMmrqO1Kjv";
 
 
     public static final int SERVER_CONNECTION_AVAILABLE = 0;
@@ -120,7 +120,7 @@ public class App extends Application {
                 printWriter.close();
 
                 ex.printStackTrace();
-                Toast.makeText(getApplicationContext(), "LaTaxi Has Crashed Due To An Error."
+                Toast.makeText(getApplicationContext(), "Happyy Ride Has Crashed Due To An Error."
                         + "\nApplication Will Restart Now."
                         + "\nSorry For Any Inconvinience Caused", Toast.LENGTH_SHORT).show();
                 //	    			restart(getApplicationContext(), 2000);

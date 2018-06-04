@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RidesApps</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Name</string>
+    <string name="nav_header_subtitle">Phone Number</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="history">History</string>
+    <string name="promotions">Promotions</string>
+    <string name="get_discount">Get Discount</string>
+    <string name="settings">Settings</string>
+    <string name="help">Help</string>
+    <string name="about">About</string>
+    <string name="english">English</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="notifications">Notification</string>
+    <string name="homePage">Home</string>
+    <string name="our_services">Our Services</string>
+    <string name="out_of_dhaka_city">Out Of Dhaka City</string>
+    <string name="hourly_package">Hourly Package</string>
+    <string name="select_division">Select Division :</string>
+    <string name="select_district">Select District</string>
+    <string name="pick_up">Pick Up</string>
+    <string name="droff">Droff</string>
+    <string name="price">Price</string>
+    <string name="primio">Primio</string>
+    <string name="noya">Noya</string>
+    <string name="rloash">Rloash</string>
+    <string name="send_request">Send Request</string>
+    <string name="hours_1">Hours 1</string>
+    <string name="hours_2">Hours 2</string>
+    <string name="hours_4">Hours 4</string>
+    <string name="day_1">Day 1</string>
+    <string name="in_dhaka_city">In Dhaka City</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="gender">Gender</string>
+    <string name="date_of_birth">Date Of Birth</string>
+    <string name="home">Home</string>
+    <string name="set_your_home_address">Set your home address</string>
+    <string name="work">Work</string>
+    <string name="set_your_work_address">Set your work address</string>
+    <string name="log_out">Log Out</string>
+
+    <string-array name="spinnerDivisionArray">
+        <item>--select Division--</item>
+        <item>Dhaka</item>
+        <item>Chittagong</item>
+        <item>Barisal</item>
+        <item>Sylhet</item>
+        <item>khulan</item>
+        <item>Rajshahi</item>
+        <item>Rangpur</item>
+        <item>Mymensing</item>
+    </string-array>
+
+    <string-array name="spinnerDhakaDistrictArray">
+        <item>Narsingdi</item>
+        <item>Gazipur</item>
+        <item>Shariatpur</item>
+        <item>Narayanganj</item>
+        <item>Tangail</item>
+        <item>Kishoregonj</item>
+        <item>Manikganj</item>
+        <item>Munshiganj</item>
+        <item>Rajbari</item>
+        <item>Madaripur</item>
+        <item>Gopalganj</item>
+        <item>Faridpur</item>
+    </string-array>
+
+    <string-array name="spinnerChittagongDistrictArray">
+        <item>Comilla</item>
+        <item>Feni</item>
+        <item>Brahmanbaria</item>
+        <item>Rangamati</item>
+        <item>Noakhali</item>
+        <item>Chandpur</item>
+        <item>Lakshmipur</item>
+        <item>"Cox's Bazar"</item>
+        <item>Khagrachhari</item>
+        <item>Bandarban</item>
+    </string-array>
+    <string-array name="spinnerBarisalDistrictArray">
+        <item>Jhalokati</item>
+        <item>Patuakhali</item>
+        <item>Pirojpur</item>
+        <item>Bhola</item>
+        <item>Barguna</item>
+    </string-array>
+
+    <string-array name="spinnerSylhetDistrictArray">
+        <item>Maulvibazar</item>
+        <item>Habiganj</item>
+        <item>Sunamganj</item>
+    </string-array>
+    <string-array name="spinnerkhulanDistrictArray">
+        <item>Jessore</item>
+        <item>Satkhira</item>
+        <item>Meherpur</item>
+        <item>Narail</item>
+        <item>Chuadanga</item>
+        <item>Kushtia</item>
+        <item>Magura</item>
+        <item>Bagerhat</item>
+        <item>Jhenaidah</item>
+    </string-array>
+    <string-array name="spinnerRajshahiDistrictArray">
+        <item>Sirajganj</item>
+        <item>Pabna</item>
+        <item>Bogra</item>
+        <item>Natore</item>
+        <item>Jaypurhat</item>
+        <item>Chapainababganj</item>
+        <item>Naogaon</item>
+    </string-array>
+    <string-array name="spinnerRangpurDistrictArray">
+        <item>Panchagarh</item>
+        <item>Dinajpur</item>
+        <item>LalMonirhat</item>
+        <item>Nilphamari</item>
+        <item>Gaibandha</item>
+        <item>Thakurgaon</item>
+        <item>Kurigram</item>
+    </string-array>
+    <string-array name="spinnerMymensingDistrictArray">
+        <item>Sherpur</item>
+        <item>Jamalpur</item>
+        <item>Netrakona</item>
+    </string-array>
+
+
+</resources>

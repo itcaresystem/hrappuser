@@ -4,11 +4,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-/**
- * Created by Jemsheer K D on 03 December, 2016.
- * Package com.company.sample.net.invokers
- * Project TeluguCatholicMatrimony
- */
+
 
 public class BaseInvoker {
     HashMap<String, String> urlParams;

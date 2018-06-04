@@ -190,6 +190,8 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
     private CarTypeRecyclerAdapter adapterCarTypes;
     private RecyclerView rvCarTypes;
 
+    private Button outOfDhakaService, packageService;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -198,6 +200,10 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         setContentView(R.layout.activity_landing_page);
 
         isGetLocationEnabled = false;
+
+
+        outOfDhakaService = findViewById(R.id.outOfDhakaService);
+        packageService = findViewById(R.id.packageService);
 
 
        /* if (!checkForLocationPermissions()) {
@@ -225,6 +231,24 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
 
 
         initFCM();
+
+
+
+
+        outOfDhakaService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+
+        packageService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
     }
 
@@ -867,6 +891,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         CarBean bean = landingPageBean.getCar(carType);
         btnRequest.setText(getString(R.string.label_request) + " " + (bean != null
                 ? bean.getCarName() : getString(R.string.app_name)));
+        btnRequest.setText("Send Request");
 
 
         llFare.setVisibility(View.VISIBLE);

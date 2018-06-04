@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="@dimen/drawer_width"
     android:layout_height="match_parent"
-    android:background="#0a4755"
+    android:background="#fff"
     android:orientation="vertical">
 
     <LinearLayout
@@ -14,19 +14,19 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="280dp"
-            android:background="@drawable/bg_header"
+            android:layout_height="235dp"
+            android:background="@color/dgts__default_logo_name"
             android:minHeight="300dp"
             android:orientation="vertical"
-            android:paddingBottom="40dp"
-            android:paddingTop="30dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="5dp"
             android:weightSum="4">
 
             <FrameLayout
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_marginLeft="30dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/dotted">
 
                 <ImageView
@@ -65,8 +65,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="40dp"
                     android:hint="@string/hint_username"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white"
+                    android:textColor="#fff"
+                    android:textColorHint="#fff"
                     android:textSize="24sp"
                     />
 
@@ -78,7 +78,7 @@
                     android:layout_marginTop="5dp"
                     android:hint="@string/sample_email"
                     android:textColor="@color/white"
-                    android:textColorHint="#b1bcbf"
+                    android:textColorHint="#fff"
                     android:textSize="18sp"/>
 
             </LinearLayout>
@@ -87,19 +87,140 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/white">
+
+
 
             <LinearLayout
-                android:layout_width="200dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="40dp"
+                android:background="@color/white"
+                android:layout_marginLeft="20dp"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_marginTop="60dp"
-                    android:background="?selectableItemBackground"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="@color/colorPrimary"
+                    android:onClick="onClickHome"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_trips_nav_drawer"/>
+
+                    <ride.happyy.user.widgets.CustomTextView
+                        android:id="@+id/txt_home"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="15dp"
+                        android:text="Home"
+                        android:textColor="#fff"
+                        android:textSize="18sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="@color/colorPrimary"
+                    android:onClick="onClickInDhakaCity"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_trips_nav_drawer"/>
+
+                    <ride.happyy.user.widgets.CustomTextView
+                        android:id="@+id/txt_in_dhaka"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="15dp"
+                        android:text="In Dhaka City"
+                        android:textColor="#fff"
+                        android:textSize="18sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="@color/colorPrimary"
+                    android:onClick="onClickOutOfDhakaCity"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_trips_nav_drawer"/>
+
+                    <ride.happyy.user.widgets.CustomTextView
+                        android:id="@+id/txt_out_of_dhaka_city"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="15dp"
+                        android:text="Out of Dhaka City"
+                        android:textColor="#fff"
+                        android:textSize="18sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="@color/colorPrimary"
+                    android:onClick="onClickPackage"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_trips_nav_drawer"/>
+
+                    <ride.happyy.user.widgets.CustomTextView
+                        android:id="@+id/txt_package"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="15dp"
+                        android:text="Packages"
+                        android:textColor="#fff"
+                        android:textSize="18sp"/>
+
+                </LinearLayout>
+
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="@color/colorPrimary"
                     android:onClick="onTripsClick"
                     android:orientation="horizontal">
 
@@ -116,8 +237,8 @@
                         android:layout_gravity="center"
                         android:layout_marginLeft="15dp"
                         android:layout_marginStart="15dp"
-                        android:text="@string/label_trips"
-                        android:textColor="#9eadb1"
+                        android:text="History"
+                        android:textColor="#fff"
                         android:textSize="18sp"/>
 
                 </LinearLayout>
@@ -153,7 +274,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="5dp"
-                    android:background="?selectableItemBackground"
+                    android:background="@color/colorPrimary"
                     android:onClick="onPromotionsClick"
                     android:orientation="horizontal">
 
@@ -171,7 +292,7 @@
                         android:layout_marginLeft="15dp"
                         android:layout_marginStart="15dp"
                         android:text="@string/label_promotion"
-                        android:textColor="#9eadb1"
+                        android:textColor="#fff"
                         android:textSize="18sp"/>
 
                 </LinearLayout>
@@ -180,7 +301,63 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="5dp"
-                    android:background="?selectableItemBackground"
+                    android:layout_marginBottom="2dp"
+                    android:background="@color/colorPrimary"
+                    android:onClick="onClickGetDiscount"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_trips_nav_drawer"/>
+
+                    <ride.happyy.user.widgets.CustomTextView
+                        android:id="@+id/txt_get_discount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="15dp"
+                        android:text="Get Discount"
+                        android:textColor="#fff"
+                        android:textSize="18sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="@color/colorPrimary"
+                    android:onClick="onClickNotification"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_trips_nav_drawer"/>
+
+                    <ride.happyy.user.widgets.CustomTextView
+                        android:id="@+id/txt_tnotification"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="15dp"
+                        android:text="Notifications"
+                        android:textColor="#fff"
+                        android:textSize="18sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/colorPrimary"
                     android:onClick="onSettingsClick"
                     android:orientation="horizontal">
 
@@ -198,7 +375,63 @@
                         android:layout_marginLeft="15dp"
                         android:layout_marginStart="15dp"
                         android:text="@string/label_settings"
-                        android:textColor="#9eadb1"
+                        android:textColor="#fff"
+                        android:textSize="18sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="@color/colorPrimary"
+                    android:onClick="onClickHelp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_trips_nav_drawer"/>
+
+                    <ride.happyy.user.widgets.CustomTextView
+                        android:id="@+id/txt_help"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="15dp"
+                        android:text="Help"
+                        android:textColor="#fff"
+                        android:textSize="18sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="@color/colorPrimary"
+                    android:onClick="onClickAbout"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_trips_nav_drawer"/>
+
+                    <ride.happyy.user.widgets.CustomTextView
+                        android:id="@+id/txt_about"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="15dp"
+                        android:text="About"
+                        android:textColor="#fff"
                         android:textSize="18sp"/>
 
                 </LinearLayout>

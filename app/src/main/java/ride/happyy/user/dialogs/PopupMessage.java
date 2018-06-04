@@ -15,11 +15,6 @@ import ride.happyy.user.R;
 import ride.happyy.user.config.TypefaceCache;
 
 
-/**
- * Created by Jemsheer K D on 1/10/2015.
- * Package ${PACKAGE_NAME}
- * Project GoCourt
- */
 public class PopupMessage {
 
     private PopupActionListener popupActionListener;

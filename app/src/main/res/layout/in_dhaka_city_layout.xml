@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".8"
+        android:visibility="visible"
+        android:id="@+id/webViewLayout">
+        <WebView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorBlack">
+        </WebView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@color/coloSoftWhite"
+            android:layout_marginLeft="20dp">
+            <SearchView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </SearchView>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="20dp"
+            android:background="@color/coloSoftWhite"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="66dp">
+            <SearchView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </SearchView>
+
+        </LinearLayout>
+
+
+
+
+    </RelativeLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_weight=".2"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:fillViewport="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/coloSoftBlack">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/our_services"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                android:layout_margin="10dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/outOfDhakaCityInDhaka"
+                    android:layout_width="0dp"
+                    android:layout_weight=".5"
+                    android:layout_margin="10dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button"
+                    android:text="@string/out_of_dhaka_city"/>
+                <Button
+                    android:id="@+id/hourlyPackageInDhaka"
+                    android:layout_width="0dp"
+                    android:layout_weight=".5"
+                    android:layout_margin="10dp"
+                    android:text="@string/hourly_package"
+                    android:background="@drawable/button"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

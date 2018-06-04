@@ -11,7 +11,7 @@ import ride.happyy.user.model.BasicBean;
 import ride.happyy.user.model.SuccessBean;
 import ride.happyy.user.net.parsers.TripEndParser;
 
-public class LaTaxiFirebaseMessagingService extends FirebaseMessagingService {
+public class HappyyRideFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "LFMService";
     private SuccessBean successBean;

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/homePage"
+            android:title="@string/homePage" />
+        <item
+            android:id="@+id/history"
+            android:title="@string/history" />
+        <item
+            android:id="@+id/promotions"
+            android:title="@string/promotions" />
+        <item
+            android:id="@+id/get_discount"
+            android:title="@string/get_discount" />
+        <item
+            android:id="@+id/notifications"
+            android:title="@string/notifications" />
+
+        <item
+            android:id="@+id/setting"
+            android:title="@string/settings" />
+        <item
+            android:id="@+id/help"
+            android:title="@string/help" />
+        <item
+            android:id="@+id/about"
+            android:title="@string/about" />
+        <item
+            android:id="@+id/english"
+            android:title="@string/english" />
+    </group>
+
+
+
+</menu>

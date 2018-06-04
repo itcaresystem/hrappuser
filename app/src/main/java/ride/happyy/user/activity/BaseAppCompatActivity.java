@@ -880,6 +880,36 @@ public class BaseAppCompatActivity extends BaseActivity implements
 
     }
 
+
+    public void onClickHome(View view) {
+        view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+
+        Intent intent = new Intent(BaseAppCompatActivity.this, TripsActivity.class);
+        startActivity(intent);
+    }
+
+    public void onClickInDhakaCity(View view) {
+        view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+
+        Intent intent = new Intent(BaseAppCompatActivity.this, TripsActivity.class);
+        startActivity(intent);
+    }
+
+    public void onClickOutOfDhakaCity(View view) {
+        view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+
+        Intent intent = new Intent(BaseAppCompatActivity.this, TripsActivity.class);
+        startActivity(intent);
+    }
+
+    public void onClickPackage(View view) {
+        view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+
+        Intent intent = new Intent(BaseAppCompatActivity.this, TripsActivity.class);
+        startActivity(intent);
+    }
+
+
     public void onTripsClick(View view) {
         view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
 
@@ -895,6 +925,14 @@ public class BaseAppCompatActivity extends BaseActivity implements
     }
 
     public void onPromotionsClick(View view) {
+        view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+
+        Intent intent = new Intent(BaseAppCompatActivity.this, PromotionActivity.class);
+        startActivity(intent);
+    }
+    //onClickGetDiscount
+
+    public void onClickGetDiscount(View view) {
         view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
 
         Intent intent = new Intent(BaseAppCompatActivity.this, PromotionActivity.class);
@@ -916,5 +954,14 @@ public class BaseAppCompatActivity extends BaseActivity implements
         Intent intent = new Intent(BaseAppCompatActivity.this, ProfileEditActivity.class);
         intent.putExtra("bean", userBean);
         startActivity(intent);
+    }
+
+    public void onClickNotification(View view) {
+    }
+
+    public void onClickHelp(View view) {
+    }
+
+    public void onClickAbout(View view) {
     }
 }

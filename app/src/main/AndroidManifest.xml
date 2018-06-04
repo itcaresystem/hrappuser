@@ -45,12 +45,12 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent"/>
 
-        <service android:name="ride.happyy.user.services.LaTaxiFirebaseMessagingService">
+        <service android:name="ride.happyy.user.services.HappyyRideFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
-        <service android:name="ride.happyy.user.services.LaTaxiFirebaseInstanceIDService">
+        <service android:name="ride.happyy.user.services.HappyyRideFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#000</color>
-    <color name="colorPrimaryDark">#D40201</color>
+    <color name="colorPrimary">#1961BC</color>
+    <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#fff</color>
-
+    <color name="colorAccent_1">#FF4081</color>
     <color name="transparent">#00000000</color>
     <color name="black">#000000</color>
     <color name="blue">#1961BC</color>
@@ -145,5 +145,11 @@
     <color name="bg_driver_Type">#f2f2f2</color>
 
     <color name="login_edit_text">#B9C3C6</color>
+
+
+    <color name="colorBlack">#0b0a0a</color>
+    <color name="coloSoftWhite">#dcfdfdfd</color>
+    <color name="coloSoftBlack">#e98f8d8d</color>
+    <color name="coloSoftRad">#e78e0b0b</color>
 
 </resources>

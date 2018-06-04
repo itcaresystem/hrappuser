@@ -2,9 +2,6 @@ package ride.happyy.user.listeners;
 
 import ride.happyy.user.model.TripFeedbackBean;
 
-/**
- * Created by SIB-QC4 on 4/12/2017.
- */
 
 public interface TripFeedbackListener {
 

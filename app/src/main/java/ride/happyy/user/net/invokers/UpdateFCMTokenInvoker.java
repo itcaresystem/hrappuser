@@ -10,9 +10,7 @@ import ride.happyy.user.net.WebConnector;
 import ride.happyy.user.net.parsers.BasicParser;
 import ride.happyy.user.net.utils.WSConstants;
 
-/**
- * Created by SIB-QC4 on 4/4/2017.
- */
+
 
 public class UpdateFCMTokenInvoker extends BaseInvoker {
 

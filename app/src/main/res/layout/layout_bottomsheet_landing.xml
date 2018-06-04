@@ -11,6 +11,38 @@
     app:behavior_peekHeight="100dp"
     app:layout_behavior="@string/bottom_sheet_behavior">
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/outOfDhakaService"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Out Of Dhaka"
+            android:textColor="#fff"
+            android:background="@color/colorPrimary"/>
+
+            <Button
+                android:id="@+id/packageService"
+                android:padding="10dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Package"
+
+                android:textColor="#fff"
+                android:background="@color/colorPrimary"/>
+
+    </LinearLayout>
+
     <!--<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/ll_driver_info"
@@ -134,12 +166,14 @@
 
     </LinearLayout>-->
 
+
     <FrameLayout
         android:id="@+id/frame_landing_bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:minHeight="100dp"
+        android:visibility="gone"
         android:onClick="onLayoutClickLandingPage"
         app:layout_behavior="@string/bottom_sheet_behavior">
 
@@ -171,7 +205,7 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_gravity="top"
-            android:visibility="gone"
+            android:visibility="visible"
             android:onClick="onLayoutClickLandingPage"
             android:orientation="horizontal"
             android:weightSum="4">
@@ -313,7 +347,7 @@
         android:background="#fff"
         android:minHeight="120dp"
         android:orientation="vertical"
-        android:visibility="visible"
+        android:visibility="gone"
         android:weightSum="1">
 
         <View
@@ -325,6 +359,7 @@
 
 
         <LinearLayout
+            android:visibility="gone"
             android:layout_width="250dp"
             android:layout_height="50dp"
             android:layout_gravity="center"

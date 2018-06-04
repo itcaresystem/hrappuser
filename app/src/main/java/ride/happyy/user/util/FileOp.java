@@ -29,12 +29,12 @@ import java.security.NoSuchAlgorithmException;
 
 public class FileOp extends Activity {
 
-    private static final String APP_TEMP_FOLDER = "/LaTaxi";
+    private static final String APP_TEMP_FOLDER = "/HappyyRide";
     private final Context context;
     private FileOutputStream fos;
     private OutputStreamWriter osw;
     private File file;
-    private final String pathEx = Environment.getExternalStorageDirectory() + "/LaTaxi/";
+    private final String pathEx = Environment.getExternalStorageDirectory() + "/HappyyRide/";
     private String pathSP;
     private FileInputStream fis;
     private InputStreamReader isr;
