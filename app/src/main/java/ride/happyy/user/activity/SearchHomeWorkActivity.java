@@ -21,6 +21,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.data.DataBufferUtils;
+import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.AutocompletePredictionBuffer;
 import com.google.android.gms.location.places.Place;
@@ -48,6 +49,10 @@ public class SearchHomeWorkActivity extends BaseAppCompatNoDrawerActivity
     private SearchResultsRecyclerAdapter adapterSearch;
     private int locationSelect;
     private RecyclerView rvSearchResults;
+
+    AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+            .setCountry("BD")
+            .build();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,7 +141,8 @@ public class SearchHomeWorkActivity extends BaseAppCompatNoDrawerActivity
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        PendingResult<AutocompletePredictionBuffer> result = Places.GeoDataApi.getAutocompletePredictions(mGoogleApiClient, "infopark", null, null);
+
+        PendingResult<AutocompletePredictionBuffer> result = Places.GeoDataApi.getAutocompletePredictions(mGoogleApiClient, "infopark", null, typeFilter);
 
         result.setResultCallback(new ResultCallback<AutocompletePredictionBuffer>() {
             @Override
@@ -189,7 +195,7 @@ public class SearchHomeWorkActivity extends BaseAppCompatNoDrawerActivity
                 PendingResult<AutocompletePredictionBuffer> results =
                         Places.GeoDataApi
                                 .getAutocompletePredictions(mGoogleApiClient, strAddress, null,
-                                        null);
+                                        typeFilter);
 
                 // This method should have been called off the main UI thread. Block and wait for at most 60s
                 // for a result from the API.

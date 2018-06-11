@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#1961BC</color>
-    <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#fff</color>
+    <color name="colorPrimary">#fff</color>
+    <color name="colorPrimaryDark">#000</color>
+    <color name="colorAccent">#000</color>
     <color name="colorAccent_1">#FF4081</color>
     <color name="transparent">#00000000</color>
     <color name="black">#000000</color>
@@ -96,7 +96,7 @@
     <color name="carbon_transparent_10">#10292a2e</color>
 
     <color name="colorEditTextDisable">#999999</color>
-    <color name="colorEditTextFocusLost">#ffffff</color>
+    <color name="colorEditTextFocusLost">#000</color>
     <color name="colorEditTextFocusGained">#c6c6c6</color>
 
     <!-- A light Holo shade of blue -->

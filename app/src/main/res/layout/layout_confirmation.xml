@@ -99,7 +99,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:gravity="center"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <ProgressBar
             android:layout_width="50dp"
@@ -120,14 +120,14 @@
         android:orientation="vertical"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <RelativeLayout
             android:id="@+id/rl_fare"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="70dp"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <ImageView
                 android:id="@+id/iv_confirmation_cash"
@@ -217,20 +217,12 @@
 
         </RelativeLayout>
 
-        <Button
-            android:id="@+id/btn_request"
-            android:layout_width="160dp"
-            android:layout_height="40dp"
-            android:layout_gravity="bottom|center"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/bg_round_edges_black"
-            android:gravity="center"
-            android:onClick="onRequestRideClick"
-            android:text="@string/btn_request_la"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:visibility="gone"/>
+
 
     </LinearLayout>
+
+    <include layout="@layout/layout_confirmation_new"/>
+
+
 
 </merge>

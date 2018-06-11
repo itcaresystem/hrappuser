@@ -29,7 +29,7 @@
     <string name="btn_request_la">Request Happyy Ride</string>
     <string name="btn_retry">Retry</string>
     <string name="btn_save">Save</string>
-    <string name="btn_set_pickup_location">Set Pick Up Location</string>
+    <string name="btn_set_pickup_location">Pickup</string>
     <string name="btn_sign_in">Sign In</string>
     <string name="btn_skip">Skip</string>
     <string name="btn_submit">Submit</string>
@@ -143,7 +143,7 @@
     <string name="label_you_rated">You Rated</string>
     <string name="label_your_fare_may_change_if_you_update_your_destination_or_make_multiple_stops">Your fare may change if you Update your destination or make multiple stops</string>
     <string name="label_your_last_trip">Your Last Trip</string>
-    <string name="label_your_lataxi_fare_is">Your smart Cab Fare is</string>
+    <string name="label_your_lataxi_fare_is">Your Fare is</string>
     <string name="label_your_past_trips">Your Past Trips</string>
     <string name="label_request">Request</string>
 

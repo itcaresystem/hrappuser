@@ -1,34 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ride.happyy.user">
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
-        android:name="ride.happyy.user.app.App"
+        android:name=".app.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!--&lt;!&ndash; Remove this to remove Fabric &ndash;&gt;-->
-        <!--<meta-data-->
-            <!--android:name="io.fabric.ApiKey"-->
-            <!--android:value="FABRIC_API_KEY"/>-->
+        <!-- &lt;!&ndash; Remove this to remove Fabric &ndash;&gt; -->
+        <!-- <meta-data -->
+        <!-- android:name="io.fabric.ApiKey" -->
+        <!-- android:value="FABRIC_API_KEY"/> -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAxYEVKFJuMAeZCJjBnSAFFeVRexSJfBb4"/>
+            android:value="AIzaSyAxYEVKFJuMAeZCJjBnSAFFeVRexSJfBb4" />
 
         <!--
      Set custom default icon. This is used when no icon is set for incoming notification messages.
@@ -36,23 +35,23 @@
         -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/logo"/>
+            android:resource="@drawable/logo" />
         <!--
              Set color used with incoming notification messages. This is used when no color is set for the incoming
              notification message. See README(https://goo.gl/6BKBk7) for more.
         -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/colorAccent"/>
+            android:resource="@color/colorAccent_1" />
 
-        <service android:name="ride.happyy.user.services.HappyyRideFirebaseMessagingService">
+        <service android:name=".services.HappyyRideFirebaseMessagingService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name="ride.happyy.user.services.HappyyRideFirebaseInstanceIDService">
+        <service android:name=".services.HappyyRideFirebaseInstanceIDService">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 
@@ -63,113 +62,94 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
 
         <activity
-            android:name="ride.happyy.user.activity.SplashActivity"
+            android:name=".activity.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="ride.happyy.user.activity.RegistrationActivity"
+            android:name=".activity.RegistrationActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize">
-        </activity>
+            android:windowSoftInputMode="adjustResize"></activity>
         <activity
-            android:name="ride.happyy.user.activity.LandingPageActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:name=".activity.LandingPageActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="ride.happyy.user.activity.LoginActivity"
+            android:name=".activity.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/LoginTheme"
-            android:windowSoftInputMode="stateHidden|adjustResize">
-        </activity>
-        <activity android:name="ride.happyy.user.activity.WelcomeActivity">
-        </activity>
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <activity android:name=".activity.WelcomeActivity"></activity>
         <activity
-            android:name="ride.happyy.user.activity.PickUpLocationActivity"
+            android:name=".activity.PickUpLocationActivity"
             android:label="@string/title_activity_pick_up_location"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize">
-        </activity>
+            android:windowSoftInputMode="adjustResize"></activity>
         <activity
-            android:name="ride.happyy.user.activity.SearchPageActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:name=".activity.SearchPageActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="ride.happyy.user.activity.PromotionActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:name=".activity.PromotionActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="ride.happyy.user.activity.FreeRidesActiivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:name=".activity.FreeRidesActiivity"
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="ride.happyy.user.activity.RequestingPageActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:name=".activity.RequestingPageActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="ride.happyy.user.activity.SettingsPageActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:name=".activity.SettingsPageActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="ride.happyy.user.activity.ProfileEditActivity"
+            android:name=".activity.ProfileEditActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize">
-        </activity>
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
         <activity
-            android:name="ride.happyy.user.activity.TripsActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:name=".activity.TripsActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="ride.happyy.user.activity.TripDetailsActivity"
+            android:name=".activity.TripDetailsActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize">
-        </activity>
+            android:windowSoftInputMode="adjustResize"></activity>
         <activity
-            android:name="ride.happyy.user.activity.HelpPageActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:name=".activity.HelpPageActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="ride.happyy.user.activity.ReceiptPageActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:name=".activity.ReceiptPageActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="ride.happyy.user.activity.DriverRatingActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:name=".activity.DriverRatingActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="ride.happyy.user.activity.SearchHomeWorkActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:name=".activity.SearchHomeWorkActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="ride.happyy.user.activity.ForgotPasswordActivity"
+            android:name=".activity.ForgotPasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/LoginTheme"
-            android:windowSoftInputMode="stateHidden|adjustResize">
-        </activity>
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
         <activity
-            android:name="ride.happyy.user.activity.OnTripActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:name=".activity.OnTripActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="ride.happyy.user.activity.MobileVerificationActivity"
+            android:name=".activity.MobileVerificationActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize">
-        </activity>
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="41fe22fe29e9adee56bd422170375370af6f965c"
-            />
+            android:value="2d9c12368efeb2745613a2732df30f211c7d4e2c" />
+
+        <activity android:name=".SearchPickupLoationActivity"></activity>
     </application>
 
 </manifest>

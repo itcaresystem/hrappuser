@@ -304,10 +304,10 @@ public class ProfileEditActivity extends BaseAppCompatNoDrawerActivity {
             // Create an image file name
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
                     .format(new Date());
-            String imageFileName = "LaTaxi" + timeStamp + "_";
+            String imageFileName = "HappyyRide" + timeStamp + "_";
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                 File storageDir = new File(
-                        Environment.getExternalStorageDirectory() + "/LaTaxi/Photo/");
+                        Environment.getExternalStorageDirectory() + "/HappyyRide/Photo/");
                 if (!storageDir.exists()) {
                     storageDir.mkdirs();
                 }

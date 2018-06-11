@@ -38,6 +38,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
@@ -50,6 +51,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.SphericalUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -142,6 +144,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
     private TextView txtDestination;
     private TextView txtTotalFare;
     private RelativeLayout rlFare;
+    private LinearLayout happyyFareWithService;
     private View viewDottedLine;
     private TextView txtCarOne;
     private TextView txtCarTwo;
@@ -165,12 +168,12 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
     private ImageView carTwoImage;
     private ImageView carThreeImage;
     private ImageView carFourImage;
-    private TextView txtCarAvailability;
+  //  private TextView txtCarAvailability;
     private String time;
     private String distance;
     private boolean isDestinationEstimateSelect = false;
     private LinearLayout llFare;
-    private TextView txtCarArrivalEstimatedTime;
+   // private TextView txtCarArrivalEstimatedTime;
     private CarBean carBean;
     private LandingPageBean landingPageBean;
     private PlaceBean destinationBean;
@@ -190,6 +193,11 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
     private CarTypeRecyclerAdapter adapterCarTypes;
     private RecyclerView rvCarTypes;
 
+    private AutocompleteFilter typeFilter;
+
+    // for select service
+    private LinearLayout linear_layout_bike, linear_layout_car_trip, linear_layout_car_one_hour, linear_layout_car_two_hour , linear_layout_car_four_hour, linear_layout_car_one_day;
+
     private Button outOfDhakaService, packageService;
 
 
@@ -201,9 +209,6 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
 
         isGetLocationEnabled = false;
 
-
-        outOfDhakaService = findViewById(R.id.outOfDhakaService);
-        packageService = findViewById(R.id.packageService);
 
 
        /* if (!checkForLocationPermissions()) {
@@ -226,29 +231,20 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setTitle("");
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
+       // getSupportActionBar().setTitle("");
+        getSupportActionBar().setIcon(R.drawable.happyridetitlebarimagefinal);
+      //  getSupportActionBar().setDisplayShowTitleEnabled(true);
 
 
         initFCM();
 
+      typeFilter = new AutocompleteFilter.Builder()
+              .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
+              .setTypeFilter(3)
+              .build();
 
 
 
-        outOfDhakaService.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-
-        packageService.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
 
     }
 
@@ -332,6 +328,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         btnRequest = (Button) findViewById(R.id.btn_request);
 
         rlFare = (RelativeLayout) findViewById(R.id.rl_fare);
+        happyyFareWithService = findViewById(R.id.ll_fare_new);
 
         coordinatorLayout.removeView(toolbar);
 //      toolbar.setVisibility(View.GONE);
@@ -363,11 +360,11 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         txtCarThree = (TextView) findViewById(R.id.txt_la_xl);
         carFour = (TextView) findViewById(R.id.txt_la_xll);
 
-        txtCarArrivalEstimatedTime = (TextView) findViewById(R.id.txt_min_time);
+      //  txtCarArrivalEstimatedTime = (TextView) findViewById(R.id.txt_min_time);
 
 //        ivActionSearch = (ImageView) toolbarHome.findViewById(R.id.ic_action_search);
 
-        txtCarAvailability = (TextView) findViewById(R.id.txt_cars_available);
+        // txtCarAvailability = (TextView) findViewById(R.id.txt_cars_available);
         txtSource = (TextView) findViewById(R.id.txt_source);
         txtDestination = (TextView) findViewById(R.id.txt_destination);
 
@@ -386,7 +383,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
 
         flLandingPage = (FrameLayout) findViewById(R.id.fl_landing_page);
 
-        framePickup = (FrameLayout) findViewById(R.id.frame_pickup_landing_page);
+       // framePickup = (FrameLayout) findViewById(R.id.frame_pickup_landing_page);
         ivMarker = (ImageView) findViewById(R.id.iv_marker);
 
         llLandingBottomBar = (LinearLayout) findViewById(R.id.ll_landing_estimation_bottom_sheet);
@@ -529,10 +526,10 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                 if (!isConfirmationPage) {
                     mMap.getUiSettings().setScrollGesturesEnabled(true);
                     mMap.setMaxZoomPreference(18f);
-                    framePickup.setVisibility(View.INVISIBLE);
+                   // framePickup.setVisibility(View.INVISIBLE);
                     ivBottomMarker.setVisibility(View.INVISIBLE);
                     ivMarker.setVisibility(View.VISIBLE);
-                    ivLocationButton.setVisibility(View.INVISIBLE);
+                    ivLocationButton.setVisibility(View.VISIBLE);
 
                     isCameraMoved = true;
                 }
@@ -557,7 +554,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                     CameraPosition postion = mMap.getCameraPosition();
                     LatLng center = postion.target;
 
-                    framePickup.setVisibility(View.VISIBLE);
+                    // framePickup.setVisibility(View.VISIBLE);
                     ivBottomMarker.setVisibility(View.VISIBLE);
                     ivMarker.setVisibility(View.INVISIBLE);
                     ivLocationButton.setVisibility(View.VISIBLE);
@@ -663,6 +660,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                     destinationBean = null;
                     txtDestination.setText("");
                     rlFare.setVisibility(View.GONE);
+                    happyyFareWithService.setVisibility(View.GONE);
 
                     onSourceSelect();
 
@@ -678,6 +676,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
 
             if (destinationBean != null) {
                 llFare.setVisibility(View.GONE);
+                happyyFareWithService.setVisibility(View.GONE);
                 llConfirmationProgress.setVisibility(View.VISIBLE);
             }
 
@@ -703,6 +702,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                     destinationBean = null;
                     txtDestination.setText("");
                     rlFare.setVisibility(View.GONE);
+                    happyyFareWithService.setVisibility(View.GONE);
 
                     Snackbar.make(coordinatorLayout, R.string.message_source_and_destination_are_same, Snackbar.LENGTH_LONG)
                             .setAction(R.string.btn_dismiss, snackBarDismissOnClickListener).show();
@@ -776,6 +776,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         try {
             if (sourceBean.getDLatitude() != 0 && sourceBean.getDLongitude() != 0 && destinationBean.getDLatitude() != 0 && destinationBean.getDLongitude() != 0) {
                 rlFare.setVisibility(View.VISIBLE);
+                happyyFareWithService.setVisibility(View.VISIBLE);
                 viewDottedLine.setVisibility(View.VISIBLE);
                 mapAutoZoom();
                 fetchPolyPoints(true);
@@ -794,6 +795,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                 && destinationBean.getDLatitude() != 0 && destinationBean.getDLongitude() != 0) {
 
             rlFare.setVisibility(View.VISIBLE);
+            happyyFareWithService.setVisibility(View.VISIBLE);
             viewDottedLine.setVisibility(View.VISIBLE);
             mapAutoZoom();
             fetchPolyPoints(true);
@@ -820,7 +822,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
 
         Log.i(TAG, "onLocationButtonClick: Clicked");
 
-//        displayLocation();
+   //  displayLocation();
 
         sourceBean = null;
         if (mGoogleApiClient != null) {
@@ -852,105 +854,6 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         startActivityForResult(intent, REQ_ESTIMATED_DESTINATION);
     }
 
-    public void onPickUpLocationClick(View view) {
-        view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-
-/*        CarBean bean1 = landingPageBean.getCars().get(0);
-        CarBean bean2 = landingPageBean.getCars().get(1);
-        CarBean bean3 = landingPageBean.getCars().get(2);
-        CarBean bean4 = landingPageBean.getCars().get(3);*/
-
-        if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-            bottomSheetBehavior.setPeekHeight(0);
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
-        }
-
-       /* if (carType.equalsIgnoreCase("1")) {
-            btnRequest.setText("Request " + bean1.getCarName());
-        }
-
-        if (carType.equalsIgnoreCase("2")) {
-            btnRequest.setText("Request " + bean2.getCarName());
-        }
-
-        if (carType.equalsIgnoreCase("3")) {
-            btnRequest.setText("Request " + bean3.getCarName());
-        }
-
-        if (carType.equalsIgnoreCase("4")) {
-            btnRequest.setText("Request " + bean4.getCarName());
-        }*/
-
-        if (landingPageBean == null) {
-            Snackbar.make(coordinatorLayout, R.string.message_service_not_available, Snackbar.LENGTH_LONG)
-                    .setAction(R.string.btn_dismiss, snackBarDismissOnClickListener).show();
-            return;
-        }
-
-        CarBean bean = landingPageBean.getCar(carType);
-        btnRequest.setText(getString(R.string.label_request) + " " + (bean != null
-                ? bean.getCarName() : getString(R.string.app_name)));
-        btnRequest.setText("Send Request");
-
-
-        llFare.setVisibility(View.VISIBLE);
-        rlFare.setVisibility(View.GONE);
-
-        LatLng center = mMap.getCameraPosition().target;
-//        center = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter();
-
-        if (sourceBean == null) {
-            sourceBean = new PlaceBean();
-        }
-
-        sourceBean.setLatitude(String.valueOf(center.latitude));
-        sourceBean.setLongitude(String.valueOf(center.longitude));
-
-        onPlotLocation(true, LOCATION_SOURCE, sourceBean.getDLatitude(), sourceBean.getDLongitude());
-
-        if (txtDestination.length() > 0) {
-            rlFare.setVisibility(View.VISIBLE);
-            viewDottedLine.setVisibility(View.VISIBLE);
-
-        }
-
-        if (!isConfirmationPage) {
-
-            layoutConfirmationPage();
-
-            txtActionSearch.setText(R.string.label_confirmation);
-
-            if (!llConfirmation.isShown()) {
-
-                cvConfirmationPage.setVisibility(View.VISIBLE);
-                llConfirmation.setVisibility(View.VISIBLE);
-
-            }
-
-            if (!btnRequest.isShown()) {
-                btnRequest.setVisibility(View.VISIBLE);
-            }
-            isConfirmationPage = true;
-
-        }
-
-        if (destinationBean != null) {
-            mMap.clear();
-            llFare.setVisibility(View.GONE);
-            llConfirmationProgress.setVisibility(View.VISIBLE);
-            txtDestination.setText(destinationBean.getName());
-
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    onDestinationSelect();
-                }
-            }, 2000);
-            llEstimation.setVisibility(View.GONE);
-        }
-    }
 
     public void layoutConfirmationPage() {
 
@@ -969,7 +872,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
 
             ivLocationButton.setVisibility(View.GONE);
 
-            framePickup.setVisibility(View.GONE);
+            // framePickup.setVisibility(View.GONE);
 
         }
     }
@@ -998,6 +901,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
 
         rlFare.setVisibility(View.GONE);
         llFare.setVisibility(View.GONE);
+        happyyFareWithService.setVisibility(View.GONE);
 
         viewDottedLine.setVisibility(View.GONE);
 
@@ -1019,7 +923,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
 //        llEstimation.setVisibility(View.VISIBLE);
-        framePickup.setVisibility(View.VISIBLE);
+        // framePickup.setVisibility(View.VISIBLE);
         ivBottomMarker.setVisibility(View.VISIBLE);
         ivMarker.setVisibility(View.GONE);
         ivLocationButton.setVisibility(View.VISIBLE);
@@ -1239,6 +1143,10 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
 
     private void displayLocation() {
 
+        LatLng center = new LatLng(LastLocation.getLatitude(),LastLocation.getLongitude());
+        LatLng northSide = SphericalUtil.computeOffset(center,100000,0);
+        LatLng southSide = SphericalUtil.computeOffset(center,100000,180);
+
         Log.i(TAG, "displayLocation: OnPlotLocation Called .........>>>>>>>>>>>>>>>>>>>>>>>>..");
 
         if (LastLocation != null && !isConfirmationPage) {
@@ -1363,8 +1271,8 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
             @Override
             public void onLoadFailed(String error) {
                 swipeView.setRefreshing(false);
-                txtCarAvailability.setText(R.string.label_no_cars_available);
-                txtCarArrivalEstimatedTime.setVisibility(View.GONE);
+                // txtCarAvailability.setText(R.string.label_no_cars_available);
+                //txtCarArrivalEstimatedTime.setVisibility(View.GONE);
                 Toast.makeText(LandingPageActivity.this, error, Toast.LENGTH_SHORT).show();
 
             }
@@ -1374,14 +1282,14 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
     private void populateCarDetails(CarBean carBean) {
 
         if (carBean.getCarsAvailable().equalsIgnoreCase(getString(R.string.label_no_cars_available))) {
-            txtCarAvailability.setText(R.string.label_no_cars_available);
-            txtCarArrivalEstimatedTime.setVisibility(View.GONE);
+           // txtCarAvailability.setText(R.string.label_no_cars_available);
+           // txtCarArrivalEstimatedTime.setVisibility(View.GONE);
         } else {
-            txtCarArrivalEstimatedTime.setVisibility(View.VISIBLE);
-            txtCarAvailability.setText(R.string.btn_set_pickup_location);
+           // txtCarArrivalEstimatedTime.setVisibility(View.VISIBLE);
+           // txtCarAvailability.setText(R.string.btn_set_pickup_location);
         }
 
-        txtCarArrivalEstimatedTime.setText(carBean.getMinTime());
+        // txtCarArrivalEstimatedTime.setText(carBean.getMinTime());
         txtTime.setText(carBean.getMinTime());
         txtMaxSize.setText(carBean.getMaxSize());
         if (destinationBean == null) {
@@ -1481,6 +1389,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                                 destinationBean = null;
                                 txtDestination.setText("");
                                 rlFare.setVisibility(View.GONE);
+                                happyyFareWithService.setVisibility(View.GONE);
                             }
                         }
 
@@ -1676,8 +1585,8 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                 adapterCarTypes.setLandingPageBean(landingPageBean);
                 adapterCarTypes.notifyDataSetChanged();
             } else {
-                txtCarAvailability.setText(R.string.label_no_cars_available);
-                txtCarArrivalEstimatedTime.setVisibility(View.GONE);
+              //  txtCarAvailability.setText(R.string.label_no_cars_available);
+               // txtCarArrivalEstimatedTime.setVisibility(View.GONE);
             }
         }
 

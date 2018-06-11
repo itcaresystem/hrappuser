@@ -1,6 +1,7 @@
 package ride.happyy.user.activity;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,6 +25,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.data.DataBufferUtils;
+import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.AutocompletePredictionBuffer;
 import com.google.android.gms.location.places.Place;
@@ -266,7 +268,10 @@ public class SearchPageActivity extends BaseAppCompatNoDrawerActivity
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        PendingResult<AutocompletePredictionBuffer> result = Places.GeoDataApi.getAutocompletePredictions(mGoogleApiClient, "infopark", null, null);
+        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+                .setCountry("BD")
+                .build();
+        PendingResult<AutocompletePredictionBuffer> result = Places.GeoDataApi.getAutocompletePredictions(mGoogleApiClient, "infopark", null, typeFilter);
 
         result.setResultCallback(new ResultCallback<AutocompletePredictionBuffer>() {
             @Override
@@ -299,15 +304,20 @@ public class SearchPageActivity extends BaseAppCompatNoDrawerActivity
         @Override
         protected ArrayList<AutocompletePrediction> doInBackground(String... params) {
 
+
             if (mGoogleApiClient.isConnected()) {
                 Log.i(TAG, "Starting autocomplete query for: " + strAddress);
+                AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+                        .setCountry("BD")
+                        .build();
 
                 // Submit the query to the autocomplete API and retrieve a PendingResult that will
                 // contain the results when the query completes.
                 PendingResult<AutocompletePredictionBuffer> results =
                         Places.GeoDataApi
                                 .getAutocompletePredictions(mGoogleApiClient, strAddress, null,
-                                        null);
+                                        typeFilter);
+
 
                 // This method should have been called off the main UI thread. Block and wait for at most 60s
                 // for a result from the API.
