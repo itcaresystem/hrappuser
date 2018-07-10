@@ -27,6 +27,12 @@
     <string name="btn_refresh">Refresh</string>
     <string name="btn_register">Register</string>
     <string name="btn_request_la">Request Happyy Ride</string>
+    <string name="btn_request_for_bike">Request for Bike</string>
+    <string name="btn_request_for_car">Request for Car</string>
+    <string name="btn_request_for_one_h">Request for 1 hour</string>
+    <string name="btn_request_for_two_h">Request for 2 hours</string>
+    <string name="btn_request_for_four_h">Request for 4 hours</string>
+    <string name="btn_request_for_day">Request for Bike</string>
     <string name="btn_retry">Retry</string>
     <string name="btn_save">Save</string>
     <string name="btn_set_pickup_location">Pickup</string>
@@ -168,6 +174,7 @@
     <string name="message_password_minimum_character">Password should be atleast 8 Characters</string>
     <string name="message_phone_number_already_exists">Phone Number Already Exists</string>
     <string name="message_phone_number_is_required">Phone number is required</string>
+    <string name="message_phone_number_is_invalid">Phone number is invalid</string>
     <string name="message_phone_number_successfully_verified">Phone Number Was Successfully Verified</string>
     <string name="message_phone_verification_failed">Phone Number Verification Failed. Please Try Again</string>
     <string name="message_phone_verified_successfully">Your Mobile Number Has Been Successfully Verified</string>

@@ -60,7 +60,8 @@ import static ride.happyy.user.app.App.NETWORK_NOT_AVAILABLE;
 import static ride.happyy.user.app.App.SERVER_CONNECTION_AVAILABLE;
 
 
-public class BaseAppCompatActivity extends BaseActivity implements
+public class
+BaseAppCompatActivity extends BaseActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         GoogleMap.OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListener,

@@ -4,8 +4,10 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -27,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -36,6 +39,7 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.AutocompleteFilter;
@@ -102,6 +106,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
             .setInterval(5000)         // 5 seconds
             .setFastestInterval(16)    // 16ms = 60fps
             .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    private FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQ_SEARCH_SOURCE_SELECT = 0;
     private static final int REQ_SEARCH_DESTINATION_SELECT = 1;
     private static final int REQ_SEARCH_DESTINATION_ESTIMATE_SELECT = 2;
@@ -197,9 +202,13 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
 
     // for select service
     private LinearLayout linear_layout_bike, linear_layout_car_trip, linear_layout_car_one_hour, linear_layout_car_two_hour , linear_layout_car_four_hour, linear_layout_car_one_day;
+    private LinearLayout bikeLinearLayout, carLinearLayout, oneHourLinearLayout,twoHoursLinearLayout, fourHoursLinearLayout, dayLinearLayout;
+    private ImageView bikeRequestImageView, carRequestImageView, carOneHourRequestImageView, carTwoHoursRequestImageView, carFourHoursRequestImageView,carDayImageView, carDayPrimioRequestImageView, carDayNoahRequestImageView, carDayHiceRequestImageView;
+    private TextView bikeFareTextView,carFareTextView, oneHourFareTextView,twoHoursFareTextView,fourHoursFareTextView,dayFareTextView;
+    private ImageButton bikeInfoImageButton, carInfoImageButton, oneHourInfoImageButton, twoHourInfoImageButton,fourHourInfoImageButton, dayInfoImageButton;
 
+    private Button bikeRequestBtn, carRequestBtn, carOneHourRequestBtn, carTwoHoursRequestBtn, carFourHoursRequestBtn, carDayPrimioRequestBtn, carDayNoahRequestBtn, carDayHiceRequestBtn;
     private Button outOfDhakaService, packageService;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -316,6 +325,249 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
 
     public void initViews() {
 
+        btnRequest = (Button) findViewById(R.id.btn_request);
+        //init laouts
+
+        //confirm Bike START
+        bikeLinearLayout        = findViewById(R.id.confirm_request_bike_ll);
+        bikeRequestImageView    = findViewById(R.id.confirm_request_bike_imv);
+        bikeFareTextView        = findViewById(R.id.confirm_request_bike_fare_tv);
+        bikeInfoImageButton     = findViewById(R.id.confirm_request_bike_info_imbtn);
+        bikeRequestBtn          = findViewById(R.id.btn_request_for_bike);
+
+        //END
+
+        //confirm CAR START
+        carLinearLayout         = findViewById(R.id.confirm_request_car_ll);
+        carRequestImageView     = findViewById(R.id.confirm_request_car_imv);
+        carFareTextView         = findViewById(R.id.confirm_request_car_fare_tv);
+        carInfoImageButton      = findViewById(R.id.confirm_request_ca_info_imbtn);
+        carRequestBtn           = findViewById(R.id.btn_request_for_car);
+        //END Car
+
+        //Start One Hour Car
+        oneHourLinearLayout         = findViewById(R.id.confirm_request_car_one_hour_ll);
+        carOneHourRequestImageView  = findViewById(R.id.confirm_request_car_one_hour_imv);
+        oneHourFareTextView         = findViewById(R.id.confirm_request_car_one_hour_fare_tv);
+        oneHourInfoImageButton      = findViewById(R.id.confirm_request_car_one_hour_info_imbtn);
+        carOneHourRequestBtn        = findViewById(R.id.btn_request_for_car_one_hour);
+        //End
+
+        // Start Two Hours
+        twoHoursLinearLayout        = findViewById(R.id.confirm_request_car_two_hours_ll);
+        carTwoHoursRequestImageView = findViewById(R.id.confirm_request_car_two_hours_imv);
+        twoHoursFareTextView        = findViewById(R.id.confirm_request_car_two_hour_fare_tv);
+        twoHourInfoImageButton      = findViewById(R.id.confirm_request_two_hours_info_imbtn);
+        carTwoHoursRequestBtn       = findViewById(R.id.btn_request_for_car_two_hours);
+        //END
+
+        // Start Four Hours
+        fourHoursLinearLayout           = findViewById(R.id.confirm_request_car_four_hours_ll);
+        carFourHoursRequestImageView    = findViewById(R.id.confirm_four_hours_imv);
+        fourHoursFareTextView           = findViewById(R.id.confirm_request_car_four_hours_fare_tv);
+        fourHourInfoImageButton         = findViewById(R.id.confirm_request_car_four_hours_info_imbtn);
+        carFourHoursRequestBtn          = findViewById(R.id.btn_request_for_car_four_hours);
+        //End
+
+        // START ONE DAY
+
+        dayLinearLayout             = findViewById(R.id.confirm_request_car_day_ll);
+        carDayImageView             = findViewById(R.id.confirm_request_car_day_imv);
+        dayFareTextView             = findViewById(R.id.confirm_request_car_day_fare_tv);
+        dayInfoImageButton          = findViewById(R.id.confirm_request_ca_day_info_imbtn);
+        //primio
+        carDayPrimioRequestImageView = findViewById(R.id.confirm_request_car_day_imv);
+        carDayPrimioRequestBtn      = findViewById(R.id.btn_request_for_car_one_day_primio);
+        // Noah
+        carDayNoahRequestImageView  = findViewById(R.id.confirm_request_car_day_imv);
+        carDayNoahRequestBtn        = findViewById(R.id.btn_request_for_car_one_day_noah);
+        // Hice
+        carDayHiceRequestImageView  = findViewById(R.id.confirm_request_car_day_imv);
+        carDayHiceRequestBtn        = findViewById(R.id.btn_request_for_car_one_day_hiace);
+
+        //Bike LinearLayout Onclick
+        bikeLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              //  bikeRequestImageView.setBackground(getResources(R.drawable.bg_round_edges_black));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    //selected
+                    bikeRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_black));
+                    carRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carOneHourRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carTwoHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carFourHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carDayPrimioRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carDayNoahRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carDayHiceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+
+                }
+                bikeRequestBtn.setVisibility(View.VISIBLE);
+                btnRequest.setVisibility(View.GONE);
+                carRequestBtn.setVisibility(View.GONE);
+                carOneHourRequestBtn.setVisibility(View.GONE);
+                carTwoHoursRequestBtn.setVisibility(View.GONE);
+                carFourHoursRequestBtn.setVisibility(View.GONE);
+                carDayPrimioRequestBtn.setVisibility(View.GONE);
+                carDayNoahRequestBtn.setVisibility(View.GONE);
+                carDayHiceRequestBtn.setVisibility(View.GONE);
+            }
+        });
+
+        //Car LinearLayout Onclick
+        carLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //  bikeRequestImageView.setBackground(getResources(R.drawable.bg_round_edges_black));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    bikeRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    //Sellected
+                    carRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_black));
+                    carOneHourRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carTwoHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carFourHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carDayPrimioRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carDayNoahRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carDayHiceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+
+                }
+                bikeRequestBtn.setVisibility(View.GONE);
+                btnRequest.setVisibility(View.GONE);
+                //selected
+                carRequestBtn.setVisibility(View.VISIBLE);
+                carOneHourRequestBtn.setVisibility(View.GONE);
+                carTwoHoursRequestBtn.setVisibility(View.GONE);
+                carFourHoursRequestBtn.setVisibility(View.GONE);
+                carDayPrimioRequestBtn.setVisibility(View.GONE);
+                carDayNoahRequestBtn.setVisibility(View.GONE);
+                carDayHiceRequestBtn.setVisibility(View.GONE);
+            }
+        });
+
+        //Bike LinearLayout Onclick
+        oneHourLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //  bikeRequestImageView.setBackground(getResources(R.drawable.bg_round_edges_black));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    bikeRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    //selected
+                    carOneHourRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_black));
+                    carTwoHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carFourHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carDayPrimioRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carDayNoahRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carDayHiceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+
+                }
+                bikeRequestBtn.setVisibility(View.GONE);
+                btnRequest.setVisibility(View.GONE);
+                carRequestBtn.setVisibility(View.GONE);
+                //selected
+                carOneHourRequestBtn.setVisibility(View.VISIBLE);
+                carTwoHoursRequestBtn.setVisibility(View.GONE);
+                carFourHoursRequestBtn.setVisibility(View.GONE);
+                carDayPrimioRequestBtn.setVisibility(View.GONE);
+                carDayNoahRequestBtn.setVisibility(View.GONE);
+                carDayHiceRequestBtn.setVisibility(View.GONE);
+            }
+        });
+
+        //Bike LinearLayout Onclick
+        twoHoursLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //  bikeRequestImageView.setBackground(getResources(R.drawable.bg_round_edges_black));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    bikeRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carOneHourRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    //selected
+                    carTwoHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_black));
+                    carFourHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carDayPrimioRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carDayNoahRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carDayHiceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+
+                }
+                bikeRequestBtn.setVisibility(View.GONE);
+                btnRequest.setVisibility(View.GONE);
+                carRequestBtn.setVisibility(View.GONE);
+                carOneHourRequestBtn.setVisibility(View.GONE);
+                //Selectes
+                carTwoHoursRequestBtn.setVisibility(View.VISIBLE);
+                carFourHoursRequestBtn.setVisibility(View.GONE);
+                carDayPrimioRequestBtn.setVisibility(View.GONE);
+                carDayNoahRequestBtn.setVisibility(View.GONE);
+                carDayHiceRequestBtn.setVisibility(View.GONE);
+            }
+        });
+
+        //Bike LinearLayout Onclick
+        fourHoursLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //  bikeRequestImageView.setBackground(getResources(R.drawable.bg_round_edges_black));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    bikeRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carOneHourRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carTwoHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    //selected
+                    carFourHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_black));
+                    carDayPrimioRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carDayNoahRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carDayHiceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+
+                }
+                bikeRequestBtn.setVisibility(View.GONE);
+                btnRequest.setVisibility(View.GONE);
+                carRequestBtn.setVisibility(View.GONE);
+                carOneHourRequestBtn.setVisibility(View.GONE);
+                carTwoHoursRequestBtn.setVisibility(View.GONE);
+                //selected
+                carFourHoursRequestBtn.setVisibility(View.VISIBLE);
+                carDayPrimioRequestBtn.setVisibility(View.GONE);
+                carDayNoahRequestBtn.setVisibility(View.GONE);
+                carDayHiceRequestBtn.setVisibility(View.GONE);
+            }
+        });
+
+        //Bike LinearLayout Onclick
+        dayLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //  bikeRequestImageView.setBackground(getResources(R.drawable.bg_round_edges_black));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    bikeRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carOneHourRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carTwoHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carFourHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    //selected
+                    carDayImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_black));
+                    //selected
+                   // carDayPrimioRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_black));
+                   // carDayNoahRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                  //  carDayHiceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+
+                }
+                bikeRequestBtn.setVisibility(View.GONE);
+                btnRequest.setVisibility(View.GONE);
+                carRequestBtn.setVisibility(View.GONE);
+                carOneHourRequestBtn.setVisibility(View.GONE);
+                carTwoHoursRequestBtn.setVisibility(View.GONE);
+                carFourHoursRequestBtn.setVisibility(View.GONE);
+                //selected
+                carDayPrimioRequestBtn.setVisibility(View.VISIBLE);
+                carDayNoahRequestBtn.setVisibility(View.GONE);
+                carDayHiceRequestBtn.setVisibility(View.GONE);
+            }
+        });
+
+
+
         snackBarRefreshOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -325,7 +577,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
             }
         };
 
-        btnRequest = (Button) findViewById(R.id.btn_request);
+       // btnRequest = (Button) findViewById(R.id.btn_request);
 
         rlFare = (RelativeLayout) findViewById(R.id.rl_fare);
         happyyFareWithService = findViewById(R.id.ll_fare_new);
@@ -1497,6 +1749,44 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         }
     }
 
+    //Bike Request
+   public void onRequestRideClickBike(View view){
+       view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+        Toast.makeText(this,"Request For Bike",Toast.LENGTH_SHORT).show();
+   }
+
+   // onRequestRideClickCar
+    public void onRequestRideClickCar(View view){
+        view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+        Toast.makeText(this,"Request For Car",Toast.LENGTH_SHORT).show();
+
+    }
+    public void onRequestRideClickCarOneHoure(View view){
+        view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+        Toast.makeText(this,"Request For One Hour",Toast.LENGTH_SHORT).show();
+    }
+    public void onRequestRideClickCarTwoHours(View view){
+        view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+        Toast.makeText(this,"Request For Two Hours",Toast.LENGTH_SHORT).show();
+    }
+    public void onRequestRideClickCarFourHours(View view){
+        view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+        Toast.makeText(this,"Request For Car Four Hours",Toast.LENGTH_SHORT).show();
+    }
+    public void onRequestRideClickCarDayPrimio(View view){
+        view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+        Toast.makeText(this,"Request For Day Primio",Toast.LENGTH_SHORT).show();
+    }
+    public void onRequestRideClickCarDayNoah(View view){
+        view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+        Toast.makeText(this,"Request For Day Noah",Toast.LENGTH_SHORT).show();
+    }
+    public void onRequestRideClickCarHice(View view){
+        view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+        Toast.makeText(this,"Request For Day Hiace",Toast.LENGTH_SHORT).show();
+    }
+
+
     public void fetchLandingPageDetails() {
 
         Log.i(TAG, "fetchLandingPageDetails: AuthToken" + Config.getInstance().getAuthToken());
@@ -1616,7 +1906,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                         break;
                 }
             }
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(newLatLng, 18));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(newLatLng, 17));
             Log.i(TAG, "onPlotLocation: Position" + newLatLng);
 
         } catch (NumberFormatException e) {
@@ -1789,6 +2079,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         } else {
             if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
 
+
                 if (LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient) != null) {
                     Config.getInstance().setCurrentLatitude(""
                             + LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient).getLatitude());
@@ -1874,6 +2165,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                     getLocationPermissions();
                 checkLocationSettingsStatus();
             } else {
+                LocationServices.getFusedLocationProviderClient(this);
                 LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
                 //	mGoogleApiClient.requestLocationUpdates(mLocationRequest,HomeActivity.this);
             }

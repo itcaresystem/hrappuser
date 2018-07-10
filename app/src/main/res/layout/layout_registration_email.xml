@@ -35,7 +35,7 @@
 
         style="@style/RegistrationFAB"
         android:onClick="onRegistrationEmailSubmitClick"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/red"
         app:fabSize="normal"
         app:srcCompat="@drawable/ic_arrow_registration"/>
 

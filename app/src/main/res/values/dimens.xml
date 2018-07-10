@@ -10,5 +10,10 @@
     <dimen name="profile_width">75dp</dimen>
     <dimen name="profile_height">75dp</dimen>
     <dimen name="drawer_width">320dp</dimen>
+    <dimen name="confirm_car_min_height">88dp</dimen>
+    <dimen name="confirm_card_view_padding_top">5dp</dimen>
+    <dimen name="confirm_card_view_padding_left">5dp</dimen>
+    <dimen name="confirm_card_view_padding_right">50dp</dimen>
+    <dimen name="confirm_card_view_padding_bottom">5dp</dimen>
 
 </resources>

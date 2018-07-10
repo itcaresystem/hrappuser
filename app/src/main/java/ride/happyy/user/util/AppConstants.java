@@ -94,7 +94,7 @@ public class AppConstants {
 
 */
 
-    private static final String COUNTRY_LIST = "{\"countries\":[{\"name\":\"Bangladesh\",\"dial_code\":\"+88\",\"code\":\"BD\"}]}";
+    private static final String COUNTRY_LIST = "{\"countries\":[{\"name\":\"Bangladesh\",\"dial_code\":\"+880\",\"code\":\"BD\"}]}";
 
     public static CountryListBean getCountryBean() {
 

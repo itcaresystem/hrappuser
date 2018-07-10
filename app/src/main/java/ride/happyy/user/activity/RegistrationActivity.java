@@ -202,9 +202,6 @@ public class RegistrationActivity extends BaseAppCompatNoDrawerActivity {
         Glide.with(getApplicationContext())
                 .load("file:///android_asset/" + "flags/"
                         + countryListBean.getCountries().get(0).getCountryCode().toLowerCase() + ".gif")
-                .apply(new RequestOptions()
-                        .centerCrop()
-                        .circleCrop())
                 .into(ivFlag);
 
         getSupportActionBar().hide();
@@ -216,9 +213,6 @@ public class RegistrationActivity extends BaseAppCompatNoDrawerActivity {
                 Glide.with(getApplicationContext())
                         .load("file:///android_asset/" + "flags/"
                                 + countryListBean.getCountries().get(position).getCountryCode().toLowerCase() + ".gif")
-                        .apply(new RequestOptions()
-                                .centerCrop()
-                                .circleCrop())
                         .into(ivFlag);
             }
 
@@ -227,9 +221,6 @@ public class RegistrationActivity extends BaseAppCompatNoDrawerActivity {
                 Glide.with(getApplicationContext())
                         .load("file:///android_asset/" + "flags/"
                                 + countryListBean.getCountries().get(0).getCountryCode().toLowerCase() + ".gif")
-                        .apply(new RequestOptions()
-                                .centerCrop()
-                                .circleCrop())
                         .into(ivFlag);
             }
         });
@@ -638,6 +629,13 @@ public class RegistrationActivity extends BaseAppCompatNoDrawerActivity {
         }
         if (etxtPhone.getText().toString().equalsIgnoreCase("")) {
             Snackbar.make(coordinatorLayout, getString(R.string.message_phone_number_is_required), Snackbar.LENGTH_LONG)
+                    .setAction(getString(R.string.btn_dismiss), snackBarDismissOnClickListener).show();
+            return false;
+        }
+
+
+        if (etxtPhone.getText().toString().length()!=10) {
+            Snackbar.make(coordinatorLayout, getString(R.string.message_phone_number_is_invalid), Snackbar.LENGTH_LONG)
                     .setAction(getString(R.string.btn_dismiss), snackBarDismissOnClickListener).show();
             return false;
         }
