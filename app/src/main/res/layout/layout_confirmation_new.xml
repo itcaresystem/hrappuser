@@ -694,7 +694,7 @@
         android:background="@drawable/bg_round_edges"
         android:gravity="center"
         android:onClick="onRequestRideClickCarDayNoah"
-        android:text="@string/btn_request_la"
+        android:text="Request for Noah"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:visibility="gone"/>
@@ -707,7 +707,7 @@
         android:background="@drawable/bg_round_edges"
         android:gravity="center"
         android:onClick="onRequestRideClickCarHice"
-        android:text="@string/btn_request_la"
+        android:text="Request for Hiace"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:visibility="gone"/>
