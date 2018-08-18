@@ -78,78 +78,87 @@
         <activity
             android:name=".activity.RegistrationActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activity.LandingPageActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/LoginTheme"
-            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
-        <activity android:name=".activity.WelcomeActivity"></activity>
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity android:name=".activity.WelcomeActivity" />
         <activity
             android:name=".activity.PickUpLocationActivity"
             android:label="@string/title_activity_pick_up_location"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activity.SearchPageActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.PromotionActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.FreeRidesActiivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.RequestingPageActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.SettingsPageActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ProfileEditActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".activity.TripsActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.TripDetailsActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activity.HelpPageActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ReceiptPageActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.DriverRatingActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.SearchHomeWorkActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ForgotPasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/LoginTheme"
-            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".activity.OnTripActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.MobileVerificationActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+            android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="2d9c12368efeb2745613a2732df30f211c7d4e2c" />
 
-        <activity android:name=".SearchPickupLoationActivity"></activity>
+        <activity android:name=".SearchPickupLoationActivity" />
+        <activity android:name=".activity.HistoryActivityWithTabs" />
+        <activity android:name=".activity.HistoryAmbulanceListActivity" />
+        <activity android:name=".activity.DiscountActivity" />
+        <activity android:name=".activity.NotificationsActivity" />
+        <activity android:name=".activity.AboutsActivit" />
+        <activity android:name=".activity.HelpSimpleActivity" />
+        <activity android:name=".activity.OutOfDhakaActivity" />
+        <activity android:name=".activity.DocumentUpActivity" />
+        <activity android:name=".activity.DiagnosticOfferRequestActivity"></activity>
     </application>
 
 </manifest>

@@ -77,6 +77,7 @@ public class ProfileEditActivity extends BaseAppCompatNoDrawerActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle("Profile");
 
     }
 

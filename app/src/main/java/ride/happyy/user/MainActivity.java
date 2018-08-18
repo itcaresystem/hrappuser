@@ -152,20 +152,20 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.history:
                 linearLayout.setVisibility(View.GONE);
-                fragment =new HistoryFragment();
+              //  fragment =new HistoryFragment();
                 break;
             case R.id.promotions:
                 linearLayout.setVisibility(View.GONE);
-                fragment =new PromotionsFragments();
+               // fragment =new PromotionsFragments();
                 break;
             case R.id.get_discount:
                 linearLayout.setVisibility(View.GONE);
-                fragment =new GetDiscountFragment();
+              // fragment =new GetDiscountFragment();
                 break;
 
             case R.id.setting:
                 linearLayout.setVisibility(View.GONE);
-                fragment =new SettingsFragment();
+               // fragment =new SettingsFragment();
                 break;
             case R.id.help:
                 linearLayout.setVisibility(View.GONE);
@@ -173,19 +173,19 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.about:
                 linearLayout.setVisibility(View.GONE);
-                fragment =new AboutFragment();
+              //  fragment =new AboutFragment();
                 break;
             case R.id.inDhakaCity:
                 linearLayout.setVisibility(View.GONE);
-                fragment =new InDhakaCityFragment();
+               // fragment =new InDhakaCityFragment();
                 break;
             case R.id.outOfDhakaCity:
                 linearLayout.setVisibility(View.GONE);
-                fragment =new OutOfDhakaCityFragment();
+               // fragment =new OutOfDhakaCityFragment();
                 break;
             case R.id.hourlyPackage:
                 linearLayout.setVisibility(View.GONE);
-                fragment =new HourlyPackageFragment();
+               // fragment =new HourlyPackageFragment();
                 break;
 
 

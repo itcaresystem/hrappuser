@@ -1,6 +1,7 @@
 package ride.happyy.user.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -88,10 +89,16 @@ public class SearchPageActivity extends BaseAppCompatNoDrawerActivity
         if (searchType == AppConstants.SEARCH_SOURCE) {
 
             etxtSearchPlace.setHint(R.string.hint_enter_the_source);
+            etxtSearchPlace.setBackgroundColor(Color.WHITE);
+            etxtSearchPlace.setTextColor(Color.BLACK);
         } else if (searchType == AppConstants.SEARCH_DESTINATION) {
             etxtSearchPlace.setHint(R.string.hint_enter_the_destination);
+            etxtSearchPlace.setBackgroundColor(Color.WHITE);
+            etxtSearchPlace.setTextColor(Color.BLACK);
         } else {
             etxtSearchPlace.setHint(R.string.hint_enter_the_destination);
+            etxtSearchPlace.setBackgroundColor(Color.WHITE);
+            etxtSearchPlace.setTextColor(Color.BLACK);
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

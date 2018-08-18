@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="gender_arry">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="car_brand">
+    <item>Select Brand</item>
+    <item>PREMIO</item>
+    <item>NOAH</item>
+    <item>HIACE</item>
+</string-array>
+
+    <string-array name="spinnerDivisionArray">
+        <item>Select</item>
+        <item>Dhaka</item>
+        <item>Chittagong</item>
+        <item>Barisal</item>
+        <item>Sylhet</item>
+        <item>khulna</item>
+        <item>Rajshahi</item>
+        <item>Rangpur</item>
+        <item>Mymensingh</item>
+    </string-array>
+
+    <string-array name="spinnerDhakaDistrictArray">
+        <item>Select</item>
+        <item>Narsingdi</item>
+        <item>Gazipur</item>
+        <item>Shariatpur</item>
+        <item>Narayanganj</item>
+        <item>Tangail</item>
+        <item>Kishoregonj</item>
+        <item>Manikganj</item>
+        <item>Munshiganj</item>
+        <item>Rajbari</item>
+        <item>Madaripur</item>
+        <item>Gopalganj</item>
+        <item>Faridpur</item>
+    </string-array>
+
+    <string-array name="spinnerChittagongDistrictArray">
+        <item>Select</item>
+        <item>Chittagong</item>
+        <item>Comilla</item>
+        <item>Feni</item>
+        <item>Brahmanbaria</item>
+        <item>Rangamati</item>
+        <item>Noakhali</item>
+        <item>Chandpur</item>
+        <item>Lakshmipur</item>
+        <item>"Cox's Bazar"</item>
+        <item>Khagrachhari</item>
+        <item>Bandarban</item>
+    </string-array>
+    <string-array name="spinnerBarisalDistrictArray">
+        <item>Select</item>
+        <item>Barisal</item>
+        <item>Jhalokati</item>
+        <item>Patuakhali</item>
+        <item>Pirojpur</item>
+        <item>Bhola</item>
+        <item>Barguna</item>
+    </string-array>
+
+    <string-array name="spinnerSylhetDistrictArray">
+        <item>Select</item>
+        <item>Sylhet</item>
+        <item>Maulvibazar</item>
+        <item>Habiganj</item>
+        <item>Sunamganj</item>
+    </string-array>
+    <string-array name="spinnerkhulanDistrictArray">
+        <item>Select</item>
+        <item>Khulna</item>
+        <item>Jessore</item>
+        <item>Satkhira</item>
+        <item>Meherpur</item>
+        <item>Narail</item>
+        <item>Chuadanga</item>
+        <item>Kushtia</item>
+        <item>Magura</item>
+        <item>Bagerhat</item>
+        <item>Jhenaidah</item>
+    </string-array>
+    <string-array name="spinnerRajshahiDistrictArray">
+        <item>Select</item>
+        <item>Rajshahi</item>
+        <item>Sirajganj</item>
+        <item>Pabna</item>
+        <item>Bogra</item>
+        <item>Natore</item>
+        <item>Jaypurhat</item>
+        <item>Chapainababganj</item>
+        <item>Naogaon</item>
+    </string-array>
+    <string-array name="spinnerRangpurDistrictArray">
+        <item>Select</item>
+        <item>Rangpur</item>
+        <item>Panchagarh</item>
+        <item>Dinajpur</item>
+        <item>LalMonirhat</item>
+        <item>Nilphamari</item>
+        <item>Gaibandha</item>
+        <item>Thakurgaon</item>
+        <item>Kurigram</item>
+    </string-array>
+    <string-array name="spinnerMymensingDistrictArray">
+        <item>Select</item>
+        <item>Mymensingh</item>
+        <item>Sherpur</item>
+        <item>Jamalpur</item>
+        <item>Netrakona</item>
+    </string-array>
+
+</resources>

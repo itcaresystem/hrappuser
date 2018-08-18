@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="?actionBarSize"
+    >
+
+
+    <LinearLayout
+        android:paddingTop="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="end"
+        android:gravity="center"
+        >
+
+        <ride.happyy.user.widgets.CustomTextView
+            android:padding="2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right|center"
+            android:text="HAPPYY"
+            android:textColor="@color/red"
+            android:layout_marginLeft="0dp"
+            android:id="@+id/happyy"
+            android:typeface="serif"
+            android:textStyle="bold"
+            android:textSize="20sp" />
+
+        <ride.happyy.user.widgets.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="RIDE"
+            android:textColor="#000"
+            android:id="@+id/mytextDrive"
+            android:typeface="sans"
+            android:textStyle="bold"
+            android:textSize="20sp" />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

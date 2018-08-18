@@ -18,5 +18,7 @@
 
     <string name="textstyle_normal">4</string>
 
+        <string name="font_fontFamily_medium">sans-serif</string>
+
 
 </resources>

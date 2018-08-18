@@ -15,10 +15,10 @@ import ride.happyy.user.R;
 public class CarFragment extends Fragment {
 
 
-    public CarFragment() {
-        // Required empty public constructor
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

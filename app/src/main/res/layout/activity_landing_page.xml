@@ -9,6 +9,12 @@
     android:orientation="vertical"
     tools:context="ride.happyy.user.activity.LandingPageActivity">
 
+
+
+   <!-- <include layout="@layout/layout_actionbar_title_extra_w">  </include>-->
+
+
+
     <include
         layout="@layout/fragment_map"
         app:layout_anchor="@+id/ll_trip_details_driver_info"
@@ -16,21 +22,56 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_location_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="110dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="70dp"
         android:layout_marginRight="10dp"
         android:focusable="true"
         android:onClick="onLocationButtonClick"
         android:scaleType="centerInside"
         android:src="@drawable/ic_location"
         android:tint="@color/white"
-        app:backgroundTint="#000"
+        app:backgroundTint="@color/red"
         app:fabSize="auto"
-        app:layout_anchor="@+id/ll_landing_estimation_bottom_sheet"
-        app:layout_anchorGravity="bottom|end"/>
+        android:visibility="visible"
+        android:layout_gravity="bottom|end"
+        />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_location_button1"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="110dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginRight="10dp"
+        android:focusable="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/outofdhakaroundimage"
+        android:tint="@color/white"
+        app:backgroundTint="@color/parpel"
+        app:fabSize="auto"
+        android:layout_gravity="bottom|end"
+        android:visibility="gone"
+        />
+    <Button
+        android:id="@+id/distinationconfirm"
+        android:visibility="visible"
+        android:layout_width="220dp"
+        android:layout_height="40dp"
+        android:text="Done"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:onClick="onClickDoneButton"
+        android:textColor="@color/parpel"
+        android:layout_gravity="bottom|center"
+        android:background="@color/blue_transparent_50"
+        android:textStyle="bold|italic"
+        android:layout_marginBottom="30dp"/>
 
     <include layout="@layout/layout_confirmation"/>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/container"/>
 
     <FrameLayout
         android:id="@+id/fl_landing_page"
@@ -46,10 +87,10 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="300dp"
             android:scaleType="centerInside"
-            android:src="@drawable/marker_pickup"
-            android:visibility="visible"/>
+            android:src="@drawable/pickup"
+            android:visibility="gone"/>
 
 
 
@@ -60,9 +101,8 @@
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:scaleType="centerInside"
-            android:src="@drawable/marker_pickup"
-            android:visibility="visible"/>
-
+            android:src="@drawable/dropofffinal"
+            android:visibility="gone"/>
 
     </FrameLayout>
 

@@ -1,8 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge
+
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cv_headingMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="top"
+        android:visibility="visible"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:weightSum="100"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="40"
+                android:paddingTop="2dp"
+                android:layout_gravity="left"
+                >
+
+              <android.support.v7.widget.Toolbar
+                  android:layout_width="wrap_content"
+                  android:layout_height="?attr/actionBarSize"
+                  android:minWidth="60dp"
+                  android:minHeight="45dp"
+                  android:id="@+id/toolbarMyTest"
+                  >
+
+              </android.support.v7.widget.Toolbar>
+                <ImageButton
+                    android:id="@+id/menubarnImageBtn"
+                    android:background="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="60dp"
+                    android:minHeight="45dp"
+                    android:gravity="left|center"
+                    android:onClick="onClickMenuBarHome"
+                    android:src="@drawable/ic_menu_black_24dp"
+                    android:visibility="gone"/>
+                <com.nex3z.notificationbadge.NotificationBadge
+                    android:visibility="gone"
+                    android:id="@+id/notificationBadgeHome"
+                    layout_toRightof="@+id/driverNotificationImageBtn"
+                    layout_alignTopof="@+id/driverNotificationImageBtn"
+                    android:layout_marginLeft="-32dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    app:maxTextLength="2"
+                    app:background="@drawable/notification_count_resource">
+                </com.nex3z.notificationbadge.NotificationBadge>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:paddingTop="0dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="20"
+                android:layout_gravity="end"
+                android:gravity="center"
+                >
+
+                <ride.happyy.user.widgets.CustomTextView
+                    android:padding="2dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="right|center"
+                    android:text="HAPPYY"
+                    android:textColor="@color/red"
+                    android:layout_marginLeft="0dp"
+                    android:id="@+id/happyy"
+                    android:typeface="serif"
+                    android:textStyle="bold"
+                    android:textSize="20sp" />
+
+                <ride.happyy.user.widgets.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="RIDE"
+                    android:textColor="#000"
+                    android:id="@+id/mytextDrive"
+                    android:typeface="sans"
+                    android:textStyle="bold"
+                    android:textSize="20sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_weight="40"
+               >
+
+            <ImageButton
+                    android:id="@+id/outOfDhakaBtn"
+                    android:layout_width="35dp"
+                    android:layout_height="match_parent"
+                    android:minWidth="40dp"
+                    android:minHeight="40dp"
+                android:padding="0dp"
+                    android:gravity="center"
+                android:scaleType="fitCenter"
+                android:onClick="onClickOutsideDhaka"
+                    android:background="@drawable/circle_gray"
+                    android:src="@drawable/outofdhakimagelogoperfect"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
         android:id="@+id/cv_confirmation_page"
@@ -10,9 +133,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_gravity="top"
-        android:layout_margin="20dp"
+        android:layout_marginTop="?actionBarSize"
+        android:paddingRight="5dp"
+        android:layout_marginLeft="2dp"
         android:visibility="visible"
-        app:cardBackgroundColor="@color/white"
+        app:cardBackgroundColor="@color/transparent"
         app:cardCornerRadius="2dp"
         app:cardElevation="4dp">
 
@@ -23,12 +148,20 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:layout_marginTop="2dp"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:onClick="onSourceClick"
                 android:orientation="horizontal"
+                android:background="@color/gray_light"
                 android:paddingLeft="10dp"
+                android:weightSum="100"
                 android:paddingRight="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="45">
 
                 <ImageView
                     android:layout_width="15dp"
@@ -36,13 +169,31 @@
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
                     android:src="@drawable/ic_source"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10">
 
                 <ride.happyy.user.widgets.CustomTextView
                     android:id="@+id/txt_source"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingTop="6dp"
                     android:layout_gravity="center"
                     android:hint="@string/label_source"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="45">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="6dp"
+                        android:src="@drawable/places_ic_search"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -59,8 +210,16 @@
                 android:layout_height="40dp"
                 android:onClick="onDestinationClick"
                 android:orientation="horizontal"
+                android:layout_marginTop="0dp"
                 android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+                android:paddingRight="10dp"
+                android:weightSum="100"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="45">
 
                 <ImageView
                     android:layout_width="15dp"
@@ -69,20 +228,35 @@
                     android:layout_margin="10dp"
                     android:src="@drawable/ic_destination"/>
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10">
+
                 <ride.happyy.user.widgets.CustomTextView
                     android:id="@+id/txt_destination"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:paddingTop="6dp"
                     android:hint="@string/hint_destination_required"
                     android:textColor="@color/black"/>
+                </LinearLayout>
 
-                <!--<ImageView
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="45">
+
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:paddingTop="6dp"
                     android:src="@drawable/places_ic_search"
-                    android:layout_gravity="center"/>-->
+                    android:layout_gravity="center"/>
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -90,21 +264,85 @@
 
     </android.support.v7.widget.CardView>
 
+
+
+
+
     <LinearLayout
         android:id="@+id/ll_confirmation_progress"
         android:layout_width="match_parent"
-        android:layout_height="140dp"
+        android:layout_height="120dp"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:gravity="center"
-        android:visibility="gone">
+        android:orientation="vertical"
+        android:visibility="visible">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:visibility="visible"
+            android:gravity="center">
 
-        <ProgressBar
+        <Button
+            android:id="@+id/destinationDoneBtn"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="top"
+            android:background="@color/red"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            android:text="Done"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:gravity="center">
+     <!--   <br.com.bloder.magic.view.MagicButton
+            android:paddingRight="1dp"
+            android:id="@+id/magic_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:magic_button_size="50dp"
+            app:button_icon="@drawable/logo"
+            app:button_icon_width="25dp"
+            app:button_icon_height="25dp"
+            app:hide_text="Out Of Dhaka"
+            android:layout_gravity="center"
+            app:hide_text_size="12dp"
+            app:hide_text_color="@android:color/white"
+            app:icon_button_color="@color/green_my"
+            app:expandable_area_color="@color/red"/> -->
+
+            <ImageButton
+                android:visibility="gone"
+                android:id="@+id/btnForOutofDhakaPage"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@color/transparent"
+                android:scaleType="centerInside"
+                android:src="@drawable/outofdhakaicon_round"/>
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_location_button"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_gravity="center"/>
+            android:layout_marginLeft="10dp"
+            android:focusable="true"
+            android:onClick="onLocationButtonClick"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_location"
+            android:tint="@color/white"
+            app:backgroundTint="@color/red"
+            app:fabSize="auto"
+            app:layout_anchorGravity="top|end"
+            android:visibility="gone"/>
+        </LinearLayout>
+
 
     </LinearLayout>
 

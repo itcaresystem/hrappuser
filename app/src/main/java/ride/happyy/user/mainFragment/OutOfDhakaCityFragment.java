@@ -2,9 +2,12 @@ package ride.happyy.user.mainFragment;
 
 
 import android.app.ActionBar;
+import android.app.Application;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import ride.happyy.user.R;
+import ride.happyy.user.activity.DocumentUpActivity;
 
 public class OutOfDhakaCityFragment extends Fragment implements View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
@@ -34,6 +38,7 @@ public class OutOfDhakaCityFragment extends Fragment implements View.OnClickList
 
     private String mParam1;
     private String mParam2;
+    private Dialog dialog;
 
     Spinner spinnerDivision,spinnerDistrict;
     LinearLayout pickUpOrDroff;
@@ -52,7 +57,7 @@ public class OutOfDhakaCityFragment extends Fragment implements View.OnClickList
         // Required empty public constructor
     }
 
-
+/*
     public static OutOfDhakaCityFragment newInstance(String param1, String param2) {
         OutOfDhakaCityFragment fragment = new OutOfDhakaCityFragment();
         Bundle args = new Bundle();
@@ -61,10 +66,21 @@ public class OutOfDhakaCityFragment extends Fragment implements View.OnClickList
         fragment.setArguments(args);
         return fragment;
     }
+    */
+public void onClickOutDhakaBtn(View view){
+    view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+
+  //  dialog = new Dialog(this);
+  //  dialog.setContentView(R.layout.dialog_photo_edit);
+  //  dialog.show();
+
+   // Intent documentUpIntent = new Intent(Application.CONTEXT_IGNORE_SECURITY,DocumentUpActivity.class);
+}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);

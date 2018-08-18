@@ -19,8 +19,8 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_gravity="center"
             android:src="@drawable/ic_home_search_page"/>
 
@@ -32,7 +32,7 @@
             android:paddingTop="5dp"
             android:layout_marginLeft="15dp"
             android:hint="@string/btn_add_home"
-            android:textSize="20sp"/>
+            android:textSize="18sp"/>
 
     </LinearLayout>
 
@@ -46,8 +46,8 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_gravity="center"
             android:src="@drawable/ic_work_search_page"/>
 
@@ -59,7 +59,7 @@
             android:paddingTop="5dp"
             android:layout_marginLeft="15dp"
             android:hint="@string/btn_add_work"
-            android:textSize="20sp"/>
+            android:textSize="18sp"/>
 
     </LinearLayout>
 

@@ -14,11 +14,10 @@ import ride.happyy.user.R;
  */
 public class BikeFragment extends Fragment {
 
-
-    public BikeFragment() {
-        // Required empty public constructor
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

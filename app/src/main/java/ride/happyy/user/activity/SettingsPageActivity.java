@@ -70,6 +70,8 @@ public class SettingsPageActivity extends BaseAppCompatNoDrawerActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
+      //  getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("SETTING");
     }
 
     private void getData() {

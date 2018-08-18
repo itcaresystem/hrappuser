@@ -15,16 +15,12 @@
       },
       "oauth_client": [
         {
-          "client_id": "800946751018-bmsatuh3omvrgv8500t4ar7la5faeg1r.apps.googleusercontent.com",
+          "client_id": "800946751018-staf6u9c5gber6kjo1mvq58shfvadnp2.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "ride.happyy.driver",
-            "certificate_hash": "ffd9caee79ebb9837868091d56c11ccca0a242a4"
+            "certificate_hash": "b96e23230025b9d4ec0d95a8a58064774925e0db"
           }
-        },
-        {
-          "client_id": "800946751018-51h82pk5t8514pg74iau7t2mf8odatsu.apps.googleusercontent.com",
-          "client_type": 3
         },
         {
           "client_id": "800946751018-51h82pk5t8514pg74iau7t2mf8odatsu.apps.googleusercontent.com",
@@ -63,16 +59,12 @@
       },
       "oauth_client": [
         {
-          "client_id": "800946751018-7nlkud276ue24v1tnuu6tu2o62u1bos7.apps.googleusercontent.com",
+          "client_id": "800946751018-kul3vh1kmud1ip61iqs6od91ve8qa094.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "ride.happyy.user",
-            "certificate_hash": "ffd9caee79ebb9837868091d56c11ccca0a242a4"
+            "certificate_hash": "b96e23230025b9d4ec0d95a8a58064774925e0db"
           }
-        },
-        {
-          "client_id": "800946751018-51h82pk5t8514pg74iau7t2mf8odatsu.apps.googleusercontent.com",
-          "client_type": 3
         },
         {
           "client_id": "800946751018-51h82pk5t8514pg74iau7t2mf8odatsu.apps.googleusercontent.com",

@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 import ride.happyy.user.R;
 import ride.happyy.user.menuFragments.historyFragments.BikeFragment;
 import ride.happyy.user.menuFragments.historyFragments.CarFragment;
-import ride.happyy.user.menuFragments.historyFragments.FoodFragment;
-import ride.happyy.user.menuFragments.historyFragments.ParcelFragment;
+import ride.happyy.user.menuFragments.historyFragments.CngFragment;
+import ride.happyy.user.menuFragments.historyFragments.AmbulanceFragment;
 
 
 public class HistoryFragment extends Fragment {
@@ -64,9 +64,9 @@ public class HistoryFragment extends Fragment {
                 case 1:
                     return new CarFragment();
                 case 2:
-                    return new FoodFragment();
+                    return new CngFragment();
                 case 3:
-                    return new ParcelFragment();
+                    return new AmbulanceFragment();
             }
               return null;
         }

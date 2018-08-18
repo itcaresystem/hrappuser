@@ -4,9 +4,12 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,7 +18,9 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -52,10 +57,27 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.SphericalUtil;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.holder.BadgeStyle;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
+import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
+import com.mikepenz.materialdrawer.util.DrawerImageLoader;
+import com.nex3z.notificationbadge.NotificationBadge;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -76,6 +98,13 @@ import ride.happyy.user.listeners.LandingPageListener;
 import ride.happyy.user.listeners.PermissionListener;
 import ride.happyy.user.listeners.PolyPointsListener;
 import ride.happyy.user.listeners.TotalFareListener;
+import ride.happyy.user.menuFragments.AboutFragment;
+import ride.happyy.user.menuFragments.GetDiscountFragment;
+import ride.happyy.user.menuFragments.HelpFragment;
+import ride.happyy.user.menuFragments.HistoryFragment;
+import ride.happyy.user.menuFragments.NotificationFragment;
+import ride.happyy.user.menuFragments.PromotionsFragments;
+import ride.happyy.user.menuFragments.SettingsFragment;
 import ride.happyy.user.model.BasicBean;
 import ride.happyy.user.model.CarBean;
 import ride.happyy.user.model.DriverBean;
@@ -83,6 +112,7 @@ import ride.happyy.user.model.FareBean;
 import ride.happyy.user.model.LandingPageBean;
 import ride.happyy.user.model.PlaceBean;
 import ride.happyy.user.model.PolyPointsBean;
+import ride.happyy.user.model.UserBean;
 import ride.happyy.user.net.DataManager;
 import ride.happyy.user.net.WSAsyncTasks.FCMRegistrationTask;
 import ride.happyy.user.net.WSAsyncTasks.LocationNameTask;
@@ -201,22 +231,36 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
     private AutocompleteFilter typeFilter;
 
     // for select service
-    private LinearLayout linear_layout_bike, linear_layout_car_trip, linear_layout_car_one_hour, linear_layout_car_two_hour , linear_layout_car_four_hour, linear_layout_car_one_day;
-    private LinearLayout bikeLinearLayout, carLinearLayout, oneHourLinearLayout,twoHoursLinearLayout, fourHoursLinearLayout, dayLinearLayout;
-    private ImageView bikeRequestImageView, carRequestImageView, carOneHourRequestImageView, carTwoHoursRequestImageView, carFourHoursRequestImageView,carDayImageView, carDayPrimioRequestImageView, carDayNoahRequestImageView, carDayHiceRequestImageView;
-    private TextView bikeFareTextView,carFareTextView, oneHourFareTextView,twoHoursFareTextView,fourHoursFareTextView,dayFareTextView;
-    private ImageButton bikeInfoImageButton, carInfoImageButton, oneHourInfoImageButton, twoHourInfoImageButton,fourHourInfoImageButton, dayInfoImageButton;
+    private LinearLayout linear_layout_bike,linear_layout_cng, linear_layout_car_trip, linear_layout_car_one_hour, linear_layout_car_two_hour , linear_layout_car_four_hour, linear_layout_car_one_day;
+    private LinearLayout bikeLinearLayout,cngLinearLayout, carLinearLayout,ambulanceLinearLayout, oneHourLinearLayout,twoHoursLinearLayout, fourHoursLinearLayout, dayLinearLayout,dayNoahLinearLayout,dayHiaceLinearLayout;
+    private ImageView bikeRequestImageView,cngRequestImageView, carRequestImageView,ambulanceRequestImageView, carOneHourRequestImageView, carTwoHoursRequestImageView, carFourHoursRequestImageView,carDayImageView, carDayPrimioRequestImageView, carDayNoahRequestImageView, carDayHiceRequestImageView;
+    private TextView bikeFareTextView,cngFareTextView,carFareTextView,ambulanceFareTextView, oneHourFareTextView,twoHoursFareTextView,fourHoursFareTextView,dayFareTextView,dayNoahFareTextView,dayHiaceFareTextView;
+    private ImageButton bikeInfoImageButton, cngInfoImageButton,carInfoImageButton, oneHourInfoImageButton, twoHourInfoImageButton,fourHourInfoImageButton, dayInfoImageButton;
+    private Button bikeRequestBtn,cngRequestBtn, carRequestBtn,ambulanceRequestBtn, carOneHourRequestBtn, carTwoHoursRequestBtn, carFourHoursRequestBtn, carDayPrimioRequestBtn, carDayNoahRequestBtn, carDayHiceRequestBtn;
+    private Button outOfDhakaService, packageService,distinationConfirmButton;
 
-    private Button bikeRequestBtn, carRequestBtn, carOneHourRequestBtn, carTwoHoursRequestBtn, carFourHoursRequestBtn, carDayPrimioRequestBtn, carDayNoahRequestBtn, carDayHiceRequestBtn;
-    private Button outOfDhakaService, packageService;
+    private ImageButton notificatinImageButton, menubarHome,outOfdhakaPage;
+    private NotificationBadge mNotificationBadge;
+    private int countNotification =0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_landing_page);
+        outOfdhakaPage = findViewById(R.id.btnForOutofDhakaPage);
 
+        outOfdhakaPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent outOfDhakaIntent = new Intent(getApplicationContext(),OutOfDhakaActivity.class);
+                startActivity(outOfDhakaIntent);
+
+            }
+        });
         isGetLocationEnabled = false;
+
+
 
 
 
@@ -231,6 +275,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         }else{
             isGetLocationEnabled=true;
         }*/
+       initDrawer();
 
         initViews();
         initMap();
@@ -238,11 +283,20 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         setProgressScreenVisibility(true, true);
 //        getData();
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+      // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+      // getSupportActionBar().setHomeButtonEnabled(true);
        // getSupportActionBar().setTitle("");
-        getSupportActionBar().setIcon(R.drawable.happyridetitlebarimagefinal);
-      //  getSupportActionBar().setDisplayShowTitleEnabled(true);
+     //  getSupportActionBar().setIcon(R.drawable.happyridetitlebarimagefinal);
+      // getSupportActionBar().setDisplayShowTitleEnabled(true);
+         //   getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            Configuration config = getResources().getConfiguration();
+          //  getSupportActionBar().setCustomView(R.layout.layout_actionbar_title_extra_w);
+        getSupportActionBar().hide();
+        menubarHome     =   findViewById(R.id.menubarnImageBtn);
+        notificatinImageButton = findViewById(R.id.driverNotificationImageBtn);
+        mNotificationBadge      = findViewById(R.id.notificationBadgeHome);
+        countNotification = 4;
+        mNotificationBadge.setNumber(countNotification);
 
 
         initFCM();
@@ -251,6 +305,269 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
               .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
               .setTypeFilter(3)
               .build();
+
+
+
+
+    }
+
+
+    private void initDrawer() {
+        //initialize and create the image loader logic
+        DrawerImageLoader.init(new AbstractDrawerImageLoader() {
+            @Override
+            public void set(ImageView imageView, Uri uri, Drawable placeholder) {
+               Picasso.with(imageView.getContext()).load(uri).placeholder(placeholder).into(imageView);
+            }
+
+            @Override
+            public void cancel(ImageView imageView) {
+              Picasso.with(imageView.getContext()).cancelRequest(imageView);
+            }
+
+
+
+
+    /*
+    @Override
+    public Drawable placeholder(Context ctx) {
+        return super.placeholder(ctx);
+    }
+
+    @Override
+    public Drawable placeholder(Context ctx, String tag) {
+        return super.placeholder(ctx, tag);
+    }
+    */
+        });
+        UserBean userBean = new UserBean();
+        Toolbar myTestToolBar = findViewById(R.id.toolbarMyTest);
+       // Config.getInstance().setProfilePhoto(userBean.getProfilePhoto());
+        String profileImageUri = profileImageUri = userBean.getProfilePhoto();
+
+        if(profileImageUri ==null && profileImageUri ==""){
+
+        }
+
+        //getResources().getDrawable(R.drawable.ic_profile_photo_default)
+
+        // Create the AccountHeader
+        AccountHeader headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withHeaderBackground(R.drawable.bg_header)
+                .addProfiles(new ProfileDrawerItem().withName("Rajib Hossain").withEmail("01623473041").withIcon(getResources().getDrawable(R.drawable.ic_profile_photo_default)))
+                .withOnAccountHeaderProfileImageListener(new AccountHeader.OnAccountHeaderProfileImageListener() {
+                    @Override
+                    public boolean onProfileImageClick(View view, IProfile profile, boolean current) {
+                        Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_SHORT).show();
+                        Intent profileSettingIntent = new Intent(getApplicationContext(),SettingsPageActivity.class);
+                        startActivity(profileSettingIntent);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onProfileImageLongClick(View view, IProfile profile, boolean current) {
+
+                        Toast.makeText(getApplicationContext(), "No Action is Set!!!Yet", Toast.LENGTH_SHORT).show();
+
+                        return false;
+                    }
+                })
+                .build();
+
+       // faw_percent('\uf29b'),
+            //    faw_percentage('\uf541')
+        //if you want to update the items at a later time it is recommended to keep it in a variable
+        final SecondaryDrawerItem item1 = new SecondaryDrawerItem().withIdentifier(1).withName("Home").withIcon(R.drawable.ic_home_red_24dp);
+        final SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("History").withIcon(R.drawable.ic_history_red_24dp);
+        SecondaryDrawerItem item3 = new SecondaryDrawerItem().withIdentifier(3).withName("Promotions").withIcon(R.drawable.ic_label_red_24dp);
+        SecondaryDrawerItem item4 = new SecondaryDrawerItem().withIdentifier(4).withName("Get Discount").withIcon(R.drawable.ic_person_add_red_24dp);
+        SecondaryDrawerItem item10 = new SecondaryDrawerItem().withIdentifier(10).withName("Diagnostic Test Offer").withIcon(R.drawable.ic_local_hospital_red_24dp);
+        final SecondaryDrawerItem item5 = new SecondaryDrawerItem().withIdentifier(5).withName("Notifications").withIcon(R.drawable.ic_notifications_none_red_24dp).withBadge("3").withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.red));;
+        SecondaryDrawerItem item6 = new SecondaryDrawerItem().withIdentifier(6).withName("Help").withIcon(R.drawable.ic_help_outline_red_24dp);
+        SecondaryDrawerItem item7 = new SecondaryDrawerItem().withIdentifier(7).withName("About").withIcon(R.drawable.ic_perm_device_information_red_24dp);
+        SecondaryDrawerItem item8 = new SecondaryDrawerItem().withIdentifier(8).withName("Setting").withIcon(R.drawable.ic_settings_applications_black_24dp);
+        SecondaryDrawerItem item9 = new SecondaryDrawerItem().withIdentifier(9).withName("Log Out").withIcon(R.drawable.ic_power_settings_new_red_24dp);
+       // SecondaryDrawerItem item11 = new SecondaryDrawerItem().withIdentifier(10).withName("Setting");
+
+//create the drawer and remember the `Drawer` result object
+        DrawerBuilder drawerBuilder = new DrawerBuilder();
+        drawerBuilder.withActivity(this);
+        drawerBuilder.withToolbar(myTestToolBar);
+        drawerBuilder.withAccountHeader(headerResult);
+        drawerBuilder.addDrawerItems(
+                item1,
+                new DividerDrawerItem(),
+                item2,
+                new DividerDrawerItem(),
+                item3,
+                new DividerDrawerItem(),
+                item4,
+                new DividerDrawerItem(),
+                item10,
+                new DividerDrawerItem(),
+                item5,
+                new DividerDrawerItem(),
+                item6,
+                new DividerDrawerItem(),
+                item7,
+                new DividerDrawerItem(),
+                item8,
+                new DividerDrawerItem(),
+                item9,
+              new DividerDrawerItem()
+               // item11
+        );
+        drawerBuilder.withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+            @Override
+            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                // do something with the clicked item :D
+                Fragment fragment = null;
+                switch ((int)drawerItem.getIdentifier()) {
+                    case 1:
+                        Toast.makeText(getApplicationContext(), "HOME", Toast.LENGTH_SHORT).show();
+                        Intent homeIntent = new Intent(getApplicationContext(),LandingPageActivity.class);
+                        startActivity(homeIntent);
+                        finish();
+                        break;
+
+                    case 2:
+                        Intent historyIntent = new Intent(getApplicationContext(),HistoryActivityWithTabs.class);
+                        startActivity(historyIntent);
+                        Toast.makeText(getApplicationContext(), "History", Toast.LENGTH_SHORT).show();
+
+                        break;
+                    case 3:
+                        Intent myPromIntent = new Intent(getApplicationContext(),PromotionActivity.class);
+                        startActivity(myPromIntent);
+                        Toast.makeText(getApplicationContext(), "Promotion", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 4:
+                        Intent discountIntent = new Intent(getApplicationContext(),DiscountActivity.class);
+                        startActivity(discountIntent);
+                        Toast.makeText(getApplicationContext(), "Discount", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 10:
+                        Intent daignosticIntent = new Intent(getApplicationContext(),DiagnosticOfferRequestActivity.class);
+                        startActivity(daignosticIntent);
+                        Toast.makeText(getApplicationContext(), "Discount", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 5:
+
+                        Toast.makeText(getApplicationContext(), "Notification", Toast.LENGTH_SHORT).show();
+                        item5.withName("Notifications").withBadge("0").withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.red));
+                        Intent notificationIntent = new Intent(getApplicationContext(),NotificationsActivity.class);
+                        startActivity(notificationIntent);
+                        break;
+                    case 6:
+                        Intent helpIntent = new Intent(getApplicationContext(),HelpSimpleActivity.class);
+                        startActivity(helpIntent);
+                        Toast.makeText(getApplicationContext(), "Help", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 7:
+                        Intent aboutIntent = new Intent(getApplicationContext(),AboutsActivit.class);
+                        startActivity(aboutIntent);
+                        Toast.makeText(getApplicationContext(), "About", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 8:
+
+                        Intent settingIntent = new Intent(getApplicationContext(),SettingsPageActivity.class);
+                        startActivity(settingIntent);
+                        Toast.makeText(getApplicationContext(), "Setting", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 9:
+                        Intent logoutIntent = new Intent(getApplicationContext(),WelcomeActivity.class);
+                        startActivity(logoutIntent);
+                        Toast.makeText(getApplicationContext(), "Log Out", Toast.LENGTH_SHORT).show();
+                        break;
+
+
+                }
+                return true;
+            }
+        });
+        Drawer result = drawerBuilder.build();
+
+      //  result.addStickyFooterItem(new PrimaryDrawerItem().withName("HAPPY RIDE!"));
+   //     getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        result.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
+
+        //modify an item of the drawer
+      //  item5.withName("Notificatons").withBadge("19").withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.red));
+//notify the drawer about the updated element. it will take care about everything else
+       // result.updateItem(item5);
+    }
+
+
+    public  void onClickMenuBarHome(View view){
+        AccountHeader headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withHeaderBackground(R.drawable.bg_header)
+                .addProfiles(
+                        new ProfileDrawerItem().withName("Mike Penz").withEmail("mikepenz@gmail.com").withIcon(getResources().getDrawable(R.drawable.ic_profile_photo_default))
+                )
+                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
+                    @Override
+                    public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
+                        return false;
+                    }
+                })
+                .build();
+        Toast.makeText(this,"clicked",Toast.LENGTH_LONG).show();
+        //if you want to update the items at a later time it is recommended to keep it in a variable
+        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Home drawer");
+        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Secondary Drwaer");
+
+//create the drawer and remember the `Drawer` result object
+        Drawer result = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(toolbar)
+                .addDrawerItems(
+                        item1,
+                        new DividerDrawerItem(),
+                        item2,
+                        new SecondaryDrawerItem().withName("Secondary Drwaer Item1")
+                )
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        // do something with the clicked item :D
+                        return false;
+                    }
+                })
+                .build();
+        //set the selection to the item with the identifier 1
+        result.setSelection(1);
+//set the selection to the item with the identifier 2
+        result.setSelection(item2);
+//set the selection and also fire the `onItemClick`-listener
+        result.setSelection(1, true);
+
+        //modify an item of the drawer
+        item1.withName("A new name for this drawerItem").withBadge("19").withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.md_red_700));
+//notify the drawer about the updated element. it will take care about everything else
+        result.updateItem(item1);
+
+//to update only the name, badge, icon you can also use one of the quick methods
+      //  result.updateName();
+
+//the result object also allows you to add new items, remove items, add footer, sticky footer, ..
+        result.addItem(new DividerDrawerItem());
+        result.addStickyFooterItem(new PrimaryDrawerItem().withName("StickyFooterItem"));
+
+//remove items with an identifier
+        result.removeItem(2);
+
+//open / close the drawer
+        result.openDrawer();
+        result.closeDrawer();
+
+//get the reference to the `DrawerLayout` itself
+        result.getDrawerLayout();
+
+
+        mNotificationBadge.setNumber(1);
 
 
 
@@ -325,6 +642,10 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
 
     public void initViews() {
 
+
+
+
+
         btnRequest = (Button) findViewById(R.id.btn_request);
         //init laouts
 
@@ -336,6 +657,14 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         bikeRequestBtn          = findViewById(R.id.btn_request_for_bike);
 
         //END
+        //CNG Start cngLinearLayout
+
+        cngLinearLayout        = findViewById(R.id.confirm_request_cng_ll);
+        cngRequestImageView    = findViewById(R.id.confirm_request_cng_imv);
+        cngFareTextView        = findViewById(R.id.confirm_request_cng_fare_tv);
+        cngInfoImageButton     = findViewById(R.id.confirm_request_cng_info_imbtn);
+        cngRequestBtn          = findViewById(R.id.btn_request_for_cng);
+        //end
 
         //confirm CAR START
         carLinearLayout         = findViewById(R.id.confirm_request_car_ll);
@@ -344,6 +673,12 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         carInfoImageButton      = findViewById(R.id.confirm_request_ca_info_imbtn);
         carRequestBtn           = findViewById(R.id.btn_request_for_car);
         //END Car
+
+        //Start Ambulance
+        ambulanceLinearLayout   =   findViewById(R.id.confirm_request_ambulance_ll);
+        ambulanceRequestImageView   =   findViewById(R.id.confirm_request_ambulance_imv);
+        ambulanceFareTextView   =   findViewById(R.id.confirm_request_ambulance_fare_tv);
+        ambulanceRequestBtn     =   findViewById(R.id.btn_request_for_ambulance);
 
         //Start One Hour Car
         oneHourLinearLayout         = findViewById(R.id.confirm_request_car_one_hour_ll);
@@ -369,20 +704,23 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         carFourHoursRequestBtn          = findViewById(R.id.btn_request_for_car_four_hours);
         //End
 
-        // START ONE DAY
+        // START ONE DAY For Premio
 
         dayLinearLayout             = findViewById(R.id.confirm_request_car_day_ll);
-        carDayImageView             = findViewById(R.id.confirm_request_car_day_imv);
+        carDayPrimioRequestImageView  = findViewById(R.id.confirm_request_car_day_imv);
         dayFareTextView             = findViewById(R.id.confirm_request_car_day_fare_tv);
         dayInfoImageButton          = findViewById(R.id.confirm_request_ca_day_info_imbtn);
-        //primio
-        carDayPrimioRequestImageView = findViewById(R.id.confirm_request_car_day_imv);
         carDayPrimioRequestBtn      = findViewById(R.id.btn_request_for_car_one_day_primio);
         // Noah
-        carDayNoahRequestImageView  = findViewById(R.id.confirm_request_car_day_imv);
-        carDayNoahRequestBtn        = findViewById(R.id.btn_request_for_car_one_day_noah);
+        dayNoahLinearLayout         =  findViewById(R.id.confirm_request_car_day_noah_ll);
+        carDayNoahRequestImageView  =  findViewById(R.id.confirm_request_car_day_noah_imv);
+        dayNoahFareTextView         =  findViewById(R.id.confirm_request_car_day_noah_fare_tv);
+        carDayNoahRequestBtn        =  findViewById(R.id.btn_request_for_car_one_day_noah);
+
         // Hice
-        carDayHiceRequestImageView  = findViewById(R.id.confirm_request_car_day_imv);
+        dayHiaceLinearLayout    =  findViewById(R.id.confirm_request_car_day_hiace_brand_ll);
+        carDayHiceRequestImageView  = findViewById(R.id.confirm_request_car_day_hiace_imv);
+        dayHiaceFareTextView        = findViewById(R.id.confirm_request_car_day_hiace_fare_tv);
         carDayHiceRequestBtn        = findViewById(R.id.btn_request_for_car_one_day_hiace);
 
         //Bike LinearLayout Onclick
@@ -393,7 +731,9 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     //selected
                     bikeRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_black));
+                    cngRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
                     carRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    ambulanceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
                     carOneHourRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
                     carTwoHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
                     carFourHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
@@ -403,8 +743,44 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
 
                 }
                 bikeRequestBtn.setVisibility(View.VISIBLE);
+                cngRequestBtn.setVisibility(View.GONE);
                 btnRequest.setVisibility(View.GONE);
                 carRequestBtn.setVisibility(View.GONE);
+                ambulanceRequestBtn.setVisibility(View.GONE);
+                carOneHourRequestBtn.setVisibility(View.GONE);
+                carTwoHoursRequestBtn.setVisibility(View.GONE);
+                carFourHoursRequestBtn.setVisibility(View.GONE);
+                carDayPrimioRequestBtn.setVisibility(View.GONE);
+                carDayNoahRequestBtn.setVisibility(View.GONE);
+                carDayHiceRequestBtn.setVisibility(View.GONE);
+            }
+        });
+
+        //cngLinearLayout Onclick
+        cngLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //  bikeRequestImageView.setBackground(getResources(R.drawable.bg_round_edges_black));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+
+                    bikeRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    //selected
+                    cngRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_black));
+                    carRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    ambulanceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carOneHourRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carTwoHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carFourHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carDayPrimioRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carDayNoahRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carDayHiceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+
+                }
+                bikeRequestBtn.setVisibility(View.GONE);
+                cngRequestBtn.setVisibility(View.VISIBLE);
+                btnRequest.setVisibility(View.GONE);
+                carRequestBtn.setVisibility(View.GONE);
+                ambulanceRequestBtn.setVisibility(View.GONE);
                 carOneHourRequestBtn.setVisibility(View.GONE);
                 carTwoHoursRequestBtn.setVisibility(View.GONE);
                 carFourHoursRequestBtn.setVisibility(View.GONE);
@@ -421,8 +797,10 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                 //  bikeRequestImageView.setBackground(getResources(R.drawable.bg_round_edges_black));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     bikeRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    cngRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
                     //Sellected
                     carRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_black));
+                    ambulanceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
                     carOneHourRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
                     carTwoHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
                     carFourHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
@@ -432,9 +810,11 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
 
                 }
                 bikeRequestBtn.setVisibility(View.GONE);
+                cngRequestBtn.setVisibility(View.GONE);
                 btnRequest.setVisibility(View.GONE);
                 //selected
                 carRequestBtn.setVisibility(View.VISIBLE);
+                ambulanceRequestBtn.setVisibility(View.GONE);
                 carOneHourRequestBtn.setVisibility(View.GONE);
                 carTwoHoursRequestBtn.setVisibility(View.GONE);
                 carFourHoursRequestBtn.setVisibility(View.GONE);
@@ -444,14 +824,50 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
             }
         });
 
-        //Bike LinearLayout Onclick
+        //Ambulance click LinearLayout
+        ambulanceLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //  bikeRequestImageView.setBackground(getResources(R.drawable.bg_round_edges_black));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    bikeRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    cngRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    //selected
+                    ambulanceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_black));
+                    carOneHourRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carTwoHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carFourHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carDayPrimioRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carDayNoahRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carDayHiceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+
+                }
+                bikeRequestBtn.setVisibility(View.GONE);
+                cngRequestBtn.setVisibility(View.GONE);
+                btnRequest.setVisibility(View.GONE);
+                carRequestBtn.setVisibility(View.GONE);
+                //selected
+                ambulanceRequestBtn.setVisibility(View.VISIBLE);
+                carOneHourRequestBtn.setVisibility(View.GONE);
+                carTwoHoursRequestBtn.setVisibility(View.GONE);
+                carFourHoursRequestBtn.setVisibility(View.GONE);
+                carDayPrimioRequestBtn.setVisibility(View.GONE);
+                carDayNoahRequestBtn.setVisibility(View.GONE);
+                carDayHiceRequestBtn.setVisibility(View.GONE);
+            }
+        });
+
+        //car one hour LinearLayout Onclick
         oneHourLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //  bikeRequestImageView.setBackground(getResources(R.drawable.bg_round_edges_black));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     bikeRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    cngRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
                     carRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    ambulanceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
                     //selected
                     carOneHourRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_black));
                     carTwoHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
@@ -462,8 +878,10 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
 
                 }
                 bikeRequestBtn.setVisibility(View.GONE);
+                cngRequestBtn.setVisibility(View.GONE);
                 btnRequest.setVisibility(View.GONE);
                 carRequestBtn.setVisibility(View.GONE);
+                ambulanceRequestBtn.setVisibility(View.GONE);
                 //selected
                 carOneHourRequestBtn.setVisibility(View.VISIBLE);
                 carTwoHoursRequestBtn.setVisibility(View.GONE);
@@ -481,7 +899,9 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                 //  bikeRequestImageView.setBackground(getResources(R.drawable.bg_round_edges_black));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     bikeRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    cngRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
                     carRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    ambulanceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
                     carOneHourRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
                     //selected
                     carTwoHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_black));
@@ -492,8 +912,10 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
 
                 }
                 bikeRequestBtn.setVisibility(View.GONE);
+                cngRequestBtn.setVisibility(View.GONE);
                 btnRequest.setVisibility(View.GONE);
                 carRequestBtn.setVisibility(View.GONE);
+                ambulanceRequestBtn.setVisibility(View.GONE);
                 carOneHourRequestBtn.setVisibility(View.GONE);
                 //Selectes
                 carTwoHoursRequestBtn.setVisibility(View.VISIBLE);
@@ -511,7 +933,9 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                 //  bikeRequestImageView.setBackground(getResources(R.drawable.bg_round_edges_black));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     bikeRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    cngRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
                     carRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    ambulanceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
                     carOneHourRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
                     carTwoHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
                     //selected
@@ -522,8 +946,10 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
 
                 }
                 bikeRequestBtn.setVisibility(View.GONE);
+                cngRequestBtn.setVisibility(View.GONE);
                 btnRequest.setVisibility(View.GONE);
                 carRequestBtn.setVisibility(View.GONE);
+                ambulanceRequestBtn.setVisibility(View.GONE);
                 carOneHourRequestBtn.setVisibility(View.GONE);
                 carTwoHoursRequestBtn.setVisibility(View.GONE);
                 //selected
@@ -534,28 +960,32 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
             }
         });
 
-        //Bike LinearLayout Onclick
+        //premio LinearLayout Onclick
         dayLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //  bikeRequestImageView.setBackground(getResources(R.drawable.bg_round_edges_black));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     bikeRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    cngRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
                     carRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    ambulanceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
                     carOneHourRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
                     carTwoHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
                     carFourHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
                     //selected
-                    carDayImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_black));
+                   // carDayImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_black));
                     //selected
-                   // carDayPrimioRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_black));
-                   // carDayNoahRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
-                  //  carDayHiceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                   carDayPrimioRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_black));
+                   carDayNoahRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                  carDayHiceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
 
                 }
                 bikeRequestBtn.setVisibility(View.GONE);
+                cngRequestBtn.setVisibility(View.GONE);
                 btnRequest.setVisibility(View.GONE);
                 carRequestBtn.setVisibility(View.GONE);
+                ambulanceRequestBtn.setVisibility(View.GONE);
                 carOneHourRequestBtn.setVisibility(View.GONE);
                 carTwoHoursRequestBtn.setVisibility(View.GONE);
                 carFourHoursRequestBtn.setVisibility(View.GONE);
@@ -563,6 +993,75 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                 carDayPrimioRequestBtn.setVisibility(View.VISIBLE);
                 carDayNoahRequestBtn.setVisibility(View.GONE);
                 carDayHiceRequestBtn.setVisibility(View.GONE);
+            }
+        });
+        dayNoahLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //  bikeRequestImageView.setBackground(getResources(R.drawable.bg_round_edges_black));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    bikeRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    cngRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    ambulanceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carOneHourRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carTwoHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carFourHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                  //  carDayImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+
+                   carDayPrimioRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    //selected
+                     carDayNoahRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_black));
+                     carDayHiceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+
+                }
+                bikeRequestBtn.setVisibility(View.GONE);
+                cngRequestBtn.setVisibility(View.GONE);
+                btnRequest.setVisibility(View.GONE);
+                carRequestBtn.setVisibility(View.GONE);
+                ambulanceRequestBtn.setVisibility(View.GONE);
+                carOneHourRequestBtn.setVisibility(View.GONE);
+                carTwoHoursRequestBtn.setVisibility(View.GONE);
+                carFourHoursRequestBtn.setVisibility(View.GONE);
+                carDayPrimioRequestBtn.setVisibility(View.GONE);
+                //selected
+                carDayNoahRequestBtn.setVisibility(View.VISIBLE);
+                carDayHiceRequestBtn.setVisibility(View.GONE);
+            }
+        });
+        dayHiaceLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //  bikeRequestImageView.setBackground(getResources(R.drawable.bg_round_edges_black));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    bikeRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    cngRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    ambulanceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carOneHourRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carTwoHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    carFourHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                  //  carDayImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    //selected
+                   carDayPrimioRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+
+                    carDayNoahRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+                    //selected
+                    carDayHiceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_black));
+
+                }
+                bikeRequestBtn.setVisibility(View.GONE);
+                cngRequestBtn.setVisibility(View.GONE);
+                btnRequest.setVisibility(View.GONE);
+                carRequestBtn.setVisibility(View.GONE);
+                ambulanceRequestBtn.setVisibility(View.GONE);
+                carOneHourRequestBtn.setVisibility(View.GONE);
+                carTwoHoursRequestBtn.setVisibility(View.GONE);
+                carFourHoursRequestBtn.setVisibility(View.GONE);
+                carDayPrimioRequestBtn.setVisibility(View.GONE);
+                //selected
+                carDayNoahRequestBtn.setVisibility(View.GONE);
+                carDayHiceRequestBtn.setVisibility(View.VISIBLE);
             }
         });
 
@@ -640,6 +1139,8 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
 
         llLandingBottomBar = (LinearLayout) findViewById(R.id.ll_landing_estimation_bottom_sheet);
         ivLocationButton = (FloatingActionButton) findViewById(R.id.fab_location_button);
+        distinationConfirmButton = findViewById(R.id.distinationconfirm);
+
 
         txtActionSearch = (TextView) toolbarHome.findViewById(R.id.txt_action_search);
 
@@ -680,6 +1181,33 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         };
 
         setPermissionListener(permissionListener);
+
+    }
+    String massage="";
+    public void onClickDoneButton(View view){
+        if (txtSource.getText().toString()==null){
+            massage ="Please select sourch";
+
+        }
+        if (txtDestination.getText().toString()==null){
+            massage ="Please select destination";
+        }
+        Toast.makeText(this,massage,Toast.LENGTH_SHORT).show();
+
+
+        if(txtSource.getText().toString()!=null || txtDestination.getText().toString()!=null) {
+            happyyFareWithService.setVisibility(View.VISIBLE);
+
+
+        }
+        mapAutoZoom();
+        fetchPolyPoints(true);
+      //  onDestinationSelect();
+        ivLocationButton.setVisibility(View.GONE);
+        ivBottomMarker.setVisibility(View.GONE);
+        mMap.getUiSettings().setScrollGesturesEnabled(false);
+        distinationConfirmButton.setVisibility(View.GONE);
+
 
     }
 
@@ -743,21 +1271,29 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                 mMap = googleMap;
                 mMap.setPadding(0, (int) ((100 * px) + mActionBarHeight + getStatusBarHeight()), 0, (int) (100 * px));
 
+
+
                 initMapLoad();
 
             }
         });
     }
-
+LatLng newLatLng=null;
+    int onfirstLoad=0;
     private void initMapLoad() {
 
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
 
-                if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED || bottomSheetBehavior.getPeekHeight() == 100 * px) {
+
+
+                //recently change
+
+             /*   if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED || bottomSheetBehavior.getPeekHeight() == 100 * px) {
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 }
+                */
             }
         });
 
@@ -770,27 +1306,33 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                     fetchTotalfare();
                     txtFare.setText(fareBean.getTotalFare());
                 }*/
+
+                //Custom recently 14/08/2018
+                /*
                 if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED || bottomSheetBehavior.getPeekHeight() == 100 * px) {
                     bottomSheetBehavior.setPeekHeight(0);
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                }
+                } */
 
                 if (!isConfirmationPage) {
                     mMap.getUiSettings().setScrollGesturesEnabled(true);
                     mMap.setMaxZoomPreference(18f);
                    // framePickup.setVisibility(View.INVISIBLE);
-                    ivBottomMarker.setVisibility(View.INVISIBLE);
+                    ivBottomMarker.setVisibility(View.VISIBLE);
                     ivMarker.setVisibility(View.VISIBLE);
-                    ivLocationButton.setVisibility(View.VISIBLE);
+                   // ivLocationButton.setVisibility(View.VISIBLE);
+                    distinationConfirmButton.setVisibility(View.VISIBLE);
 
                     isCameraMoved = true;
                 }
             }
         });
 
+
         mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override
             public void onCameraIdle() {
+                onfirstLoad=1;
 
                 if (sourceBean != null & destinationBean != null) {
                     if (!isConfirmationPage) {
@@ -807,9 +1349,16 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                     LatLng center = postion.target;
 
                     // framePickup.setVisibility(View.VISIBLE);
-                    ivBottomMarker.setVisibility(View.VISIBLE);
+                    if(happyyFareWithService.getVisibility()==View.VISIBLE) {
+                        ivBottomMarker.setVisibility(View.GONE);
+                        //onfirstLoad =2;
+                    }else {
+                        ivBottomMarker.setVisibility(View.VISIBLE);
+
+                    }
+
                     ivMarker.setVisibility(View.INVISIBLE);
-                    ivLocationButton.setVisibility(View.VISIBLE);
+                  //  ivLocationButton.setVisibility(View.VISIBLE);
 
                     if (bottomSheetBehavior.getPeekHeight() == 0) {
                         bottomSheetBehavior.setPeekHeight((int) (100 * px));
@@ -819,14 +1368,48 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
 
                     Log.i(TAG, "onCameraIdle: GetLocationName Called : " + center);
                     if (isCameraMoved) {
+                        String lat = Config.getInstance().getCurrentLatitude();
+                        String lomg = Config.getInstance().getCurrentLongitude();
 
-                        getLocationName(String.valueOf(center.latitude), String.valueOf(center.longitude));
-//                        getLocationName(center.latitude, center.longitude);
+                        getLocationName(Config.getInstance().getCurrentLatitude(), Config.getInstance().getCurrentLongitude());
 
                         if (sourceBean == null)
                             sourceBean = new PlaceBean();
-                        sourceBean.setLatitude(String.valueOf(center.latitude));
-                        sourceBean.setLongitude(String.valueOf(center.longitude));
+                        sourceBean.setLatitude(Config.getInstance().getCurrentLatitude());
+                        sourceBean.setLongitude(Config.getInstance().getCurrentLongitude());
+                        newLatLng = new LatLng(sourceBean.getDLatitude(),sourceBean.getDLongitude());
+                        mMap.clear();
+                       MarkerOptions marker = new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.pickuplocationtest1));
+
+
+                      mMap.addMarker(marker);
+
+                if (marker!=null)
+                          marker=null;
+//
+                   /*     MarkerOptions  markerOptionscurrect = new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_source_marker_old));
+                        mMap.addMarker(markerOptionscurrect);
+                        if(markerOptionscurrect!=null) {
+                            markerOptionscurrect = null;
+                        }
+                        */
+
+
+                        getLocationNameDestination(String.valueOf(center.latitude),String.valueOf(center.longitude));
+
+                       // getLocationName(String.valueOf(center.latitude), String.valueOf(center.longitude));
+//                        getLocationName(center.latitude, center.longitude);
+
+                     /*   if (sourceBean == null)
+                            sourceBean = new PlaceBean();
+                        sourceBean.setLatitude(Config.getInstance().getCurrentLatitude());
+                        sourceBean.setLongitude(Config.getInstance().getCurrentLongitude());
+                        */
+
+                        if (destinationBean == null)
+                            destinationBean = new PlaceBean();
+                        destinationBean.setLatitude(String.valueOf(center.latitude));
+                        destinationBean.setLongitude(String.valueOf(center.longitude));
 
                         if (App.isNetworkAvailable()) {
                             fetchLandingPageDetails();
@@ -1029,9 +1612,17 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
             if (sourceBean.getDLatitude() != 0 && sourceBean.getDLongitude() != 0 && destinationBean.getDLatitude() != 0 && destinationBean.getDLongitude() != 0) {
                 rlFare.setVisibility(View.VISIBLE);
                 happyyFareWithService.setVisibility(View.VISIBLE);
+                ivBottomMarker.setVisibility(View.GONE);
+                ivLocationButton.setVisibility(View.GONE);
+                distinationConfirmButton.setVisibility(View.GONE);
                 viewDottedLine.setVisibility(View.VISIBLE);
+                ivMarker.setVisibility(View.GONE);
                 mapAutoZoom();
                 fetchPolyPoints(true);
+
+                ///customise for testing purpose recently
+                mMap.getUiSettings().setScrollGesturesEnabled(false);
+                isCameraMoved=false;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1048,10 +1639,18 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
 
             rlFare.setVisibility(View.VISIBLE);
             happyyFareWithService.setVisibility(View.VISIBLE);
+            ivBottomMarker.setVisibility(View.GONE);
+            ivLocationButton.setVisibility(View.GONE);
+            ivMarker.setVisibility(View.GONE);
+            distinationConfirmButton.setVisibility(View.GONE);
             viewDottedLine.setVisibility(View.VISIBLE);
             mapAutoZoom();
             fetchPolyPoints(true);
+            mMap.getUiSettings().setScrollGesturesEnabled(false);
+            //customized recently for test
+            isCameraMoved=false;
         }
+
 
     }
 
@@ -1079,6 +1678,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         sourceBean = null;
         if (mGoogleApiClient != null) {
             if (mGoogleApiClient.isConnected() || !mGoogleApiClient.isConnecting()) {
+
                 getCurrentLocation();
             } else {
                 mGoogleApiClient.connect();
@@ -1086,6 +1686,11 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         } else {
             setUpLocationClientIfNeeded();
         }
+    }
+
+    public void onClickOutsideDhaka(View view){
+        Intent myOutDhakaIntent = new Intent(this,OutOfDhakaActivity.class);
+        startActivity(myOutDhakaIntent);
     }
 
     public void onFareEstimateClick(View view) {
@@ -1178,9 +1783,11 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         // framePickup.setVisibility(View.VISIBLE);
         ivBottomMarker.setVisibility(View.VISIBLE);
         ivMarker.setVisibility(View.GONE);
-        ivLocationButton.setVisibility(View.VISIBLE);
+        ivLocationButton.setVisibility(View.GONE);
         btnRequest.setVisibility(View.GONE);
-        llConfirmation.setVisibility(View.GONE);
+        distinationConfirmButton.setVisibility(View.GONE);
+        //Modified recently
+      llConfirmation.setVisibility(View.GONE);
 
         mMap.clear();
 
@@ -1461,12 +2068,63 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
 
                     txtActionSearch.setText(address);
                     txtSource.setText(address);
+                   // txtDestination.setText(address);
                     if (sourceBean == null)
                         sourceBean = new PlaceBean();
                     sourceBean.setAddress(address);
                     sourceBean.setName(address);
                     sourceBean.setLatitude(latitude);
                     sourceBean.setLongitude(longitude);
+                    /*					txtLocation.setText(address);
+                    Toast.makeText(CreateActivity.this,"Location Name Retrieved : "+address, Toast.LENGTH_SHORT).show();
+					 */
+                }
+            }
+
+            @Override
+            public void dataDownloadFailed() {
+
+            }
+        });
+        locationNameTask.execute();
+    }
+
+    //for destination event
+
+    protected void getLocationNameDestination(final String latitude, final String longitude) {
+
+//        swipeView.setRefreshing(true);
+
+        /*String currentLatitude = Config.getInstance().getCurrentLatitude();
+        String currentLongitude = Config.getInstance().getCurrentLongitude();
+
+        System.out.println("Current Location : " + currentLatitude + "," + currentLongitude);*/
+
+        HashMap<String, String> urlParams = new HashMap<>();
+        //	postData.put("uid", id);
+        urlParams.put("latlng", latitude + "," + longitude);
+        urlParams.put("sensor", "true");
+        urlParams.put("key", getString(R.string.browser_api_key));
+
+        LocationNameTask locationNameTask = new LocationNameTask(urlParams);
+        locationNameTask.setLocationNameTaskListener(new LocationNameTask.LocationNameTaskListener() {
+
+            @Override
+            public void dataDownloadedSuccessfully(String address) {
+                //	System.out.println(landingBean.getStatus());
+                if (null != address) {
+                    System.out.println("Location Name Retrieved : " + address);
+                    Config.getInstance().setCurrentLocation(address);
+
+                    txtActionSearch.setText(address);
+                 //   txtSource.setText(address);
+                    txtDestination.setText(address);
+                    if (destinationBean == null)
+                        destinationBean = new PlaceBean();
+                    destinationBean.setAddress(address);
+                    destinationBean.setName(address);
+                    destinationBean.setLatitude(latitude);
+                    destinationBean.setLongitude(longitude);
                     /*					txtLocation.setText(address);
                     Toast.makeText(CreateActivity.this,"Location Name Retrieved : "+address, Toast.LENGTH_SHORT).show();
 					 */
@@ -1752,38 +2410,49 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
     //Bike Request
    public void onRequestRideClickBike(View view){
        view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-        Toast.makeText(this,"Request For Bike",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"No Bike Available",Toast.LENGTH_SHORT).show();
    }
+//CNG onRequestRideClickCNG
 
+    public void onRequestRideClickCNG(View view){
+        view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+        Toast.makeText(this,"No CNG Available",Toast.LENGTH_SHORT).show();
+    }
    // onRequestRideClickCar
     public void onRequestRideClickCar(View view){
         view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-        Toast.makeText(this,"Request For Car",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"No Car Available",Toast.LENGTH_SHORT).show();
 
     }
     public void onRequestRideClickCarOneHoure(View view){
         view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-        Toast.makeText(this,"Request For One Hour",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"No Car Available",Toast.LENGTH_SHORT).show();
     }
     public void onRequestRideClickCarTwoHours(View view){
         view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-        Toast.makeText(this,"Request For Two Hours",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"No Car Available",Toast.LENGTH_SHORT).show();
     }
     public void onRequestRideClickCarFourHours(View view){
         view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-        Toast.makeText(this,"Request For Car Four Hours",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"No Car Available",Toast.LENGTH_SHORT).show();
     }
     public void onRequestRideClickCarDayPrimio(View view){
         view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-        Toast.makeText(this,"Request For Day Primio",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"No Premio Car Available",Toast.LENGTH_SHORT).show();
     }
     public void onRequestRideClickCarDayNoah(View view){
         view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-        Toast.makeText(this,"Request For Day Noah",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"No Noah Car Available",Toast.LENGTH_SHORT).show();
     }
     public void onRequestRideClickCarHice(View view){
         view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-        Toast.makeText(this,"Request For Day Hiace",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"No Hiace Car Available",Toast.LENGTH_SHORT).show();
+    }
+
+    public void onRequestRideClickAmbulance(View view){
+        view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+        Toast.makeText(this,"No Ambulance Available",Toast.LENGTH_SHORT).show();
+
     }
 
 
@@ -1896,10 +2565,10 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
             if (isMarkerNeeded) {
                 switch (type) {
                     case LOCATION_SOURCE:
-                        mMap.addMarker(new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_source_marker)));
+                        mMap.addMarker(new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.pickuplocationtest1)));
                         break;
                     case LOCATION_DESTINATION:
-                        mMap.addMarker(new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_destination_marker)));
+                        mMap.addMarker(new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.dropofffinal)));
                         break;
                     default:
                         mMap.addMarker(new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.defaultMarker()));
@@ -1983,8 +2652,8 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
             }
 
             polyLineOptions.addAll(points);
-            polyLineOptions.width(8);
-            polyLineOptions.color(ContextCompat.getColor(getApplicationContext(), R.color.map_path));
+            polyLineOptions.width(6);
+            polyLineOptions.color(ContextCompat.getColor(getApplicationContext(), R.color.black));
 
         }
 
@@ -2130,6 +2799,9 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
             Config.getInstance().setCurrentLatitude("" + location.getLatitude());
             Config.getInstance().setCurrentLongitude("" + location.getLongitude());
         }
+
+
+
 
         if (isInit) {
             getData();

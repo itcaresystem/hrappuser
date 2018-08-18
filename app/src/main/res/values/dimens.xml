@@ -12,8 +12,13 @@
     <dimen name="drawer_width">320dp</dimen>
     <dimen name="confirm_car_min_height">88dp</dimen>
     <dimen name="confirm_card_view_padding_top">5dp</dimen>
-    <dimen name="confirm_card_view_padding_left">5dp</dimen>
-    <dimen name="confirm_card_view_padding_right">50dp</dimen>
+    <dimen name="confirm_card_view_padding_left">20dp</dimen>
+    <dimen name="confirm_card_view_padding_right">2dp</dimen>
     <dimen name="confirm_card_view_padding_bottom">5dp</dimen>
+
+    <dimen name="tab_max_width">264dp</dimen>
+    <dimen name="tab_padding_bottom">16dp</dimen>
+    <dimen name="tab_label">14sp</dimen>
+    <dimen name="custom_tab_layout_height">72dp</dimen>
 
 </resources>

@@ -1,11 +1,14 @@
 package ride.happyy.user.util;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
@@ -272,9 +275,9 @@ public class FileOp extends Activity {
                 try {
                     android_id = AdvertisingIdClient.getAdvertisingIdInfo(context.getApplicationContext()).getId();
                     System.out.println("ANDROID_ID NOT AVAILABLE");
-                } catch (IOException|
+                } catch (IOException |
                         GooglePlayServicesNotAvailableException |
-                        GooglePlayServicesRepairableException | IllegalStateException e1){
+                        GooglePlayServicesRepairableException | IllegalStateException e1) {
                     e1.printStackTrace();
                 }
                 e.printStackTrace();
@@ -282,7 +285,18 @@ public class FileOp extends Activity {
             String device_id = null;
             try {
                 TelephonyManager tManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-                device_id = tManager.getDeviceId();
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    device_id = tManager.getDeviceId();
+                    return device_id;
+                }
+
             } catch (Exception e) {
                 device_id = "";
                 System.out.println("DEVICE_ID NOT AVAILABLE OR DISABLED");

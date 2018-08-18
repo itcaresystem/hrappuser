@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_splash_old"
+    tools:context=".activity.OutOfDhakaActivity">
+
+    <android.support.v4.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        style="@style/NestedScrollBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent">
+    <LinearLayout
+        android:background="@color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+<LinearLayout
+    android:layout_margin="5dp"
+    android:background="@color/transparent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ride.happyy.user.widgets.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:textSize="18dp"
+        android:textColor="@color/blue"
+        android:textStyle="bold"
+        android:text="From"/>
+    <ride.happyy.user.widgets.CustomTextView
+        android:id="@+id/outOfDhakaFromTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="18dp"
+        android:textColor="@color/parpel"
+        android:text="Dhaka"/>
+
+</LinearLayout>
+
+    <LinearLayout
+        android:background="@color/white_transparent_ee"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ride.happyy.user.widgets.CustomTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:textSize="18dp"
+            android:textColor="@color/parpel"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="TO"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_margin="5dp"
+        android:background="@color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ride.happyy.user.widgets.CustomTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:textSize="18dp"
+            android:gravity="center"
+            android:textColor="@color/blue"
+            android:textStyle="bold"
+            android:text="Division*"/>
+      <!--  <Spinner
+            android:id="@+id/divisionSpinerOutOfDhaka"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:textColor="@color/parpel"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/division">
+        </Spinner>-->
+
+        <Spinner
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:id="@+id/divisionSpinerOutOfDhaka"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+
+            android:background="@drawable/spinner_border"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ride.happyy.user.widgets.CustomTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:textSize="18dp"
+            android:gravity="center"
+            android:textColor="@color/blue"
+            android:textStyle="bold"
+            android:text="District*"/>
+      <!--  <Spinner
+            android:id="@+id/districtSpinerOutOfDhaka"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:gravity="center"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/parpel"
+            android:textSize="18dp"
+            android:entries="@array/spinnerDhakaDistrictArray">
+        </Spinner>-->
+
+        <Spinner
+            android:layout_marginRight="12dp"
+            android:layout_weight="1"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:id="@+id/districtSpinerOutOfDhaka"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@drawable/spinner_border"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_margin="5dp"
+        android:background="@color/transparent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+    <ride.happyy.user.widgets.CustomTextView
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textSize="18dp"
+        android:textColor="@color/black"
+        android:text="Pick"/>
+    <EditText
+        android:id="@+id/pickupOutDhakaEdt"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="auto"
+        android:hint="Type Here"/>
+
+</LinearLayout>
+    <LinearLayout
+        android:layout_margin="4dp"
+        android:background="@color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <ride.happyy.user.widgets.CustomTextView
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textSize="18dp"
+            android:textColor="@color/red"
+        android:text="Drop"/>
+
+        <ride.happyy.user.widgets.CustomTextView
+            android:id="@+id/dropOfffOutDhakaTv"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textSize="18dp"
+            android:text="District Sodor"/>
+
+    </LinearLayout>
+        <LinearLayout
+            android:layout_margin="4dp"
+            android:background="@color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <ride.happyy.user.widgets.CustomTextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textSize="18dp"
+                android:textColor="@color/blue"
+                android:text="Mobile Number"/>
+
+            <EditText
+                android:id="@+id/phoneNumberOutDhakaET"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textSize="18dp"
+                android:maxLength="11"
+                android:hint="01714790220"/>
+
+
+        </LinearLayout>
+    <LinearLayout
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:background="@color/white_transparent_ee"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ride.happyy.user.widgets.CustomTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:textSize="20dp"
+            android:textColor="@color/parpel"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="Rent Info"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:padding="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blue_transparent_50">
+
+        <FrameLayout
+            android:id="@+id/frameLayoutForPrimio"
+            android:layout_margin="2dp"
+            android:background="@drawable/material_drawer_circle_mask"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            >
+            <ImageView
+                android:layout_margin="5dp"
+                android:padding="2dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                android:scaleType="centerInside"
+                android:src="@drawable/premioperfect1"/>
+            <ride.happyy.user.widgets.CustomTextView
+                android:layout_gravity="top|center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:text="PRIMIO"/>
+            <ride.happyy.user.widgets.CustomTextView
+                android:id="@+id/primioRentTv"
+                android:layout_gravity="bottom|center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:text="৳0000"/>
+
+            <ride.happyy.user.widgets.CustomTextView
+                android:background="@drawable/ic_info_outline_red_24dp"
+                android:id="@+id/primioInfoTv"
+                android:padding="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="15dp"
+                android:layout_gravity="right|center"
+                android:text=" "/>
+
+
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/frameLayoutForNoah"
+            android:layout_margin="2dp"
+            android:background="@drawable/circle_white_with_gray_edge"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <ImageView
+                android:layout_margin="5dp"
+                android:padding="2dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                android:scaleType="centerInside"
+                android:src="@drawable/noahperfect"/>
+            <ride.happyy.user.widgets.CustomTextView
+                android:layout_gravity="top|center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:text="NOAH"/>
+            <ride.happyy.user.widgets.CustomTextView
+                android:id="@+id/noahRentTv"
+                android:layout_gravity="bottom|center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:text="৳7500"/>
+            <ride.happyy.user.widgets.CustomTextView
+                android:background="@drawable/ic_info_outline_red_24dp"
+                android:id="@+id/noahInfoTv"
+                android:padding="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="15dp"
+                android:layout_gravity="right|center"
+                android:text="(-)"/>
+
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/frameLayoutForHiace"
+            android:layout_margin="2dp"
+            android:background="@drawable/circle_white_with_gray_edge"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <ImageView
+                android:layout_margin="5dp"
+                android:padding="2dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                android:scaleType="centerInside"
+                android:src="@drawable/hiaceperfect"/>
+            <ride.happyy.user.widgets.CustomTextView
+                android:layout_gravity="top|center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:text="HIACE"/>
+            <ride.happyy.user.widgets.CustomTextView
+                android:id="@+id/haiceRentTv"
+                android:layout_gravity="bottom|center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:text="৳8000"/>
+            <ride.happyy.user.widgets.CustomTextView
+                android:id="@+id/hiaceInfoTv"
+                android:background="@drawable/ic_info_outline_red_24dp"
+                android:padding="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="15dp"
+                android:layout_gravity="right|center"
+                android:text=""/>
+
+        </FrameLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:padding="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/requestBtnForPrimio"
+            android:padding="5dp"
+            android:background="@color/parpel"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textColor="@color/white"
+            android:text="Request For Primio"
+            android:visibility="visible"/>
+        <Button
+            android:id="@+id/requestBtnForNoah"
+            android:padding="5dp"
+            android:background="@color/parpel"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textColor="@color/white"
+            android:text="Request For Noah"
+            android:visibility="gone"/>
+        <Button
+            android:id="@+id/requestBtnForHiace"
+            android:padding="5dp"
+            android:background="@color/parpel"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textColor="@color/white"
+            android:text="Request For Hiace"
+            android:visibility="gone"/>
+    </LinearLayout>
+    </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+
+</LinearLayout>

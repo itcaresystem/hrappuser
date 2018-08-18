@@ -38,6 +38,8 @@ public class PromotionActivity extends BaseAppCompatNoDrawerActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("PROMO CODE");
     }
 
     @Override
