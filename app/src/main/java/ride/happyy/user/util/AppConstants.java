@@ -9,6 +9,52 @@ import ride.happyy.user.net.ServiceNames;
 
 public class AppConstants {
 
+    //Bike___start
+    public static final float BIKE_BASE_FARE    =20;
+    public static final float BIKE_MIN_FARE    =50;
+    public static final float BIKE_PER_KM_FARE    =12;
+    public static final float BIKE_PER_MIN_FARE    =0.5f;
+
+    //CNG_start
+    public static final float CNG_BASE_FARE    =40;
+    public static final float CNG_MIN_FARE    =50;
+    public static final float CNG_PER_KM_FARE    =15;
+    public static final float CNG_PER_MIN_FARE    =1.5f;
+
+    //Ambulance_start
+
+
+
+    //Car__start
+    public static final float CAR_BASE_FARE    =50;
+    public static final float CAR_MIN_FARE    =80;
+    public static final float CAR_PER_KM_FARE    =20;
+    public static final float CAR_PER_MIN_FARE    =2.50f;
+
+    //Ambulance
+    public static final float AMBULANCE_BASE_FARE    =750;
+    public static final float AMBULANCE_MIN_FARE    =750;
+    public static final float AMBULANCE_PER_KM_FARE    =0.10f;
+    public static final float AMBULANCE_PER_MIN_FARE    =7;
+
+    //Car_hire
+    public static final float CAR_HIRE_BASE_FARE    =250;
+    public static final float CAR_HIRE_MIN_FARE    =450;
+    public static final float CAR_HIRE_PER_KM_FARE    =22;
+    public static final float CAR_HIRE_PER_MIN_FARE    =4;
+
+
+    //Car__hire_one_hour
+    public static final float CAR_ONE_HOUR_PACKAGE_BASE_FARE    =450;
+    public static final float CAR_TWO_HOURS_PACKAGE_BASE_FARE    =610;
+    public static final float CAR_FOUR_HOURS_PACKAGE_BASE_FARE    =840;
+    public static final float CAR_TEN_HOURS_PACKAGE_BASE_FARE_PREMIO    =3500;
+    public static final float CAR_TEN_HOURS_PACKAGE_BASE_FARE_NOAH   =4000;
+    public static final float CAR_TEN_HOURS_PACKAGE_BASE_FARE_HIACE    =4500;
+
+
+
+
 
     public static final String SEPARATOR = "/";
     public static final String BASE_URL = ServiceNames.API_UPLOADS + SEPARATOR;
@@ -105,5 +151,7 @@ public class AppConstants {
         return countryListBean;
 
     }
+
+
 
 }

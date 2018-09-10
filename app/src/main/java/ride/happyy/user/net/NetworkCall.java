@@ -73,23 +73,29 @@ public class NetworkCall implements MyApiService {
     }
 
     @Override
-    public void sendOutOfdhakaRequest(OutOfDhakaServiceModel outOfDhakaService, ResponseCallback<String> callback) {
+    public void sendOutOfdhakaRequest(OutOfDhakaServiceModel outOfDhakaService, final ResponseCallback<String> callback) {
         RetrofitApiInterface retrofitApiInterface   = RetrofitApiClient.getClient().create(RetrofitApiInterface.class);
-        Call<OutofDhakaServerresponse>    call    = retrofitApiInterface.sendOutOfdhakaRequest(outOfDhakaService);
-        call.enqueue(new Callback<OutofDhakaServerresponse>() {
+        Call<ServerResponse> call = retrofitApiInterface.sendOutOfdhakaRequest(outOfDhakaService);
+        call.enqueue(new Callback<ServerResponse>() {
             @Override
-            public void onResponse(Call<OutofDhakaServerresponse> call, Response<OutofDhakaServerresponse> response) {
-                OutofDhakaServerresponse serverResponse   = response.body();
-                if(serverResponse.isSuccess()){
+            public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
+                ServerResponse validity = response.body();
+                if(validity!=null){
+                    if(validity.isSuccess())
+                        callback.onSuccess(validity.getMessage());
 
-
+                    else
+                        callback.onError(new Exception(validity.getMessage()));
                 }
+                else
+                    callback.onError(new Exception(response.message()));
             }
 
             @Override
-            public void onFailure(Call<OutofDhakaServerresponse> call, Throwable t) {
+            public void onFailure(Call<ServerResponse> call, Throwable t) {
 
             }
         });
     }
+
 }

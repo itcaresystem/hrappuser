@@ -118,6 +118,7 @@ import ride.happyy.user.net.WSAsyncTasks.FCMRegistrationTask;
 import ride.happyy.user.net.WSAsyncTasks.LocationNameTask;
 import ride.happyy.user.net.WSAsyncTasks.LocationTask;
 import ride.happyy.user.util.AppConstants;
+import ride.happyy.user.util.FareCalculation;
 
 
 public class LandingPageActivity extends BaseAppCompatActivity implements
@@ -166,7 +167,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
     private ImageView ivLocationButton;
     private SupportMapFragment mapFragment;
     //    private View lytBottom;
-    private TextView txtTime;
+    private TextView txtTime,destinationTV;
     private TextView txtMaxSize;
     private TextView txtFare;
     private String carType = String.valueOf(-1);
@@ -355,7 +356,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         AccountHeader headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.bg_header)
-                .addProfiles(new ProfileDrawerItem().withName("Rajib Hossain").withEmail("01623473041").withIcon(getResources().getDrawable(R.drawable.ic_profile_photo_default)))
+                .addProfiles(new ProfileDrawerItem().withName("Rajib Hossain").withEmail("01623473041").withIcon(getResources().getDrawable(R.drawable.carperfect11)))
                 .withOnAccountHeaderProfileImageListener(new AccountHeader.OnAccountHeaderProfileImageListener() {
                     @Override
                     public boolean onProfileImageClick(View view, IProfile profile, boolean current) {
@@ -1094,6 +1095,8 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         rvCarTypes.setLayoutManager(layoutManager);
 
         ivBottomMarker = (ImageView) findViewById(R.id.iv_bottom_marker);
+        destinationTV   = findViewById(R.id.dest_top_part);
+
 
         llConfirmationProgress = (LinearLayout) findViewById(R.id.ll_confirmation_progress);
 
@@ -1184,6 +1187,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
 
     }
     String massage="";
+    FareCalculation fareCalculation = new FareCalculation();
     public void onClickDoneButton(View view){
         if (txtSource.getText().toString()==null){
             massage ="Please select sourch";
@@ -1192,7 +1196,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         if (txtDestination.getText().toString()==null){
             massage ="Please select destination";
         }
-        Toast.makeText(this,massage,Toast.LENGTH_SHORT).show();
+     //   Toast.makeText(this,massage,Toast.LENGTH_SHORT).show();
 
 
         if(txtSource.getText().toString()!=null || txtDestination.getText().toString()!=null) {
@@ -1202,10 +1206,25 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         }
         mapAutoZoom();
         fetchPolyPoints(true);
+       // onPlotLocation(true, LOCATION_DESTINATION, destinationBean.getDLatitude(), destinationBean.getDLongitude());
+
+
       //  onDestinationSelect();
         ivLocationButton.setVisibility(View.GONE);
         ivBottomMarker.setVisibility(View.GONE);
+        destinationTV.setVisibility(View.GONE);
+      //  mMap.getUiSettings().setScrollGesturesEnabled(false);
+       mMap.getUiSettings().setAllGesturesEnabled(false);
+
+        // testing purpose
+        /*
+        mMap.getUiSettings().setAllGesturesEnabled(false);
         mMap.getUiSettings().setScrollGesturesEnabled(false);
+        mMap.getUiSettings().setZoomGesturesEnabled(false);
+        mMap.getUiSettings().setTiltGesturesEnabled(false);
+        mMap.getUiSettings().setRotateGesturesEnabled(false);
+        */
+
         distinationConfirmButton.setVisibility(View.GONE);
 
 
@@ -1286,6 +1305,10 @@ LatLng newLatLng=null;
             @Override
             public void onMapClick(LatLng latLng) {
 
+                if (happyyFareWithService.getVisibility()==View.VISIBLE){
+
+                }
+
 
 
                 //recently change
@@ -1315,11 +1338,12 @@ LatLng newLatLng=null;
                 } */
 
                 if (!isConfirmationPage) {
-                    mMap.getUiSettings().setScrollGesturesEnabled(true);
+                   // mMap.getUiSettings().setScrollGesturesEnabled(true);
                     mMap.setMaxZoomPreference(18f);
                    // framePickup.setVisibility(View.INVISIBLE);
                     ivBottomMarker.setVisibility(View.VISIBLE);
-                    ivMarker.setVisibility(View.VISIBLE);
+                    destinationTV.setVisibility(View.VISIBLE);
+                    ivMarker.setVisibility(View.GONE);
                    // ivLocationButton.setVisibility(View.VISIBLE);
                     distinationConfirmButton.setVisibility(View.VISIBLE);
 
@@ -1351,13 +1375,16 @@ LatLng newLatLng=null;
                     // framePickup.setVisibility(View.VISIBLE);
                     if(happyyFareWithService.getVisibility()==View.VISIBLE) {
                         ivBottomMarker.setVisibility(View.GONE);
+                        destinationTV.setVisibility(View.GONE);
+                        mMap.getUiSettings().setAllGesturesEnabled(false);
                         //onfirstLoad =2;
                     }else {
                         ivBottomMarker.setVisibility(View.VISIBLE);
+                        destinationTV.setVisibility(View.VISIBLE);
 
                     }
 
-                    ivMarker.setVisibility(View.INVISIBLE);
+                    ivMarker.setVisibility(View.GONE);
                   //  ivLocationButton.setVisibility(View.VISIBLE);
 
                     if (bottomSheetBehavior.getPeekHeight() == 0) {
@@ -1379,7 +1406,7 @@ LatLng newLatLng=null;
                         sourceBean.setLongitude(Config.getInstance().getCurrentLongitude());
                         newLatLng = new LatLng(sourceBean.getDLatitude(),sourceBean.getDLongitude());
                         mMap.clear();
-                       MarkerOptions marker = new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.pickuplocationtest1));
+                       MarkerOptions marker = new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.pickup_png));
 
 
                       mMap.addMarker(marker);
@@ -1613,6 +1640,7 @@ LatLng newLatLng=null;
                 rlFare.setVisibility(View.VISIBLE);
                 happyyFareWithService.setVisibility(View.VISIBLE);
                 ivBottomMarker.setVisibility(View.GONE);
+                destinationTV.setVisibility(View.GONE);
                 ivLocationButton.setVisibility(View.GONE);
                 distinationConfirmButton.setVisibility(View.GONE);
                 viewDottedLine.setVisibility(View.VISIBLE);
@@ -1640,6 +1668,7 @@ LatLng newLatLng=null;
             rlFare.setVisibility(View.VISIBLE);
             happyyFareWithService.setVisibility(View.VISIBLE);
             ivBottomMarker.setVisibility(View.GONE);
+            destinationTV.setVisibility(View.GONE);
             ivLocationButton.setVisibility(View.GONE);
             ivMarker.setVisibility(View.GONE);
             distinationConfirmButton.setVisibility(View.GONE);
@@ -1647,6 +1676,7 @@ LatLng newLatLng=null;
             mapAutoZoom();
             fetchPolyPoints(true);
             mMap.getUiSettings().setScrollGesturesEnabled(false);
+
             //customized recently for test
             isCameraMoved=false;
         }
@@ -1724,6 +1754,7 @@ LatLng newLatLng=null;
             bottomSheetBehavior.setPeekHeight(0);
 
             ivBottomMarker.setVisibility(View.GONE);
+            destinationTV.setVisibility(View.GONE);
 
             ivMarker.setVisibility(View.GONE);
 
@@ -1782,6 +1813,7 @@ LatLng newLatLng=null;
 //        llEstimation.setVisibility(View.VISIBLE);
         // framePickup.setVisibility(View.VISIBLE);
         ivBottomMarker.setVisibility(View.VISIBLE);
+        destinationTV.setVisibility(View.VISIBLE);
         ivMarker.setVisibility(View.GONE);
         ivLocationButton.setVisibility(View.GONE);
         btnRequest.setVisibility(View.GONE);
@@ -2565,10 +2597,10 @@ LatLng newLatLng=null;
             if (isMarkerNeeded) {
                 switch (type) {
                     case LOCATION_SOURCE:
-                        mMap.addMarker(new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.pickuplocationtest1)));
+                        mMap.addMarker(new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.pickup_png)));
                         break;
                     case LOCATION_DESTINATION:
-                        mMap.addMarker(new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.dropofffinal)));
+                        mMap.addMarker(new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.desroutpng)));
                         break;
                     default:
                         mMap.addMarker(new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.defaultMarker()));
@@ -2608,8 +2640,32 @@ LatLng newLatLng=null;
 
                 Log.i(TAG, "onLoadCompleted: Time Taken" + polyPointsBean.getTimeText());
                 Log.i(TAG, "onLoadCompleted: Distance" + polyPointsBean.getDistanceText());
+                HashMap fareHashMap =new HashMap();
+                // & polyPointsBean.getDistanceText()!=null & polyPointsBean.getDistanceText()!="" & polyPointsBean.getDistanceText()!=" "
+                Float distancedinroundfigur=1f;
+                if(polyPointsBean.getDistanceText().length()>3) {
+                    distancedinroundfigur = Float.parseFloat(polyPointsBean.getDistanceText().substring(0, polyPointsBean.getDistanceText().length() - 3));
+
+                }
+                float distancefloat = distancedinroundfigur;
+
+                fareHashMap =fareCalculation.estimateFareCalculation(polyPointsBean.getDistance(),polyPointsBean.getTime());
+                bikeFareTextView.setText("৳"+fareHashMap.get("bikeFare").toString());
+                cngFareTextView.setText("৳"+fareHashMap.get("cngFare").toString());
+                carFareTextView.setText("৳"+fareHashMap.get("carFare").toString());
+                ambulanceFareTextView.setText("৳"+fareHashMap.get("ambulanceFare").toString());
+               // oneHourFareTextView,twoHoursFareTextView,fourHoursFareTextView,dayFareTextView,dayNoahFareTextView,dayHiaceFareTextView
+                oneHourFareTextView.setText("৳"+fareHashMap.get("carHireFare").toString());
+
+               // twoHoursFareTextView.setText("৳"+fareHashMap.get("twohoursHireFare").toString());
+                dayFareTextView.setText("৳"+fareHashMap.get("ondayHirePremioFare").toString());
+                dayNoahFareTextView.setText("৳"+fareHashMap.get("onedayHireNoahFare").toString());
+                dayHiaceFareTextView.setText("৳"+fareHashMap.get("onedayHireHiaceFare").toString());
+
+
 
                 fetchTotalfare();
+
 
                 if (isPolyLineNeeded) {
                     if (!isDestinationEstimateSelect)
@@ -2678,7 +2734,7 @@ LatLng newLatLng=null;
 //        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (40 * px)));
         if (mapFragment.getView() != null) {
             if (mapFragment.getView().getHeight() > 150 * px)
-                mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (40 * px)));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (20 * px)));
             else
                 mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (5 * px)));
         }

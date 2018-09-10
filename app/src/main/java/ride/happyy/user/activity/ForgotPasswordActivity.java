@@ -108,5 +108,21 @@ public class ForgotPasswordActivity extends BaseAppCompatNoDrawerActivity {
             performNewPassword();
 
     }
+
+    public void onCodeCheckButtonClick(View view) {
+        view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+
+        if (validateEmail())
+            performNewPassword();
+
+    }
+
+    public void onREsetPasswordButtonClick(View view) {
+        view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+
+        if (validateEmail())
+            performNewPassword();
+
+    }
 }
 

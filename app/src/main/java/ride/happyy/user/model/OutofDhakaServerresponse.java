@@ -5,14 +5,14 @@ import com.google.gson.annotations.SerializedName;
 public class OutofDhakaServerresponse {
     @SerializedName("status")
     boolean statusString;
-    @SerializedName("outofdhaka_request_id")
-    String outofDhakaRequestId;
+    @SerializedName("message")
+    String messageString;
 
-    public boolean isSuccess(){
+    public boolean isStatusString() {
         return statusString;
     }
 
-    public String getOutofDhakaRequestId() {
-        return outofDhakaRequestId;
+    public String getMessageString() {
+        return messageString;
     }
 }

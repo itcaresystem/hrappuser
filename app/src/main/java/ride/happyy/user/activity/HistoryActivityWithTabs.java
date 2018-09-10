@@ -32,7 +32,7 @@ public class HistoryActivityWithTabs extends BaseAppCompatNoDrawerActivity {
             R.drawable.ic_bike_trip,
             R.drawable.cng,
             R.drawable.carhirelogotime,
-            R.drawable.ambulance
+            R.drawable.ambulanc_png
     };
 
     @Override
@@ -67,7 +67,7 @@ public class HistoryActivityWithTabs extends BaseAppCompatNoDrawerActivity {
         tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_history_red_24dp, 0, 0);
         tabLayout.getTabAt(2).setCustomView(tabThree);
         TextView tabFour= (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tabs, null);
-        tabFour.setText("AMbulance");
+        tabFour.setText("AMBULANCE");
         tabFour.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_history_red_24dp, 0, 0);
         tabLayout.getTabAt(3).setCustomView(tabFour);
 

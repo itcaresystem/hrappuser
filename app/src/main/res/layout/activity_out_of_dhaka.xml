@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_splash_old"
+    android:background="@drawable/outofdhakabgrain"
     tools:context=".activity.OutOfDhakaActivity">
 
     <android.support.v4.widget.NestedScrollView
@@ -15,6 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/transparent">
+
+
     <LinearLayout
         android:background="@color/transparent"
         android:layout_width="match_parent"
@@ -89,14 +91,13 @@
         </Spinner>-->
 
         <Spinner
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="12dp"
             android:layout_weight="1"
             android:paddingLeft="2dp"
             android:paddingRight="2dp"
             android:id="@+id/divisionSpinerOutOfDhaka"
             android:layout_width="match_parent"
             android:layout_height="35dp"
-
             android:background="@drawable/spinner_border"/>
 
     </LinearLayout>
@@ -127,7 +128,7 @@
         </Spinner>-->
 
         <Spinner
-            android:layout_marginRight="12dp"
+            android:layout_marginRight="14dp"
             android:layout_weight="1"
             android:paddingLeft="2dp"
             android:paddingRight="2dp"
@@ -276,8 +277,8 @@
                 android:background="@drawable/ic_info_outline_red_24dp"
                 android:id="@+id/primioInfoTv"
                 android:padding="2dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 android:textSize="15dp"
@@ -322,13 +323,13 @@
                 android:background="@drawable/ic_info_outline_red_24dp"
                 android:id="@+id/noahInfoTv"
                 android:padding="2dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 android:textSize="15dp"
                 android:layout_gravity="right|center"
-                android:text="(-)"/>
+                android:text=""/>
 
         </FrameLayout>
         <FrameLayout
@@ -367,8 +368,8 @@
                 android:id="@+id/hiaceInfoTv"
                 android:background="@drawable/ic_info_outline_red_24dp"
                 android:padding="2dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 android:textSize="15dp"
@@ -378,11 +379,27 @@
         </FrameLayout>
 
     </LinearLayout>
+
     <LinearLayout
         android:padding="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+        <ride.happyy.user.widgets.CustomTextView
+            android:id="@+id/responsemessagetv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textColor="@color/green_my"
+            android:textStyle="bold"
+            android:textSize="14dp"
+            android:text=" "/>
+        <ProgressBar
+            android:id="@+id/requestprogressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
         <Button
             android:id="@+id/requestBtnForPrimio"
             android:padding="5dp"
@@ -410,6 +427,7 @@
             android:textColor="@color/white"
             android:text="Request For Hiace"
             android:visibility="gone"/>
+
     </LinearLayout>
     </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

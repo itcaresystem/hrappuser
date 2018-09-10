@@ -18,7 +18,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="180dp"
-            android:background="@drawable/bg_settings"
+            android:background="@color/black"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -201,6 +201,31 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:hint="@string/btn_add_work"
+                android:paddingTop="5dp"
+                android:textSize="20sp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:onClick="onAddWorkClick">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:src="@drawable/ic_edit_red_24dp"/>
+
+            <ride.happyy.user.widgets.CustomTextView
+                android:id="@+id/changepassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:hint="Change Password"
                 android:paddingTop="5dp"
                 android:textSize="20sp"/>
 

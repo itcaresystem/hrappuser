@@ -119,7 +119,7 @@
                 android:scaleType="fitCenter"
                 android:onClick="onClickOutsideDhaka"
                     android:background="@drawable/circle_gray"
-                    android:src="@drawable/outofdhakimagelogoperfect"/>
+                    android:src="@drawable/outofdhakalofinalselectedpng"/>
 
             </LinearLayout>
 
@@ -324,7 +324,7 @@
                 android:layout_height="50dp"
                 android:background="@color/transparent"
                 android:scaleType="centerInside"
-                android:src="@drawable/outofdhakaicon_round"/>
+                android:src="@drawable/outofdhakalogoselected"/>
 
 
         <android.support.design.widget.FloatingActionButton

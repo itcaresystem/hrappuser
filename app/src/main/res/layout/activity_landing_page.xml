@@ -13,8 +13,6 @@
 
    <!-- <include layout="@layout/layout_actionbar_title_extra_w">  </include>-->
 
-
-
     <include
         layout="@layout/fragment_map"
         app:layout_anchor="@+id/ll_trip_details_driver_info"
@@ -22,8 +20,8 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_location_button"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginBottom="70dp"
         android:layout_marginRight="10dp"
         android:focusable="true"
@@ -45,7 +43,7 @@
         android:layout_marginRight="10dp"
         android:focusable="true"
         android:scaleType="fitCenter"
-        android:src="@drawable/outofdhakaroundimage"
+        android:src="@drawable/outofdhakalogoselected"
         android:tint="@color/white"
         app:backgroundTint="@color/parpel"
         app:fabSize="auto"
@@ -93,16 +91,28 @@
             android:visibility="gone"/>
 
 
-
+<TextView
+    android:id="@+id/dest_top_part"
+    android:background="@drawable/btn_click_black_rectangle_with_semicircle_edge"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginTop="1dp"
+    android:padding="3dp"
+    android:scaleType="centerInside"
+    android:textColor="@color/white"
+    android:text="DESTINATION"
+    android:textSize="11dp"
+    />
         <ImageView
             android:id="@+id/iv_bottom_marker"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:scaleType="centerInside"
-            android:src="@drawable/dropofffinal"
-            android:visibility="gone"/>
+            android:src="@drawable/destination"
+            android:visibility="visible"/>
 
     </FrameLayout>
 

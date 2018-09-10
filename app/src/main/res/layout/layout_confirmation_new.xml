@@ -36,7 +36,7 @@
 
 
                 <LinearLayout
-                    android:background="@drawable/circle_white_with_gray_edge"
+                    android:background="@color/transparent"
                     android:id="@+id/confirm_request_bike_ll"
                     android:paddingTop="@dimen/confirm_card_view_padding_top"
                     android:paddingLeft="20dp"
@@ -67,7 +67,7 @@
                                 android:layout_width="45dp"
                                 android:layout_height="45dp"
                                 android:background="@drawable/circle_carbon_transparent"
-                                android:src="@drawable/motoperfect11111" />
+                                android:src="@drawable/bikeperfectlogoselected" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -75,7 +75,7 @@
                                 android:layout_gravity="center"
                                 android:text="BIKE"
                                 android:textColor="#000"
-                                android:textSize="14sp" />
+                                android:textSize="10sp" />
 
                             <View
                                 android:layout_width="match_parent"
@@ -98,15 +98,15 @@
                                     android:text="৳ 50"
                                     android:textAlignment="center"
                                     android:textColor="#000"
-                                    android:textSize="14sp"
+                                    android:textSize="10sp"
                                     android:translationX="2dp" />
 
                             </LinearLayout>
                         </LinearLayout>
                     </android.support.v7.widget.CardView>
                     <ride.happyy.user.widgets.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/infologo_width_h"
+                        android:layout_height="@dimen/infologo_width_h"
                         android:layout_gravity="right|center"
                         android:background="@drawable/ic_info_outline_red_24dp"
                         />
@@ -129,7 +129,7 @@
 
 
                 <LinearLayout
-                    android:background="@drawable/circle_white_with_gray_edge"
+                    android:background="@color/transparent"
                     android:id="@+id/confirm_request_cng_ll"
                     android:paddingTop="@dimen/confirm_card_view_padding_top"
                     android:paddingLeft="20dp"
@@ -168,7 +168,7 @@
                                 android:layout_gravity="center"
                                 android:text="CNG"
                                 android:textColor="#000"
-                                android:textSize="14sp" />
+                                android:textSize="10sp" />
 
                             <View
                                 android:layout_width="match_parent"
@@ -191,15 +191,15 @@
                                     android:text="৳ 80"
                                     android:textAlignment="center"
                                     android:textColor="#000"
-                                    android:textSize="14sp"
+                                    android:textSize="10sp"
                                     android:translationX="2dp" />
 
                             </LinearLayout>
                         </LinearLayout>
                     </android.support.v7.widget.CardView>
                     <ride.happyy.user.widgets.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/infologo_width_h"
+                        android:layout_height="@dimen/infologo_width_h"
                         android:layout_gravity="right|center"
                         android:background="@drawable/ic_info_outline_red_24dp"
                         />
@@ -224,7 +224,7 @@
 
 
                 <LinearLayout
-                    android:background="@drawable/circle_white_with_gray_edge"
+                    android:background="@color/transparent"
                     android:id="@+id/confirm_request_car_ll"
                     android:paddingTop="@dimen/confirm_card_view_padding_top"
                     android:paddingLeft="@dimen/confirm_card_view_padding_left"
@@ -262,7 +262,7 @@
                                 android:layout_gravity="center"
                                 android:text="CAR"
                                 android:textColor="#000"
-                                android:textSize="14sp" />
+                                android:textSize="10sp" />
 
                             <View
                                 android:layout_width="match_parent"
@@ -284,7 +284,7 @@
                                     android:text="৳ 100"
                                     android:textAlignment="center"
                                     android:textColor="#000"
-                                    android:textSize="14sp"
+                                    android:textSize="10sp"
                                     android:translationX="2dp" />
 
 
@@ -294,8 +294,8 @@
                         </LinearLayout>
                     </android.support.v7.widget.CardView>
                     <ride.happyy.user.widgets.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/infologo_width_h"
+                        android:layout_height="@dimen/infologo_width_h"
                         android:layout_gravity="right|center"
                         android:background="@drawable/ic_info_outline_red_24dp"
                         />
@@ -313,10 +313,10 @@
                         />
                 </LinearLayout>
                 <LinearLayout
-                    android:background="@drawable/circle_white_with_gray_edge"
+                    android:background="@color/transparent"
                     android:id="@+id/confirm_request_ambulance_ll"
                     android:paddingTop="@dimen/confirm_card_view_padding_top"
-                    android:paddingLeft="20dp"
+                    android:paddingLeft="15dp"
                     android:paddingRight="@dimen/confirm_card_view_padding_right"
                     android:paddingBottom="@dimen/confirm_card_view_padding_bottom"
                     android:layout_width="wrap_content"
@@ -346,7 +346,7 @@
                                 android:layout_height="45dp"
                                 android:scaleType="fitCenter"
                                 android:background="@drawable/bg_round_edges_gray"
-                                android:src="@drawable/ambulancepngperfect" />
+                                android:src="@drawable/ambulancetestimagepng" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -354,7 +354,7 @@
                                 android:layout_gravity="center"
                                 android:text="AMBU."
                                 android:textColor="#000"
-                                android:textSize="14sp" />
+                                android:textSize="10sp" />
 
                             <View
                                 android:layout_width="match_parent"
@@ -377,7 +377,7 @@
                                     android:text="৳ 50"
                                     android:textAlignment="center"
                                     android:textColor="#000"
-                                    android:textSize="14sp"
+                                    android:textSize="10sp"
                                     android:translationX="2dp" />
 
                             </LinearLayout>
@@ -385,8 +385,8 @@
                     </android.support.v7.widget.CardView>
 
                     <ride.happyy.user.widgets.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/infologo_width_h"
+                        android:layout_height="@dimen/infologo_width_h"
                         android:layout_gravity="right|center"
                         android:background="@drawable/ic_info_outline_red_24dp"
                         />
@@ -408,7 +408,6 @@
 
 
                 <LinearLayout
-                    android:background="@drawable/circle_white_with_gray_edge"
                     android:id="@+id/confirm_request_car_one_hour_ll"
                     android:paddingTop="@dimen/confirm_card_view_padding_top"
                     android:paddingLeft="@dimen/confirm_card_view_padding_left"
@@ -473,6 +472,7 @@
 
 
                                 <TextView
+                                    android:visibility="gone"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="3"
@@ -496,8 +496,8 @@
                         </LinearLayout>
                     </android.support.v7.widget.CardView>
                     <ride.happyy.user.widgets.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/infologo_width_h"
+                        android:layout_height="@dimen/infologo_width_h"
                         android:layout_gravity="right|center"
                         android:background="@drawable/ic_info_outline_red_24dp"
                         />
@@ -516,7 +516,8 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:background="@drawable/circle_white_with_gray_edge"
+                    android:visibility="gone"
+                    android:background="@color/transparent"
                     android:id="@+id/confirm_request_car_two_hours_ll"
                     android:paddingTop="@dimen/confirm_card_view_padding_top"
                     android:paddingLeft="@dimen/confirm_card_view_padding_left"
@@ -603,8 +604,8 @@
                         </LinearLayout>
                     </android.support.v7.widget.CardView>
                     <ride.happyy.user.widgets.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/infologo_width_h"
+                        android:layout_height="@dimen/infologo_width_h"
                         android:layout_gravity="right|center"
                         android:background="@drawable/ic_info_outline_red_24dp"
                         />
@@ -623,7 +624,8 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:background="@drawable/circle_white_with_gray_edge"
+                    android:visibility="gone"
+                    android:background="@color/transparent"
                     android:id="@+id/confirm_request_car_four_hours_ll"
                     android:paddingTop="@dimen/confirm_card_view_padding_top"
                     android:paddingLeft="@dimen/confirm_card_view_padding_left"
@@ -712,8 +714,8 @@
                         </LinearLayout>
                     </android.support.v7.widget.CardView>
                     <ride.happyy.user.widgets.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/infologo_width_h"
+                        android:layout_height="@dimen/infologo_width_h"
                         android:layout_gravity="right|center"
                         android:background="@drawable/ic_info_outline_red_24dp"
                         />
@@ -732,7 +734,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:background="@drawable/circle_white_with_gray_edge"
+                    android:background="@color/transparent"
                     android:id="@+id/confirm_request_car_day_ll"
                     android:paddingTop="@dimen/confirm_card_view_padding_top"
                     android:paddingLeft="@dimen/confirm_card_view_padding_left"
@@ -820,8 +822,8 @@
                         </LinearLayout>
                     </android.support.v7.widget.CardView>
                     <ride.happyy.user.widgets.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/infologo_width_h"
+                        android:layout_height="@dimen/infologo_width_h"
                         android:layout_gravity="right|center"
                         android:background="@drawable/ic_info_outline_red_24dp"
                         />
@@ -841,7 +843,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:background="@drawable/circle_white_with_gray_edge"
+                    android:background="@color/transparent"
                     android:id="@+id/confirm_request_car_day_noah_ll"
                     android:paddingTop="@dimen/confirm_card_view_padding_top"
                     android:paddingLeft="@dimen/confirm_card_view_padding_left"
@@ -929,8 +931,8 @@
                         </LinearLayout>
                     </android.support.v7.widget.CardView>
                     <ride.happyy.user.widgets.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/infologo_width_h"
+                        android:layout_height="@dimen/infologo_width_h"
                         android:layout_gravity="right|center"
                         android:background="@drawable/ic_info_outline_red_24dp"
                         />
@@ -950,7 +952,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:background="@drawable/circle_white_with_gray_edge"
+                    android:background="@color/transparent"
                     android:id="@+id/confirm_request_car_day_hiace_brand_ll"
                     android:paddingTop="@dimen/confirm_card_view_padding_top"
                     android:paddingLeft="@dimen/confirm_card_view_padding_left"
@@ -998,7 +1000,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="Hire Car"
+                                android:text="Hire Hiace"
                                 android:textColor="#000"
                                 android:textSize="8sp" />
 
@@ -1039,8 +1041,8 @@
                         </LinearLayout>
                     </android.support.v7.widget.CardView>
                     <ride.happyy.user.widgets.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/infologo_width_h"
+                        android:layout_height="@dimen/infologo_width_h"
                         android:layout_gravity="right|center"
                         android:background="@drawable/ic_info_outline_red_24dp"
                         />
@@ -1085,12 +1087,12 @@
         android:layout_height="38dp"
         android:layout_gravity="bottom|center"
         android:padding="5dp"
-        android:background="@color/blue_transparent_50"
+        android:background="@drawable/btn_click_black_rectangle_with_semicircle_edge"
         android:gravity="center"
         android:onClick="onRequestRideClickBike"
         android:text="@string/btn_request_for_bike"
         android:textAllCaps="false"
-        android:textColor="@color/parpel"
+        android:textColor="@color/white"
         android:visibility="visible"/>
     <Button
         android:id="@+id/btn_request_for_cng"
@@ -1111,7 +1113,7 @@
         android:layout_height="38dp"
         android:layout_gravity="bottom|center"
         android:padding="5dp"
-        android:background="@drawable/bg_black_rectangle_with_semicircle_edge"
+        android:background="@drawable/btn_click_black_rectangle_with_semicircle_edge"
         android:gravity="center"
         android:onClick="onRequestRideClickCar"
         android:text="@string/btn_request_for_car"
@@ -1124,7 +1126,7 @@
         android:layout_height="38dp"
         android:layout_gravity="bottom|center"
         android:padding="5dp"
-        android:background="@color/red"
+        android:background="@drawable/btn_click_black_rectangle_with_semicircle_edge"
         android:gravity="center"
         android:onClick="onRequestRideClickCarOneHoure"
         android:text="@string/btn_request_for_one_h"
@@ -1137,7 +1139,7 @@
         android:layout_height="38dp"
         android:layout_gravity="bottom|center"
         android:padding="5dp"
-        android:background="@color/red"
+        android:background="@drawable/btn_click_black_rectangle_with_semicircle_edge"
         android:gravity="center"
         android:onClick="onRequestRideClickCarTwoHours"
         android:text="@string/btn_request_for_two_h"
@@ -1150,7 +1152,7 @@
         android:layout_height="38dp"
         android:layout_gravity="bottom|center"
         android:padding="5dp"
-        android:background="@color/red"
+        android:background="@drawable/btn_click_black_rectangle_with_semicircle_edge"
         android:gravity="center"
         android:onClick="onRequestRideClickCarFourHours"
         android:text="@string/btn_request_for_four_h"
@@ -1163,7 +1165,7 @@
         android:layout_height="38dp"
         android:layout_gravity="bottom|center"
         android:padding="5dp"
-        android:background="@color/red"
+        android:background="@drawable/btn_click_black_rectangle_with_semicircle_edge"
         android:gravity="center"
         android:onClick="onRequestRideClickCarDayPrimio"
         android:text="@string/btn_request_for_day"
@@ -1176,7 +1178,7 @@
         android:layout_height="38dp"
         android:layout_gravity="bottom|center"
         android:padding="5dp"
-        android:background="@color/red"
+        android:background="@drawable/btn_click_black_rectangle_with_semicircle_edge"
         android:gravity="center"
         android:onClick="onRequestRideClickCarDayNoah"
         android:text="Request for Noah"
@@ -1189,7 +1191,7 @@
         android:layout_height="40dp"
         android:layout_gravity="bottom|center"
         android:padding="5dp"
-        android:background="@color/red"
+        android:background="@drawable/btn_click_black_rectangle_with_semicircle_edge"
         android:gravity="center"
         android:onClick="onRequestRideClickCarHice"
         android:text="Request for Hiace"
@@ -1202,7 +1204,7 @@
         android:layout_height="38dp"
         android:layout_gravity="bottom|center"
         android:padding="5dp"
-        android:background="@color/red"
+        android:background="@drawable/btn_click_black_rectangle_with_semicircle_edge"
         android:gravity="center"
         android:onClick="onRequestRideClickAmbulance"
         android:text="Req. For Ambulance"

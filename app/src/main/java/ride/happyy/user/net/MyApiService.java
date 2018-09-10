@@ -1,6 +1,7 @@
 package ride.happyy.user.net;
 
 import ride.happyy.user.model.OutOfDhakaServiceModel;
+import ride.happyy.user.model.OutofDhakaServerresponse;
 import ride.happyy.user.model.User;
 
 public interface MyApiService {

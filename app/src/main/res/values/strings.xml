@@ -30,7 +30,7 @@
     <string name="btn_request_for_bike">Request for Bike</string>
     <string name="btn_request_for_cng">Request for CNG</string>
     <string name="btn_request_for_car">Request for Car</string>
-    <string name="btn_request_for_one_h">Request for 1 hour</string>
+    <string name="btn_request_for_one_h">Request for Hire Car</string>
     <string name="btn_request_for_two_h">Request for 2 hours</string>
     <string name="btn_request_for_four_h">Request for 4 hours</string>
     <string name="btn_request_for_day">Request for Premio</string>
@@ -400,5 +400,8 @@
         <item>Netrakona</item>
     </string-array>
 
+    <string-array name="countrymobilecode">
+        <item>+880</item>
+    </string-array>
 
 </resources>

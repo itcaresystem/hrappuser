@@ -7,7 +7,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitApiClient {
-    private static final String BASE_URL = "http://happyyride/sap/"; //address of your remote server. Here I used localhost
+    private static final String BASE_URL = "http://happyyride.com/testapi/v1/PHPAPIS/"; //address of your remote server. Here I used localhost
     private static Retrofit retrofit = null;
 
     private static Gson gson = new GsonBuilder()

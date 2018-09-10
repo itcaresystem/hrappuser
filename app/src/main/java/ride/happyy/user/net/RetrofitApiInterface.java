@@ -11,12 +11,15 @@ import ride.happyy.user.model.ServerResponse;
 import ride.happyy.user.model.User;
 
 public interface RetrofitApiInterface {
-    @POST("retrofit_get_post/server_side_code.php")
+    @POST("server_side_code.php")
     Call<ServerResponse> getUserValidity(@Body User userLoginCredential);
 
-    @GET("retrofit_get_post/server_side_code.php")
+    @GET("outofdhakacervice.php")
     Call<ServerResponse> getJoke(@Query("user_id") String userId);
 
-    @POST("outofdhakacervice")
-    Call<OutofDhakaServerresponse> sendOutOfdhakaRequest(@Body OutOfDhakaServiceModel outOfDhakaService);
+    @POST("outofdhakacervice.php")
+    Call<ServerResponse> sendOutOfdhakaRequest(@Body OutOfDhakaServiceModel outOfDhakaService);
 }
+
+
+

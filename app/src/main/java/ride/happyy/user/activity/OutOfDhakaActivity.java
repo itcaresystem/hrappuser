@@ -1,6 +1,7 @@
 package ride.happyy.user.activity;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.HapticFeedbackConstants;
@@ -10,17 +11,25 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import ride.happyy.user.R;
 import ride.happyy.user.model.OutOfDhakaServiceModel;
+import ride.happyy.user.model.OutofDhakaServerresponse;
+import ride.happyy.user.net.MyApiService;
+import ride.happyy.user.net.NetworkCall;
+import ride.happyy.user.net.ResponseCallback;
 
 public class OutOfDhakaActivity extends BaseAppCompatNoDrawerActivity {
+    OutOfDhakaServiceModel  outOfDhakaServiceModel;
+    MyApiService myApiService = new NetworkCall();
 Fragment fragment;
+ProgressBar reqProgressBar;
 FrameLayout primioFrameLayout,noahFrameLayout,hiaceFrameLayout;
-TextView fromTv,toTv,pickUpTv,dropOffAddress;
+TextView fromTv,toTv,pickUpTv,dropOffAddress,responseMessageTv;
 TextView primioRentTv,noahRentTv,hiaceRentTv;
 TextView primioInfoTv,noahInfoTv,hiaceInfoTv;
 EditText picuppAddress,phoneNumberEditText;
@@ -35,10 +44,13 @@ Button primioRequestButton,noahRequestButton,hiaceRequestButton;
             getSupportActionBar().setTitle("Out Of Dhaka");
             //init view
         initView();
+        outOfDhakaServiceModel  =new OutOfDhakaServiceModel();
 
     }
 
   void   initView(){
+        responseMessageTv   = findViewById(R.id.responsemessagetv);
+        reqProgressBar=findViewById(R.id.requestprogressbar);
       //spinner for division and District
       divisionSpinner   =   findViewById(R.id.divisionSpinerOutOfDhaka);
       districSpinner    =   findViewById(R.id.districtSpinerOutOfDhaka);
@@ -77,7 +89,7 @@ Button primioRequestButton,noahRequestButton,hiaceRequestButton;
               getApplicationContext(), R.layout.layout_text_view_for_drop_down, getResources().getStringArray(R.array.spinnerDivisionArray));
       division.setDropDownViewResource(android.R.layout.select_dialog_singlechoice );
       divisionSpinner.setAdapter(division);
-      divisionSpinner.setPopupBackgroundResource(R.drawable.bg_header);
+      divisionSpinner.setPopupBackgroundResource(R.color.material_drawer_accent);
 //primio
       primioFrameLayout.setOnClickListener(new View.OnClickListener() {
           @Override
@@ -132,22 +144,47 @@ Button primioRequestButton,noahRequestButton,hiaceRequestButton;
           public void onClick(View view) {
               lytContent.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
               if (checkFields()) {
-                  OutOfDhakaServiceModel.setUserId("1");
-                  OutOfDhakaServiceModel.setServiceType("");
-                  OutOfDhakaServiceModel.setPickupAddress(picuppAddress.getText().toString());
-                  OutOfDhakaServiceModel.setDropOffAddress(dropOffAddress.getText().toString());
-                  OutOfDhakaServiceModel.setDivision(divisionSpinner.getSelectedItem().toString());
-                  OutOfDhakaServiceModel.setDistrict(districSpinner.getSelectedItem().toString());
-                  OutOfDhakaServiceModel.setPhoneNumber(phoneNumberEditText.getText().toString());
-                  OutOfDhakaServiceModel.setCarType("NOAH");
-                  OutOfDhakaServiceModel.setRent(primioRentTv.getText().toString());
-                  OutOfDhakaServiceModel.setDocument("Nothing");
-                  OutOfDhakaServiceModel.setRequestTimeLocationAddres("Kollanpur");
+                  responseMessageTv.setVisibility(View.GONE);
+                  reqProgressBar.setVisibility(View.VISIBLE);
+                  outOfDhakaServiceModel.setUserId("1");
+                  outOfDhakaServiceModel.setServiceType("9");
+                  outOfDhakaServiceModel.setPickupAddress(picuppAddress.getText().toString());
+                  outOfDhakaServiceModel.setDropOffAddress(dropOffAddress.getText().toString());
+                  outOfDhakaServiceModel.setDivision(divisionSpinner.getSelectedItem().toString());
+                  outOfDhakaServiceModel.setDistrict(districSpinner.getSelectedItem().toString());
+                  outOfDhakaServiceModel.setPhoneNumber(phoneNumberEditText.getText().toString());
+                  outOfDhakaServiceModel.setCarType("1");
+                  outOfDhakaServiceModel.setRent(primioRentTv.getText().toString().substring(1));
+                  outOfDhakaServiceModel.setDocument("Nothing");
+                  outOfDhakaServiceModel.setRequestTimeLocationAddres("Kollanpur");
 
-                  String info = OutOfDhakaServiceModel.getDistrict() + OutOfDhakaServiceModel.getPhoneNumber() + OutOfDhakaServiceModel.getDistrict() + OutOfDhakaServiceModel.getDivision();
 
 
-                  Toast.makeText(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
+                 myApiService.sendOutOfdhakaRequest(outOfDhakaServiceModel, new ResponseCallback<String>() {
+                     @Override
+                     public void onSuccess(String data) {
+                         reqProgressBar.setVisibility(View.GONE);
+                       //  Toast.makeText(getBaseContext(),data,Toast.LENGTH_LONG).show();
+                         responseMessageTv.setText(data.toString());
+                         responseMessageTv.setVisibility(View.VISIBLE);
+                     }
+
+                     @Override
+                     public void onError(Throwable th) {
+                         reqProgressBar.setVisibility(View.GONE);
+                         Toast.makeText(getBaseContext(),th.getMessage(),Toast.LENGTH_LONG).show();
+                         responseMessageTv.setText(th.getMessage());
+                         responseMessageTv.setVisibility(View.VISIBLE);
+                     }
+                 });
+
+
+
+
+                 // String info = outOfDhakaServiceModel.getDistrict() + outOfDhakaServiceModel.getPhoneNumber() + outOfDhakaServiceModel.getDistrict() + outOfDhakaServiceModel.getDivision();
+
+
+                 // Toast.makeText(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
               }else {
                   Toast.makeText(getApplicationContext(),"Please enter correct info!!", Toast.LENGTH_SHORT).show();
               }
@@ -161,8 +198,45 @@ Button primioRequestButton,noahRequestButton,hiaceRequestButton;
           @Override
           public void onClick(View view) {
               lytContent.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-              Toast.makeText(getApplicationContext(),"Request For Noah",Toast.LENGTH_SHORT).show();
+              if (checkFields()) {
+                  responseMessageTv.setVisibility(View.GONE);
+                  reqProgressBar.setVisibility(View.VISIBLE);
+                  outOfDhakaServiceModel.setUserId("2");
+                  outOfDhakaServiceModel.setServiceType("9");
+                  outOfDhakaServiceModel.setPickupAddress(picuppAddress.getText().toString());
+                  outOfDhakaServiceModel.setDropOffAddress(dropOffAddress.getText().toString());
+                  outOfDhakaServiceModel.setDivision(divisionSpinner.getSelectedItem().toString());
+                  outOfDhakaServiceModel.setDistrict(districSpinner.getSelectedItem().toString());
+                  outOfDhakaServiceModel.setPhoneNumber(phoneNumberEditText.getText().toString());
+                  outOfDhakaServiceModel.setCarType("2");
+                  outOfDhakaServiceModel.setRent(noahRentTv.getText().toString().substring(1));
+                  outOfDhakaServiceModel.setDocument("Nothing");
+                  outOfDhakaServiceModel.setRequestTimeLocationAddres("Kollanpur");
 
+               myApiService.sendOutOfdhakaRequest(outOfDhakaServiceModel, new ResponseCallback<String>() {
+                   @Override
+                   public void onSuccess(String data) {
+                       reqProgressBar.setVisibility(View.GONE);
+                    //   Toast.makeText(getApplicationContext(),data,Toast.LENGTH_LONG).show();
+                       responseMessageTv.setText(data.toString());
+                       responseMessageTv.setVisibility(View.VISIBLE);
+                   }
+
+                   @Override
+                   public void onError(Throwable th) {
+                       reqProgressBar.setVisibility(View.GONE);
+                     Toast.makeText(getApplicationContext(),th.getMessage(),Toast.LENGTH_LONG).show();
+
+                   }
+               });
+
+
+
+                  // String info = outOfDhakaServiceModel.getDistrict() + outOfDhakaServiceModel.getPhoneNumber() + outOfDhakaServiceModel.getDistrict() + outOfDhakaServiceModel.getDivision();
+                  // Toast.makeText(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
+              }else {
+                  Toast.makeText(getApplicationContext(),"Please enter correct info!!", Toast.LENGTH_SHORT).show();
+              }
           }
       });
 
@@ -170,7 +244,47 @@ Button primioRequestButton,noahRequestButton,hiaceRequestButton;
           @Override
           public void onClick(View view) {
               lytContent.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-              Toast.makeText(getApplicationContext(),"Request For Hiace",Toast.LENGTH_SHORT).show();
+              if (checkFields()) {
+                  responseMessageTv.setVisibility(View.GONE);
+                  reqProgressBar.setVisibility(View.VISIBLE);
+                  outOfDhakaServiceModel.setUserId("3");
+                  outOfDhakaServiceModel.setServiceType("9");
+                  outOfDhakaServiceModel.setPickupAddress(picuppAddress.getText().toString());
+                  outOfDhakaServiceModel.setDropOffAddress(dropOffAddress.getText().toString());
+                  outOfDhakaServiceModel.setDivision(divisionSpinner.getSelectedItem().toString());
+                  outOfDhakaServiceModel.setDistrict(districSpinner.getSelectedItem().toString());
+                  outOfDhakaServiceModel.setPhoneNumber(phoneNumberEditText.getText().toString());
+                  outOfDhakaServiceModel.setCarType("3");
+                  outOfDhakaServiceModel.setRent(hiaceRentTv.getText().toString().substring(1));
+                  outOfDhakaServiceModel.setDocument("Nothing");
+                  outOfDhakaServiceModel.setRequestTimeLocationAddres("Kollanpur");
+
+                  myApiService.sendOutOfdhakaRequest(outOfDhakaServiceModel, new ResponseCallback<String>() {
+                      @Override
+                      public void onSuccess(String data) {
+                          reqProgressBar.setVisibility(View.GONE);
+
+                        //  Toast.makeText(getApplicationContext(),data,Toast.LENGTH_LONG).show();
+                          responseMessageTv.setText(data.toString());
+                          responseMessageTv.setVisibility(View.VISIBLE);
+
+                      }
+
+                      @Override
+                      public void onError(Throwable th) {
+                          reqProgressBar.setVisibility(View.GONE);
+                          Toast.makeText(getApplicationContext(),th.getMessage(),Toast.LENGTH_LONG).show();
+
+                      }
+                  });
+
+
+                  // String info = outOfDhakaServiceModel.getDistrict() + outOfDhakaServiceModel.getPhoneNumber() + outOfDhakaServiceModel.getDistrict() + outOfDhakaServiceModel.getDivision();
+                  // Toast.makeText(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
+              }else {
+                  Toast.makeText(getApplicationContext(),"Please enter correct info!!", Toast.LENGTH_SHORT).show();
+              }
+
 
           }
       });
@@ -201,7 +315,7 @@ Button primioRequestButton,noahRequestButton,hiaceRequestButton;
                 getApplicationContext(), R.layout.layout_text_view_for_drop_down, getResources().getStringArray(R.array.spinnerDivisionArray));
         division.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
         divisionSpinner.setAdapter(division);
-        divisionSpinner.setPopupBackgroundResource(R.drawable.bg_header);
+        divisionSpinner.setPopupBackgroundResource(R.color.green_1);
     }
     @Override
     public void onResume() {
@@ -593,6 +707,10 @@ Button primioRequestButton,noahRequestButton,hiaceRequestButton;
             Toast.makeText(this,"Please Select Division",Toast.LENGTH_SHORT).show();
             return false;
         }
+       if(districSpinner.getSelectedItem().toString()=="Select"){
+           Toast.makeText(this,"Please Select District",Toast.LENGTH_SHORT).show();
+           return false;
+       }
 
        if(picuppAddress.getText().toString()==""){
            Toast.makeText(this,"Enter Pick Up address",Toast.LENGTH_SHORT).show();
@@ -605,7 +723,7 @@ Button primioRequestButton,noahRequestButton,hiaceRequestButton;
        return true;
    }
 
-    OutOfDhakaServiceModel OutOfDhakaServiceModel = new OutOfDhakaServiceModel();
+  //  OutOfDhakaServiceModel OutOfDhakaServiceModel = new OutOfDhakaServiceModel();
     /*
     String userId   ="";
     String serviceType   ="";
@@ -629,7 +747,7 @@ Button primioRequestButton,noahRequestButton,hiaceRequestButton;
                     getApplicationContext(), R.layout.layout_text_view_for_drop_down, getResources().getStringArray(R.array.spinnerDhakaDistrictArray));
             district.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
             districSpinner.setAdapter(district);
-            districSpinner.setPopupBackgroundResource(R.drawable.bg_header);
+            districSpinner.setPopupBackgroundResource(R.color.green_1);
            // textView.setVisibility(View.VISIBLE);
             districSpinner.setVisibility(View.VISIBLE);
           //  pickUpOrDroff.setVisibility(View.VISIBLE);
@@ -640,7 +758,7 @@ Button primioRequestButton,noahRequestButton,hiaceRequestButton;
                     getApplicationContext(), R.layout.layout_text_view_for_drop_down, getResources().getStringArray(R.array.spinnerChittagongDistrictArray));
             district.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
             districSpinner.setAdapter(district);
-            districSpinner.setPopupBackgroundResource(R.drawable.bg_header);
+            districSpinner.setPopupBackgroundResource(R.color.green_1);
          //   textView.setVisibility(View.VISIBLE);
             districSpinner.setVisibility(View.VISIBLE);
          //   pickUpOrDroff.setVisibility(View.VISIBLE);
@@ -651,7 +769,7 @@ Button primioRequestButton,noahRequestButton,hiaceRequestButton;
                     getApplicationContext(), R.layout.layout_text_view_for_drop_down, getResources().getStringArray(R.array.spinnerBarisalDistrictArray));
             district.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
             districSpinner.setAdapter(district);
-            districSpinner.setPopupBackgroundResource(R.drawable.bg_header);
+            districSpinner.setPopupBackgroundResource(R.color.green_1);
          //   textView.setVisibility(View.VISIBLE);
             districSpinner.setVisibility(View.VISIBLE);
          //   pickUpOrDroff.setVisibility(View.VISIBLE);
@@ -662,7 +780,7 @@ Button primioRequestButton,noahRequestButton,hiaceRequestButton;
                     getApplicationContext(), R.layout.layout_text_view_for_drop_down, getResources().getStringArray(R.array.spinnerSylhetDistrictArray));
             district.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
             districSpinner.setAdapter(district);
-            districSpinner.setPopupBackgroundResource(R.drawable.bg_header);
+            districSpinner.setPopupBackgroundResource(R.color.green_1);
           //  textView.setVisibility(View.VISIBLE);
             districSpinner.setVisibility(View.VISIBLE);
           //  pickUpOrDroff.setVisibility(View.VISIBLE);
@@ -673,7 +791,7 @@ Button primioRequestButton,noahRequestButton,hiaceRequestButton;
                     getApplicationContext(), R.layout.layout_text_view_for_drop_down, getResources().getStringArray(R.array.spinnerkhulanDistrictArray));
             district.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
             districSpinner.setAdapter(district);
-            districSpinner.setPopupBackgroundResource(R.drawable.bg_header);
+            districSpinner.setPopupBackgroundResource(R.color.green_1);
            // textView.setVisibility(View.VISIBLE);
             districSpinner.setVisibility(View.VISIBLE);
           //  pickUpOrDroff.setVisibility(View.VISIBLE);
@@ -686,7 +804,7 @@ Button primioRequestButton,noahRequestButton,hiaceRequestButton;
             districSpinner.setAdapter(district);
         //    textView.setVisibility(View.VISIBLE);
             districSpinner.setVisibility(View.VISIBLE);
-            districSpinner.setPopupBackgroundResource(R.drawable.bg_header);
+            districSpinner.setPopupBackgroundResource(R.color.green_1);
         //    pickUpOrDroff.setVisibility(View.VISIBLE);
          //   price.setVisibility(View.VISIBLE);
 
@@ -695,7 +813,7 @@ Button primioRequestButton,noahRequestButton,hiaceRequestButton;
                     getApplicationContext(), R.layout.layout_text_view_for_drop_down, getResources().getStringArray(R.array.spinnerRangpurDistrictArray));
             district.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
             districSpinner.setAdapter(district);
-            districSpinner.setPopupBackgroundResource(R.drawable.bg_header);
+            districSpinner.setPopupBackgroundResource(R.color.green_1);
          //   textView.setVisibility(View.VISIBLE);
 
             districSpinner.setVisibility(View.VISIBLE);
@@ -707,7 +825,7 @@ Button primioRequestButton,noahRequestButton,hiaceRequestButton;
                     getApplicationContext(), R.layout.layout_text_view_for_drop_down, getResources().getStringArray(R.array.spinnerMymensingDistrictArray));
             district.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
             districSpinner.setAdapter(district);
-            districSpinner.setPopupBackgroundResource(R.drawable.bg_header);
+            districSpinner.setPopupBackgroundResource(R.color.green_1);
         //    textView.setVisibility(View.VISIBLE);
             districSpinner.setVisibility(View.VISIBLE);
         //    pickUpOrDroff.setVisibility(View.VISIBLE);
