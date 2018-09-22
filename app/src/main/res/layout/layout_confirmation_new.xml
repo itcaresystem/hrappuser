@@ -105,6 +105,7 @@
                         </LinearLayout>
                     </android.support.v7.widget.CardView>
                     <ride.happyy.user.widgets.CustomTextView
+                        android:visibility="gone"
                         android:layout_width="@dimen/infologo_width_h"
                         android:layout_height="@dimen/infologo_width_h"
                         android:layout_gravity="right|center"
@@ -114,14 +115,11 @@
 
 
                     <ImageButton
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:id="@+id/confirm_request_bike_info_imbtn"
-                        android:background="@drawable/bg_round_edges_gray"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
                         android:layout_gravity="right|center"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="0dp"
                         android:src="@drawable/ic_info_outline_red_24dp"
                         />
 

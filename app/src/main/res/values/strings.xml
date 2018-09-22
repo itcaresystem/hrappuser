@@ -251,6 +251,14 @@
     <string name="about">About</string>
     <string name="english">English</string>
 
+    <string name="pp_title">Pricing Policy</string>
+    <string name="pp_shortdescriptipn">Fare for your trip will be based on our pricing policy and other necessary adjustments.</string>
+    <string name="pp_basefare">Base Fare.........৳25.0</string>
+       <string name="pp_perkm">Per Kilometer.....৳12.0</string>
+    <string name="pp_perminute">Per Minute.......৳0.5</string>
+    <string name="pp_minimumfare">Minimum Fare...৳30</string>
+    <string name="pp_note">*Prices may vary</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="notifications">Notification</string>

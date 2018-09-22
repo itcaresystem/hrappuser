@@ -92,6 +92,7 @@ import ride.happyy.user.adapter.CarTypeRecyclerAdapter;
 import ride.happyy.user.app.App;
 import ride.happyy.user.config.Config;
 import ride.happyy.user.dialogs.PopupMessage;
+import ride.happyy.user.dialogs.PricePolicyDialog;
 import ride.happyy.user.listeners.BasicListener;
 import ride.happyy.user.listeners.CarInfoListener;
 import ride.happyy.user.listeners.LandingPageListener;
@@ -239,6 +240,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
     private ImageButton bikeInfoImageButton, cngInfoImageButton,carInfoImageButton, oneHourInfoImageButton, twoHourInfoImageButton,fourHourInfoImageButton, dayInfoImageButton;
     private Button bikeRequestBtn,cngRequestBtn, carRequestBtn,ambulanceRequestBtn, carOneHourRequestBtn, carTwoHoursRequestBtn, carFourHoursRequestBtn, carDayPrimioRequestBtn, carDayNoahRequestBtn, carDayHiceRequestBtn;
     private Button outOfDhakaService, packageService,distinationConfirmButton;
+    PricePolicyDialog pricePolicyDialog;
 
     private ImageButton notificatinImageButton, menubarHome,outOfdhakaPage;
     private NotificationBadge mNotificationBadge;
@@ -1066,6 +1068,16 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
             }
         });
 
+        //start info button click event
+
+        bikeInfoImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               pricePolicyDialog = new PricePolicyDialog(LandingPageActivity.this);
+               pricePolicyDialog.showBikePricePolicy();
+            }
+        });
+
 
 
         snackBarRefreshOnClickListener = new View.OnClickListener() {
@@ -1406,7 +1418,7 @@ LatLng newLatLng=null;
                         sourceBean.setLongitude(Config.getInstance().getCurrentLongitude());
                         newLatLng = new LatLng(sourceBean.getDLatitude(),sourceBean.getDLongitude());
                         mMap.clear();
-                       MarkerOptions marker = new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.pickup_png));
+                       MarkerOptions marker = new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.pickup_png_black));
 
 
                       mMap.addMarker(marker);
@@ -2589,6 +2601,8 @@ LatLng newLatLng=null;
         fetchCarDetails();
     }
 
+
+
     public void onPlotLocation(boolean isMarkerNeeded, int type, double latitude, double longitude) {
 
         LatLng newLatLng = null;
@@ -2597,17 +2611,17 @@ LatLng newLatLng=null;
             if (isMarkerNeeded) {
                 switch (type) {
                     case LOCATION_SOURCE:
-                        mMap.addMarker(new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.pickup_png)));
+                        mMap.addMarker(new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.pickup_png_black)));
                         break;
                     case LOCATION_DESTINATION:
-                        mMap.addMarker(new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.desroutpng)));
+                        mMap.addMarker(new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_destination_marker)));
                         break;
                     default:
                         mMap.addMarker(new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.defaultMarker()));
                         break;
                 }
             }
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(newLatLng, 17));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(newLatLng, 18));
             Log.i(TAG, "onPlotLocation: Position" + newLatLng);
 
         } catch (NumberFormatException e) {

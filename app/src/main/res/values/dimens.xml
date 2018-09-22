@@ -22,5 +22,6 @@
     <dimen name="custom_tab_layout_height">72dp</dimen>
 
     <dimen name="infologo_width_h">15sp</dimen>
+    <dimen name="map_marker_diameter">100</dimen>
 
 </resources>
