@@ -26,7 +26,7 @@ import ride.happyy.user.util.AppConstants;
 
 public class LoginActivity extends BaseAppCompatNoDrawerActivity {
 
-    private EditText etxtUserName;
+    private EditText etxtUserName,etxPhone;
     private EditText etxtPassword;
     private View.OnClickListener snackBarRefreshOnClickListener;
     private String TAG = " ";
@@ -52,10 +52,12 @@ public class LoginActivity extends BaseAppCompatNoDrawerActivity {
     public void initViews() {
 
         etxtUserName = (EditText) findViewById(R.id.etxt_login_email);
+        etxPhone = (EditText) findViewById(R.id.etxt_login_phone);
         etxtPassword = (EditText) findViewById(R.id.etxt_login_password);
 
         etxtPassword.setTypeface(typeface);
         etxtUserName.setTypeface(typeface);
+        etxPhone.setTypeface(typeface);
     }
 
     @Override
@@ -88,12 +90,8 @@ public class LoginActivity extends BaseAppCompatNoDrawerActivity {
 
     private boolean collectLoginData() {
 
-        if (etxtUserName.getText().toString().equals("")) {
-            Snackbar.make(coordinatorLayout, R.string.message_email_is_required, Snackbar.LENGTH_LONG)
-                    .setAction(R.string.btn_dismiss, snackBarDismissOnClickListener).show();
-            return false;
-        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(etxtUserName.getText().toString()).matches()) {
-            Snackbar.make(coordinatorLayout, R.string.message_enter_a_valid_email_address, Snackbar.LENGTH_LONG)
+        if (etxPhone.getText().toString().equals("") | etxPhone.getText().length()!=11) {
+            Snackbar.make(coordinatorLayout, "Phone is requered and valid!", Snackbar.LENGTH_LONG)
                     .setAction(R.string.btn_dismiss, snackBarDismissOnClickListener).show();
             return false;
         }
@@ -143,7 +141,7 @@ public class LoginActivity extends BaseAppCompatNoDrawerActivity {
         JSONObject postData = new JSONObject();
 
         try {
-            postData.put("username", etxtUserName.getText().toString());
+            postData.put("phone", "+88"+etxPhone.getText().toString());
             postData.put("password", etxtPassword.getText().toString());
 
         } catch (JSONException e) {
@@ -155,9 +153,11 @@ public class LoginActivity extends BaseAppCompatNoDrawerActivity {
 
     public void onForgotPasswordClick(View view) {
         view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+        //mVibrator.vibrate(25);
+        Intent intentForgetPassword =new Intent(this,RegistrationActivity.class);
+        intentForgetPassword.putExtra("forgetpass", "forgetpass");
 
-        Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(intentForgetPassword));
     }
 }
 

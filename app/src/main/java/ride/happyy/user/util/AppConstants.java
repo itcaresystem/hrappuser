@@ -52,6 +52,23 @@ public class AppConstants {
     public static final float CAR_TEN_HOURS_PACKAGE_BASE_FARE_NOAH   =4000;
     public static final float CAR_TEN_HOURS_PACKAGE_BASE_FARE_HIACE    =4500;
 
+    public static  final int BIKE_REQUEST_CODE =1;
+    public static  final int CNG_EQUEST_CODE =2;
+    public static  final int CAR_NORMAL_REQUEST_CODE =3;
+    public static  final int AMBULANCE_REQUEST_CODE =4;
+    public static  final int CAR_PREMIO_REQUEST_CODE =5;
+    public static  final int CAR_NOAH_REQUEST_CODE =6;
+    public static  final int CAR_HIACE_REQUEST_CODE =7;
+
+    public static  final int BIKE_REQUEST_CODE_TYPE =1;
+    public static  final int CNG_EQUEST_CODE_TYPE =2;
+    public static  final int CAR_NORMAL_REQUEST_CODE_TYPE =3;
+    public static  final int CAR_PREMIO_REQUEST_CODE_TYPE =3;
+    public static  final int CAR_NOAH_REQUEST_CODE_TYPE =3;
+    public static  final int CAR_HIACE_REQUEST_CODE_TYPE =3;
+    public static  final int AMBULANCE_REQUEST_CODE_TYPE =4;
+
+
 
 
 

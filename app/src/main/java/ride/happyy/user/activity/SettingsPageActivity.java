@@ -166,9 +166,10 @@ public class SettingsPageActivity extends BaseAppCompatNoDrawerActivity {
 
         HashMap<String, String> urlParams = new HashMap<>();
 
-        urlParams.put("auth_token", Config.getInstance().getAuthToken());
+       // urlParams.put("auth_token", Config.getInstance().getAuthToken());
+        JSONObject postData = getPostData();
 
-        DataManager.fetchUserInfo(urlParams, Config.getInstance().getUserID(), new UserInfoListener() {
+        DataManager.fetchUserInfo(postData, Config.getInstance().getPhone(), new UserInfoListener() {
             @Override
             public void onLoadCompleted(UserBean userBean) {
 
@@ -191,6 +192,17 @@ public class SettingsPageActivity extends BaseAppCompatNoDrawerActivity {
 
             }
         });
+    }
+
+    public JSONObject getPostData() {
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("phone",Config.getInstance().getPhone());
+            postData.put("passenger_id",Config.getInstance().getPhone());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return postData;
     }
 
     private void populateUserInfo(UserBean userBean) {
@@ -283,11 +295,13 @@ public class SettingsPageActivity extends BaseAppCompatNoDrawerActivity {
                 postData.put("home", homeLocationBean.getName());
                 postData.put("home_latitude", homeLocationBean.getLatitude());
                 postData.put("home_longitude", homeLocationBean.getLongitude());
+                postData.put("phone",Config.getInstance().getPhone());
             } else {
                 postData.put("type", WORK_LOCATION);
                 postData.put("work", workLocationBean.getName());
                 postData.put("work_latitude", workLocationBean.getLatitude());
                 postData.put("work_longitude", workLocationBean.getLongitude());
+                postData.put("phone",Config.getInstance().getPhone());
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -303,5 +317,7 @@ public class SettingsPageActivity extends BaseAppCompatNoDrawerActivity {
                 .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
         finish();
     }
+
+
 }
 

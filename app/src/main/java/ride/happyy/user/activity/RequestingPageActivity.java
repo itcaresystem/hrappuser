@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
@@ -22,6 +23,7 @@ import ride.happyy.user.R;
 import ride.happyy.user.app.App;
 import ride.happyy.user.config.Config;
 import ride.happyy.user.dialogs.PopupMessage;
+import ride.happyy.user.listeners.AppStatusListener;
 import ride.happyy.user.listeners.BasicListener;
 import ride.happyy.user.listeners.DriverDetailsListener;
 import ride.happyy.user.listeners.RequestRideListener;
@@ -40,7 +42,7 @@ public class RequestingPageActivity extends BaseAppCompatNoDrawerActivity {
     //    private String source;
 //    private String destination;
     private TextView txtDummy;
-    private String carType;
+    private String carType,car_type_id,fare,distance,time;
     //    private double sourceLatitude;
 //    private double sourceLongitude;
     private Handler mHandler = new Handler();
@@ -56,6 +58,8 @@ public class RequestingPageActivity extends BaseAppCompatNoDrawerActivity {
     private boolean isRequestHandled = false;
     private PlaceBean sourceBean;
     private PlaceBean destinationBean;
+    private String request_id;
+    private View.OnClickListener snackBarRefreshOnClickListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +71,12 @@ public class RequestingPageActivity extends BaseAppCompatNoDrawerActivity {
         sourceBean = (PlaceBean) getIntent().getSerializableExtra("source_bean");
         destinationBean = (PlaceBean) getIntent().getSerializableExtra("destination_bean");
         carType = getIntent().getStringExtra("car_type");
+        car_type_id = getIntent().getStringExtra("car_type_id");
+        fare =getIntent().getStringExtra("fare");
+        distance=getIntent().getStringExtra("distance");
+        time=getIntent().getStringExtra("time");
+
+
 
 /*        sourceLatitude = Double.parseDouble(getIntent().getStringExtra("source_latitude"));
         sourceLongitude = Double.parseDouble(getIntent().getStringExtra("source_longitude"));
@@ -156,7 +166,7 @@ public class RequestingPageActivity extends BaseAppCompatNoDrawerActivity {
 
     public void performRequestRide() {
 
-        Log.i(TAG, "performRequestRide: AuthToken" + Config.getInstance().getAuthToken());
+        Log.i(TAG, "performRequestRide: AuthToken" + Config.getInstance().getPhone());
 
         swipeView.setRefreshing(true);
         JSONObject postData = getRequestRideJSObj();
@@ -168,18 +178,25 @@ public class RequestingPageActivity extends BaseAppCompatNoDrawerActivity {
 
                 requestBean = requestBeanWS;
                 swipeView.setRefreshing(false);
-                mHandler.post(triggerTask);
-                mHandler.post(requestTask);
-                fetchRequestStatus();
+                request_id =requestBeanWS.getRequest_id();
+              //  mHandler.post(triggerTask); //12-10-2018
+                mHandler.post(requestTask); //12-10-2018
+                //fetchRequestStatus();
+                Toast.makeText(getBaseContext(),"Request Sent!!!",Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onLoadFailed(String error) {
                 swipeView.setRefreshing(false);
-                finish();
+                Toast.makeText(getBaseContext(),"No Car is found!!",Toast.LENGTH_LONG).show();
+              //  finish();
 
             }
         });
+
+
+
+
     }
 
     private JSONObject getRequestRideJSObj() {
@@ -187,6 +204,7 @@ public class RequestingPageActivity extends BaseAppCompatNoDrawerActivity {
         JSONObject postData = new JSONObject();
 
         try {
+            /*
             postData.put("source", sourceBean.getName());
             postData.put("destination", destinationBean.getName());
             postData.put("car_type", carType);
@@ -194,6 +212,24 @@ public class RequestingPageActivity extends BaseAppCompatNoDrawerActivity {
             postData.put("source_longitude", sourceBean.getLongitude());
             postData.put("destination_latitude", destinationBean.getLatitude());
             postData.put("destination_longitude", destinationBean.getLongitude());
+            */
+
+            //
+
+            postData.put("distance", distance);
+            postData.put("time", time);
+            postData.put("fare", fare);
+            postData.put("car_type",carType);
+            postData.put("car_type_id",car_type_id);
+            postData.put("customer_phone",Config.getInstance().getPhone());
+            postData.put("customer_name",Config.getInstance().getName());
+            postData.put("customer_photo",Config.getInstance().getProfilePhoto());
+            postData.put("customer_location",sourceBean.getAddress());
+            postData.put("customer_latitude",sourceBean.getDLatitude());
+            postData.put("customer_longitude",sourceBean.getDLongitude());
+            postData.put("destination_location",destinationBean.getAddress());
+            postData.put("destination_latitude",destinationBean.getDLatitude());
+            postData.put("destination_longitude",destinationBean.getDLongitude());
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -244,14 +280,19 @@ public class RequestingPageActivity extends BaseAppCompatNoDrawerActivity {
         return postData;
     }
 
+
+
     public void fetchRequestStatus() {
 
         swipeView.setRefreshing(true);
 
         id = requestBean.getId();
+        request_id =requestBean.getRequest_id();
 
         HashMap<String, String> urlParams = new HashMap<>();
         urlParams.put("id", id);
+        urlParams.put("request_id", id);
+        urlParams.put("phone", Config.getInstance().getPhone());
 
         DataManager.fetchRequestStatus(urlParams, new DriverDetailsListener() {
 
@@ -263,7 +304,69 @@ public class RequestingPageActivity extends BaseAppCompatNoDrawerActivity {
 
                 driverBean = driverBeanWS;
 
-                if (driverBean.getRequestStatus().equalsIgnoreCase("1")) {
+                if (driverBean.getRequest_id().equalsIgnoreCase(id) && driverBean!=null) {
+                    isRequestHandled = true;
+                    mHandler.removeCallbacks(requestTask);
+                    if (driverBean != null && driverBean.getAppStatus() == 0) {
+                        startActivity(new Intent(RequestingPageActivity.this, LandingPageActivity.class));
+                    } else {
+                        Log.i(TAG, "navigate: TripBean : " + new Gson().toJson(driverBean));
+                        startActivity(new Intent(RequestingPageActivity.this, OnTripActivity.class)
+                                .putExtra("bean", driverBean));
+                    }
+                    finish();
+
+                }
+                /*
+                else if (driverBean.getRequestStatus().equalsIgnoreCase("2")) {
+                    isRequestHandled = true;
+                    mHandler.removeCallbacks(requestTask);
+                    Intent intent = new Intent();
+//                    intent.putExtra("fareBean", driverBeanWS);
+                    setResult(RESULT_CANCELED, intent);
+                    finish();
+
+                }
+                */
+            }
+
+            @Override
+            public void onLoadFailed(String error) {
+//                swipeView.setRefreshing(false);
+
+                if (App.isNetworkAvailable()) {
+                    performRequestCancel();
+                }
+                isRequestHandled = true;
+                mHandler.removeCallbacks(requestTask);
+                finish();
+            }
+        });
+    }
+
+/*
+    public void fetchRequestStatus() {
+
+        swipeView.setRefreshing(true);
+
+        id = requestBean.getId();
+        request_id =requestBean.getRequest_id();
+
+        HashMap<String, String> urlParams = new HashMap<>();
+        urlParams.put("id", id);
+        urlParams.put("request_id", request_id);
+
+        DataManager.fetchRequestStatus(urlParams, new DriverDetailsListener() {
+
+            @Override
+            public void onLoadCompleted(DriverBean driverBeanWS) {
+
+//                swipeView.setRefreshing(false);
+                Log.i(TAG, "onLoadCompleted: DriverBean : " + driverBeanWS);
+
+                driverBean = driverBeanWS;
+
+                if (driverBean.getRequest_id().equalsIgnoreCase(request_id)) {
                     isRequestHandled = true;
                     mHandler.removeCallbacks(requestTask);
                     Intent intent = new Intent();
@@ -295,6 +398,8 @@ public class RequestingPageActivity extends BaseAppCompatNoDrawerActivity {
             }
         });
     }
+
+    */
 
     public void performRequestCancel() {
 

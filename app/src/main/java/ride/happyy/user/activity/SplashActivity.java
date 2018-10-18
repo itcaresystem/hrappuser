@@ -12,10 +12,14 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 
 import ride.happyy.user.R;
 import ride.happyy.user.app.App;
+import ride.happyy.user.config.Config;
 import ride.happyy.user.dialogs.PopupMessage;
 import ride.happyy.user.listeners.AppStatusListener;
 import ride.happyy.user.model.BasicBean;
@@ -148,8 +152,9 @@ public class SplashActivity extends BaseAppCompatNoDrawerActivity {
     private void fetchAppStatus() {
 
         HashMap<String, String> urlParams = new HashMap<>();
+        JSONObject postData = getJsonData();
 
-        DataManager.fetchAppStatus(urlParams, new AppStatusListener() {
+        DataManager.fetchAppStatus(postData, new AppStatusListener() {
             @Override
             public void onLoadCompleted(DriverBean driverBeanWS) {
                 Log.i(TAG, "onLoadCompleted: APP STATUS DRIVER BEAN : " + new Gson().toJson(driverBeanWS));
@@ -177,6 +182,17 @@ public class SplashActivity extends BaseAppCompatNoDrawerActivity {
 
     }
 
+    public JSONObject getJsonData() {
+        JSONObject jsonData = new JSONObject();
+        try {
+            jsonData.put("phone", Config.getInstance().getPhone());
+            jsonData.put("customer_id", Config.getInstance().getUserID());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonData;
+    }
+
     private void showErrorPopup(String error) {
         if (popupMessage == null)
             popupMessage = new PopupMessage(SplashActivity.this);
@@ -195,6 +211,7 @@ public class SplashActivity extends BaseAppCompatNoDrawerActivity {
         });
         popupMessage.show(error, 0, getString(R.string.btn_retry), getString(R.string.btn_cancel));
     }
+
 
 }
 

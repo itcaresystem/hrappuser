@@ -385,7 +385,7 @@ public class App extends MultiDexApplication {
       /*  boolean isEmailVerified = prfs.getBoolean(AppConstants.PREFERENCE_IS_EMAIL_VERIFIED, false);
         boolean isRegistrationCompleted = prfs.getBoolean(AppConstants.PREFERENCE_IS_REGISTRATION_COMPLETED, false);
 */
-        if (!"".equals(token)) {
+        if (!"".equals(phone)) {
             Config.getInstance().setAuthToken(token);
             Config.getInstance().setUserID(userID);
             Config.getInstance().setEmail(email);

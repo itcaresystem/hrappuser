@@ -27,7 +27,7 @@ public class EditProfileTask extends AsyncTask<String, Integer, UserBean> {
     protected UserBean doInBackground(String... params) {
         System.out.println(">>>>>>>>>doInBackground");
         EditProfileInvoker editProfileInvoker = new EditProfileInvoker(null, postData);
-        return editProfileInvoker.invokeEditProfileWS(fileList);
+        return editProfileInvoker.invokeEditProfileWS();
     }
 
     @Override

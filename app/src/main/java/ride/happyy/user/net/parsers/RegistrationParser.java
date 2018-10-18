@@ -101,8 +101,8 @@ public class RegistrationParser {
                                 if (userObj.has("name")) {
                                     authBean.setName(userObj.optString("name"));
                                 }
-                                if (userObj.has("phone")) {
-                                    authBean.setPhone(userObj.optString("phone"));
+                                if (userObj.has("mobile_number")) {
+                                    authBean.setPhone(userObj.optString("mobile_number"));
                                 }
                                 if (userObj.has("email")) {
                                     authBean.setEmail(userObj.optString("email"));

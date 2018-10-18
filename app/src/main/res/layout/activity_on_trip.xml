@@ -16,7 +16,9 @@
         android:id="@+id/ll_on_trip_details"
         layout="@layout/layout_driver_details"/>
 
+
     <ImageView
+        android:visibility="gone"
         android:id="@+id/iv_on_trip_marker"
         android:layout_width="16dp"
         android:layout_height="17dp"
@@ -26,6 +28,7 @@
         app:layout_anchorGravity="top|center_horizontal"/>
 
     <ride.happyy.user.widgets.CustomTextView
+        android:visibility="gone"
         android:id="@+id/txt_on_trip_estimated_time_of_arrival"
         android:layout_width="35dp"
         android:layout_height="35dp"
@@ -37,6 +40,7 @@
         android:textSize="10sp"
         app:layout_anchor="@+id/iv_on_trip_marker"
         app:layout_anchorGravity="top|center_horizontal"/>
+
 
 
 </android.support.design.widget.CoordinatorLayout>

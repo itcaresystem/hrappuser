@@ -3,6 +3,8 @@ package ride.happyy.user.net.WSAsyncTasks;
 
 import android.os.AsyncTask;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 
 import ride.happyy.user.model.LocationBean;
@@ -13,16 +15,17 @@ public class SavedLocationTask extends AsyncTask<String, Integer, LocationBean> 
     private SavedLocationTaskListener savedLocationTaskListener;
 
     private HashMap<String, String> urlParams;
+    private JSONObject posData;
 
-    public SavedLocationTask(HashMap<String, String> urlParams) {
+    public SavedLocationTask(JSONObject posData) {
         super();
-        this.urlParams = urlParams;
+        this.posData = posData;
     }
 
     @Override
     protected LocationBean doInBackground(String... params) {
         System.out.println(">>>>>>>>>doInBackground");
-        SavedLocationInvoker savedLocationInvoker = new SavedLocationInvoker(urlParams, null);
+        SavedLocationInvoker savedLocationInvoker = new SavedLocationInvoker(null,posData);
         return savedLocationInvoker.invokeDummyWS();
     }
 

@@ -26,11 +26,11 @@ public class SavedLocationInvoker extends BaseInvoker {
 
         WebConnector webConnector;
 
-        webConnector = new WebConnector(new StringBuilder(ServiceNames.SAVED_LOCATION), WSConstants.PROTOCOL_HTTP, urlParams, null);
+        webConnector = new WebConnector(new StringBuilder(ServiceNames.SAVED_LOCATION), WSConstants.PROTOCOL_HTTP, null, postData);
 
         //webConnector= new WebConnector(new StringBuilder(ServiceNames.MODELS), WSConstants.PROTOCOL_HTTP, null);
 //    String wsResponseString=webConnector.connectToPOST_service();
-        String wsResponseString = webConnector.connectToGET_service(true);
+        String wsResponseString = webConnector.connectToPOST_service();
         System.out.println(">>>>>>>>>>> response: " + wsResponseString);
         LocationBean locationBean = null;
         if (wsResponseString.equals("")) {

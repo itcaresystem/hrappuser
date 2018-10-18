@@ -88,24 +88,37 @@ public class TripListParser {
 
                             TripBean tripBean = new TripBean();
 
-                            if (tripObj.has("id")) {
-                                tripBean.setId(tripObj.optString("id"));
+                            if (tripObj.has("trip_id")) {
+                                tripBean.setId(tripObj.optString("trip_id"));
+                            }
+                            if (tripObj.has("trip_id")) {
+                                tripBean.setTrip_id(tripObj.optString("trip_id"));
                             }
                             if (tripObj.has("trip_status")) {
                                 tripBean.setTripStatus(tripObj.optString("trip_status"));
                             }
-                            if (tripObj.has("trip_id")) {
-                                tripBean.setId(tripObj.optString("trip_id"));
-                            }
+
                             if (tripObj.has("car_name")) {
                                 tripBean.setCarName(tripObj.optString("car_name"));
+                            }
+
+                            if (tripObj.has("car_type")) {
+                                tripBean.setCar_type(tripObj.optString("car_type"));
+                            }
+                            if (tripObj.has("car_type_id")) {
+                                tripBean.setCar_type_id(tripObj.optString("car_type_id"));
                             }
                             if (tripObj.has("time")) {
                                 tripBean.setTime(tripObj.optLong("time"));
                             }
-                            if (tripObj.has("rate")) {
-                                tripBean.setRate(tripObj.optString("rate"));
+                            if (tripObj.has("fare")) {
+                                tripBean.setRate(tripObj.optString("fare"));
                             }
+
+                            if (tripObj.has("fare")) {
+                                tripBean.setFare(tripObj.optString("fare"));
+                            }
+
                             if (tripObj.has("source_latitude")) {
                                 tripBean.setSourceLatitude(tripObj.optString("source_latitude"));
                             }

@@ -260,11 +260,13 @@ public class SearchPageActivity extends BaseAppCompatNoDrawerActivity
                 postData.put("home", homeLocationBean.getName());
                 postData.put("home_latitude", homeLocationBean.getLatitude());
                 postData.put("home_longitude", homeLocationBean.getLongitude());
+                postData.put("phone",Config.getInstance().getPhone());
             } else {
                 postData.put("type", WORK_LOCATION);
                 postData.put("work", workLocationBean.getName());
                 postData.put("work_latitude", workLocationBean.getLatitude());
                 postData.put("work_longitude", workLocationBean.getLongitude());
+                postData.put("phone",Config.getInstance().getPhone());
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -289,6 +291,8 @@ public class SearchPageActivity extends BaseAppCompatNoDrawerActivity
             }
         });
     }
+
+
 
 
     private class PlaceListTask extends AsyncTask<String, Integer, ArrayList<AutocompletePrediction>> {
@@ -504,8 +508,9 @@ public class SearchPageActivity extends BaseAppCompatNoDrawerActivity
     public void fetchSavedLocation() {
 
         HashMap<String, String> urlParams = new HashMap<>();
+        JSONObject postData = getJsonData();
 
-        DataManager.fetchSavedLocation(urlParams, new SavedLocationListener() {
+        DataManager.fetchSavedLocation(postData, new SavedLocationListener() {
 
             @Override
             public void onLoadCompleted(LocationBean locationBean) {
@@ -522,6 +527,17 @@ public class SearchPageActivity extends BaseAppCompatNoDrawerActivity
 
             }
         });
+    }
+
+    public JSONObject getJsonData() {
+        JSONObject jsonData = new JSONObject();
+        try {
+            jsonData.put("phone",Config.getInstance().getPhone());
+            jsonData.put("passenger_id",Config.getInstance().getUserID());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonData;
     }
 
     private void setLocationBean(LocationBean locationBean) {

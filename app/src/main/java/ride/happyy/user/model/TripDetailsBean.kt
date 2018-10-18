@@ -5,6 +5,7 @@ import com.google.android.gms.maps.model.LatLng
 class TripDetailsBean : BaseBean() {
 
     var id: String = ""
+    var trip_id:String = ""
     var tripStatus: String = ""
     var time: String = ""
     var rating: Float = 0.toFloat()
@@ -18,6 +19,7 @@ class TripDetailsBean : BaseBean() {
     var subTotalFare: String = ""
     var promotionFare: String = ""
     var totalFare: String = ""
+    var fare: String = ""
 
     var sourceLatitude: String = ""
     var sourceLongitude: String = ""

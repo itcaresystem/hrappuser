@@ -73,7 +73,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:text="@string/sample_amount"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/black"
             android:textSize="18sp"
             android:visibility="visible"/>
 
@@ -84,7 +84,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:text="@string/label_cancelled"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/red"
             android:textSize="18sp"
             android:visibility="gone"/>
 

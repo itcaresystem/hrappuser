@@ -327,9 +327,9 @@ public class DataManager {
         otpResendCodeTask.execute();
     }
 
-    public static void fetchUserInfo(HashMap<String, String> urlParams, String userID, final UserInfoListener listener) {
+    public static void fetchUserInfo(JSONObject postData, String userID, final UserInfoListener listener) {
 
-        UserInfoTask userInfoTask = new UserInfoTask(urlParams);
+        UserInfoTask userInfoTask = new UserInfoTask(postData);
         userInfoTask.setUserInfoTaskListener(new UserInfoTask.UserInfoTaskListener() {
             @Override
             public void dataDownloadedSuccessfully(UserBean userBean) {
@@ -382,9 +382,9 @@ public class DataManager {
         promoCodeTask.execute();
     }
 
-    public static void fetchCarAvailability(HashMap<String, String> urlParams, final CarInfoListener listener) {
+    public static void fetchCarAvailability(JSONObject postData, final CarInfoListener listener) {
 
-        CarInfoTask carInfoTask = new CarInfoTask(urlParams);
+        CarInfoTask carInfoTask = new CarInfoTask(postData);
         carInfoTask.setCarInfoTaskListener(new CarInfoTask.CarInfoTaskListener() {
             @Override
             public void dataDownloadedSuccessfully(CarBean carBean) {
@@ -409,9 +409,9 @@ public class DataManager {
         carInfoTask.execute();
     }
 
-    public static void fetchLandingPageDetails(HashMap<String, String> urlParams, final LandingPageListener landingPageListener) {
+    public static void fetchLandingPageDetails(JSONObject postData, final LandingPageListener landingPageListener) {
 
-        LandingPageDetailsTask landingPageDetailsTask = new LandingPageDetailsTask(urlParams);
+        LandingPageDetailsTask landingPageDetailsTask = new LandingPageDetailsTask(postData);
         landingPageDetailsTask.setLandingPageDetailsTaskListener(new LandingPageDetailsTask.LandingPageDetailsTaskListener() {
 
             @Override
@@ -464,9 +464,9 @@ public class DataManager {
         tripDetailsTask.execute();
     }
 
-    public static void fetchTotalFare(HashMap<String, String> urlParams, final TotalFareListener listener) {
+    public static void fetchTotalFare(JSONObject postData, final TotalFareListener listener) {
 
-        TotalFareTask totalFareTask = new TotalFareTask(urlParams);
+        TotalFareTask totalFareTask = new TotalFareTask(postData);
         totalFareTask.setTotalFareTaskListener(new TotalFareTask.TotalFareTaskListener() {
 
             @Override
@@ -551,9 +551,9 @@ public class DataManager {
         tripListTask.execute();
     }
 
-    public static void fetchSavedLocation(HashMap<String, String> urlParams, final SavedLocationListener listener) {
+    public static void fetchSavedLocation(JSONObject  postData, final SavedLocationListener listener) {
 
-        SavedLocationTask savedLocationTask = new SavedLocationTask(urlParams);
+        SavedLocationTask savedLocationTask = new SavedLocationTask(postData);
         savedLocationTask.setSavedLocationTaskListener(new SavedLocationTask.SavedLocationTaskListener() {
             @Override
             public void dataDownloadedSuccessfully(LocationBean locationBean) {
@@ -924,9 +924,9 @@ public class DataManager {
         requestTriggeringTask.execute();
     }
 
-    public static void fetchAppStatus(HashMap<String, String> urlParams, final AppStatusListener appStatusListener) {
+    public static void fetchAppStatus(JSONObject postData, final AppStatusListener appStatusListener) {
 
-        AppStatusTask appStatusTask = new AppStatusTask(urlParams);
+        AppStatusTask appStatusTask = new AppStatusTask(postData);
         appStatusTask.setAppStatusTaskListener(new AppStatusTask.AppStatusTaskListener() {
 
             @Override

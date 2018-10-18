@@ -43,6 +43,9 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.HashMap;
 
@@ -326,7 +329,7 @@ BaseAppCompatActivity extends BaseActivity implements
             removeLoginDrawerFromNavigationView();
         }*/
 
-        if (Config.getInstance().getAuthToken() != null && !Config.getInstance().getAuthToken().equals("")) {
+        if (Config.getInstance().getPhone() != null && !Config.getInstance().getPhone().equals("")) {
 //            if (getServerConnectionAvailableStatus(false) == SERVER_CONNECTION_AVAILABLE) {
             if (App.isNetworkAvailable()) {
                 fetchUserInfo();
@@ -337,10 +340,12 @@ BaseAppCompatActivity extends BaseActivity implements
     private void fetchUserInfo() {
 
         HashMap<String, String> urlParams = new HashMap<>();
+        JSONObject postData= getPostData();
 
-        urlParams.put("auth_token", Config.getInstance().getAuthToken());
+       // urlParams.put("auth_token", Config.getInstance().getAuthToken());
+        urlParams.put("phone", Config.getInstance().getPhone());
 
-        DataManager.fetchUserInfo(urlParams, Config.getInstance().getUserID(), new UserInfoListener() {
+        DataManager.fetchUserInfo(postData, Config.getInstance().getUserID(), new UserInfoListener() {
             @Override
             public void onLoadCompleted(UserBean userBean) {
                 System.out.println("Successfull  : UserBean : " + userBean);
@@ -360,6 +365,17 @@ BaseAppCompatActivity extends BaseActivity implements
             }
         });
 
+    }
+
+    public JSONObject getPostData() {
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("phone",Config.getInstance().getPhone());
+            postData.put("passenger_id",Config.getInstance().getUserID());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return postData;
     }
 
     private void populateUserInfo(UserBean userBean) {
@@ -597,8 +613,8 @@ BaseAppCompatActivity extends BaseActivity implements
 
 
     int getServerConnectionAvailableStatus(boolean isSnackbarEnabled) {
-        if (Config.getInstance().getAuthToken() == null || Config.getInstance().getAuthToken().equals("")) {
-            if (App.checkForToken() && !Config.getInstance().getAuthToken().equals("")) {
+        if (Config.getInstance().getPhone() == null || Config.getInstance().getPhone().equals("")) {
+            if (App.checkForToken() && !Config.getInstance().getPhone().equals("")) {
                 if (Config.getInstance().isPhoneVerified()) {
                     if (App.isNetworkAvailable()) {
                         return SERVER_CONNECTION_AVAILABLE;
@@ -965,4 +981,6 @@ BaseAppCompatActivity extends BaseActivity implements
 
     public void onClickAbout(View view) {
     }
+
+
 }

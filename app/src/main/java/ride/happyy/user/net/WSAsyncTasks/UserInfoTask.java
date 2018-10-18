@@ -2,6 +2,8 @@ package ride.happyy.user.net.WSAsyncTasks;
 
 import android.os.AsyncTask;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 
 import ride.happyy.user.model.UserBean;
@@ -12,16 +14,17 @@ public class UserInfoTask extends AsyncTask<String, Integer, UserBean> {
     private UserInfoTaskListener userInfoTaskListener;
 
     private HashMap<String, String> urlParams;
+    private JSONObject postData;
 
-    public UserInfoTask(HashMap<String, String> urlParams) {
+    public UserInfoTask(JSONObject postData) {
         super();
-        this.urlParams = urlParams;
+        this.postData = postData;
     }
 
     @Override
     protected UserBean doInBackground(String... params) {
         System.out.println(">>>>>>>>>doInBackground");
-        UserInfoInvoker userInfoInvoker = new UserInfoInvoker(urlParams, null);
+        UserInfoInvoker userInfoInvoker = new UserInfoInvoker(null, postData);
         return userInfoInvoker.invokeUserInfoWS();
     }
 

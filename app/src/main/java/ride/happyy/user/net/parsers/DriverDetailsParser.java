@@ -102,6 +102,16 @@ public class DriverDetailsParser {
                         if (dataObj.has("trip_id")) {
                             driverBean.setTripID(dataObj.optString("trip_id"));
                         }
+                        if (dataObj.has("trip_status")) {
+                            driverBean.setTrip_status(dataObj.optString("trip_status"));
+                        }
+                        if (dataObj.has("request_id")) {
+                            driverBean.setRequest_id(dataObj.optString("request_id"));
+                        }
+                        if (dataObj.has("trip_confirmation_code")) {
+                            driverBean.setTrip_confirmation_code(dataObj.optString("trip_confirmation_code"));
+                        }
+
                         if (dataObj.has("car_photo")) {
                             driverBean.setCarPhoto(App.getImagePath(dataObj.optString("car_photo")));
                         }
@@ -111,8 +121,8 @@ public class DriverDetailsParser {
                         if (dataObj.has("driver_photo")) {
                             driverBean.setDriverPhoto(App.getImagePath(dataObj.optString("driver_photo")));
                         }
-                        if (dataObj.has("driver_number")) {
-                            driverBean.setDriverNumber(dataObj.optString("driver_number"));
+                        if (dataObj.has("driver_phone")) {
+                            driverBean.setDriverNumber(dataObj.optString("driver_phone"));
                         }
                         if (dataObj.has("car_name")) {
                             driverBean.setCarName(dataObj.optString("car_name"));
@@ -143,6 +153,15 @@ public class DriverDetailsParser {
                         }
                         if (dataObj.has("car_longitude")) {
                             driverBean.setCarLongitude(dataObj.optString("car_longitude"));
+                        }
+                        if (dataObj.has("fare")) {
+                            driverBean.setFare(dataObj.optString("fare"));
+                        }
+                        if (dataObj.has("car_type")) {
+                            driverBean.setCarType(dataObj.optString("car_type"));
+                        }
+                        if (dataObj.has("car_type_id")) {
+                            driverBean.setCarTypeId(dataObj.optString("car_type_id"));
                         }
 
                     } catch (Exception e) {

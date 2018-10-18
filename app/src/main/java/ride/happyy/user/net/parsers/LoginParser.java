@@ -109,8 +109,8 @@ public class LoginParser {
                                 if (userObj.has("auth_token")) {
                                     authBean.setAuthToken(userObj.optString("auth_token"));
                                 }
-                                if (userObj.has("username")) {
-                                    authBean.setUserName(userObj.optString("username"));
+                                if (userObj.has("name")) {
+                                    authBean.setUserName(userObj.optString("name"));
                                 }
                                 if (userObj.has("user_id")) {
                                     authBean.setUserID(userObj.optString("user_id"));
@@ -124,8 +124,8 @@ public class LoginParser {
                                 if (userObj.has("name")) {
                                     authBean.setName(userObj.optString("name"));
                                 }
-                                if (userObj.has("phone")) {
-                                    authBean.setPhone(userObj.optString("phone"));
+                                if (userObj.has("mobile_number")) {
+                                    authBean.setPhone(userObj.optString("mobile_number"));
                                 }
                                 if (userObj.has("email")) {
                                     authBean.setEmail(userObj.optString("email"));

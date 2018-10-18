@@ -39,6 +39,7 @@ import java.util.List;
 
 import ride.happyy.user.R;
 import ride.happyy.user.app.App;
+import ride.happyy.user.config.Config;
 import ride.happyy.user.listeners.AppStatusListener;
 import ride.happyy.user.listeners.PolyPointsListener;
 import ride.happyy.user.listeners.TripCancellationListener;
@@ -62,7 +63,7 @@ public class OnTripActivity extends BaseAppCompatNoDrawerActivity {
     private TextView txtETA;
     private ImageView ivETAMarker;
     private TextView txtDriverName;
-    private TextView txtCarNumber;
+    private TextView txtCarNumber,customer_confirmation_code;
     private RatingBar ratingDriver;
     private ImageView ivDriverPhoto;
     private ImageView ivCarPhoto;
@@ -71,6 +72,7 @@ public class OnTripActivity extends BaseAppCompatNoDrawerActivity {
     private PolyPointsBean polyPointsBean;
     private Polyline polyLine;
     private LatLngBounds bounds;
+    private Handler mHandler=new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +93,7 @@ public class OnTripActivity extends BaseAppCompatNoDrawerActivity {
         initViews();
         initMap();
 //        populateDriverDetails();
-
+      //  mHandler.post(appStatusTask);
         setProgressScreenVisibility(true, true);
 
     }
@@ -105,6 +107,7 @@ public class OnTripActivity extends BaseAppCompatNoDrawerActivity {
 
         txtDriverName = (TextView) findViewById(R.id.txt_on_trip_driver_name);
         txtCarNumber = (TextView) findViewById(R.id.txt_on_trip_car_number);
+        customer_confirmation_code =(TextView) findViewById(R.id.customer_confirmation_code);
 
         ratingDriver = (RatingBar) findViewById(R.id.rating_on_trip_driver_rating);
 
@@ -128,7 +131,8 @@ public class OnTripActivity extends BaseAppCompatNoDrawerActivity {
                 mMap.setPadding(0, (int) ((100 * px) + mActionBarHeight + getStatusBarHeight()), 0, (int) (230 * px));
 
 //                populateDriverDetails();
-                new Handler().postDelayed(appStatusTask, 5000);
+                mHandler.postDelayed(appStatusTask, 5000);
+
 
             }
         });
@@ -180,15 +184,54 @@ public class OnTripActivity extends BaseAppCompatNoDrawerActivity {
                 ? driverBean.getTime() : getString(R.string.label_not_available));
         txtDriverName.setText(driverBean.getDriverName());
         txtCarNumber.setText(driverBean.getCarNumber());
+        customer_confirmation_code.setText(driverBean.getTrip_confirmation_code());
 
         ratingDriver.setRating(driverBean.getRating());
 
-        Glide.with(getApplicationContext())
-                .load(driverBean.getCarPhoto())
-                .apply(new RequestOptions()
-                        .error(R.drawable.ic_car_la_landing_page)
-                        .fallback(R.drawable.ic_car_la_landing_page))
-                .into(ivCarPhoto);
+        switch (driverBean.getCarType()){
+            case "1":
+                Glide.with(getApplicationContext())
+                        .load(driverBean.getCarPhoto())
+                        .apply(new RequestOptions()
+                                .error(R.drawable.bikeperfectlogoselected)
+                                .fallback(R.drawable.bikeperfectlogoselected))
+                        .into(ivCarPhoto);
+                break;
+            case  "2":
+                Glide.with(getApplicationContext())
+                        .load(driverBean.getCarPhoto())
+                        .apply(new RequestOptions()
+                                .error(R.drawable.cng)
+                                .fallback(R.drawable.cng))
+                        .into(ivCarPhoto);
+                break;
+            case "3":
+                Glide.with(getApplicationContext())
+                        .load(driverBean.getCarPhoto())
+                        .apply(new RequestOptions()
+                                .error(R.drawable.carlogo111)
+                                .fallback(R.drawable.carlogo111))
+                        .into(ivCarPhoto);
+                break;
+            case "4":
+                Glide.with(getApplicationContext())
+                        .load(driverBean.getCarPhoto())
+                        .apply(new RequestOptions()
+                                .error(R.drawable.ambulancetestimagepng)
+                                .fallback(R.drawable.ambulancetestimagepng))
+                        .into(ivCarPhoto);
+                break;
+                default:
+                    Glide.with(getApplicationContext())
+                            .load(driverBean.getCarPhoto())
+                            .apply(new RequestOptions()
+                                    .error(R.drawable.carlogo111)
+                                    .fallback(R.drawable.carlogo111))
+                            .into(ivCarPhoto);
+
+        }
+
+
 
         Log.i(TAG, "populateDriverDetails: DriverPhoto " + driverBean.getDriverPhoto());
 
@@ -241,26 +284,42 @@ public class OnTripActivity extends BaseAppCompatNoDrawerActivity {
         public void run() {
             if (App.isNetworkAvailable()) {
                 fetchAppStatus();
+                mHandler.postDelayed(appStatusTask,5000);
             }
+
         }
+
     };
 
     private void fetchAppStatus() {
 
         HashMap<String, String> urlParams = new HashMap<>();
+        JSONObject postData = getJsonData();
 
-        DataManager.fetchAppStatus(urlParams, new AppStatusListener() {
+        DataManager.fetchAppStatus(postData, new AppStatusListener() {
             @Override
             public void onLoadCompleted(DriverBean driverBeanWS) {
 
-                if (driverBeanWS.getAppStatus() != 0) {
-                    driverBean = driverBeanWS;
-                    populateDriverDetails();
-                } else {
-                    Toast.makeText(OnTripActivity.this, R.string.message_trip_ended, Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(OnTripActivity.this, SplashActivity.class)
-                            .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+                if(driverBeanWS !=null && driverBeanWS.getTrip_status().equals("3")){
+                    mHandler.removeCallbacks(appStatusTask);
+                    Intent tripDetailsIntent=new Intent(getBaseContext(),TripDetailsActivity.class);
+                    tripDetailsIntent.putExtra("trip_id",driverBeanWS.getTripID());
+                    tripDetailsIntent.putExtra("driverdetails",driverBeanWS);
+                    startActivity(tripDetailsIntent);
                     finish();
+
+                }else {
+
+                    if (driverBeanWS.getAppStatus() != 0) {
+                        driverBean = driverBeanWS;
+                        populateDriverDetails();
+                    } else {
+                        mHandler.removeCallbacks(appStatusTask);
+                        Toast.makeText(OnTripActivity.this, R.string.message_trip_ended, Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(OnTripActivity.this, SplashActivity.class)
+                                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+                        finish();
+                    }
                 }
             }
 
@@ -270,6 +329,17 @@ public class OnTripActivity extends BaseAppCompatNoDrawerActivity {
             }
         });
 
+    }
+
+    public JSONObject getJsonData() {
+        JSONObject jsonData = new JSONObject();
+        try {
+            jsonData.put("phone", Config.getInstance().getPhone());
+            jsonData.put("customer_id", Config.getInstance().getUserID());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonData;
     }
 
     public void performTripCancellation() {
@@ -282,9 +352,10 @@ public class OnTripActivity extends BaseAppCompatNoDrawerActivity {
             @Override
             public void onLoadCompleted(TripCancellationBean tripCancellationBean) {
                 swipeView.setRefreshing(false);
+              //  mHandler.removeCallbacks(appStatusTask);
                 Toast.makeText(OnTripActivity.this, R.string.message_trip_cancelled, Toast.LENGTH_SHORT).show();
 
-                startActivity(new Intent(OnTripActivity.this, SplashActivity.class)
+                startActivity(new Intent(OnTripActivity.this, LandingPageActivity.class)
                         .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                 finish();
 
@@ -308,6 +379,7 @@ public class OnTripActivity extends BaseAppCompatNoDrawerActivity {
 
         try {
             postData.put("trip_id", tripID);
+            postData.put("phone",Config.getInstance().getPhone());
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -330,7 +402,7 @@ public class OnTripActivity extends BaseAppCompatNoDrawerActivity {
                         break;
                     case LOCATION_DESTINATION:
                         mMap.addMarker(new MarkerOptions()
-                                .position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_destination_marker)));
+                                .position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.destinationfinaldone)));
                         break;
                     default:
                         mMap.addMarker(new MarkerOptions()
@@ -411,7 +483,7 @@ public class OnTripActivity extends BaseAppCompatNoDrawerActivity {
 
             polyLineOptions.addAll(points);
             polyLineOptions.width(8);
-            polyLineOptions.color(ContextCompat.getColor(getApplicationContext(), R.color.map_path));
+            polyLineOptions.color(ContextCompat.getColor(getApplicationContext(), R.color.black));
 
         }
 
@@ -455,4 +527,6 @@ public class OnTripActivity extends BaseAppCompatNoDrawerActivity {
         //mVibrator.vibrate(25);
 
     }
+
+
 }

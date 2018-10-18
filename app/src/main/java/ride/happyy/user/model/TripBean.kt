@@ -6,11 +6,15 @@ import com.google.android.gms.maps.model.LatLng
 class TripBean : BaseBean(), Comparable<TripBean> {
 
     var id: String = ""
+    var trip_id: String = ""
     var tripStatus: String = ""
     var date: String = ""
     var carName: String = ""
+    var car_type: String = ""
+    var car_type_id: String = ""
     var time: Long = 0
     var rate: String = ""
+    var fare: String = ""
     var driverPhoto: String = ""
     var sourceLatitude: String = ""
     var sourceLongitude: String = ""

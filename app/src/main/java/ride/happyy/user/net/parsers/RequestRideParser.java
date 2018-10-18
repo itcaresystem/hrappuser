@@ -97,6 +97,9 @@ public class RequestRideParser {
                         if (dataJSObject.has("id")) {
                             requestBean.setId(dataJSObject.optString("id"));
                         }
+                        if (dataJSObject.has("request_id")) {
+                            requestBean.setId(dataJSObject.optString("request_id"));
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

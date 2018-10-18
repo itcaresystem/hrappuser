@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_on_trip_details"
     android:layout_width="match_parent"
-    android:layout_height="230dp"
+    android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
     android:onClick="onOnTripDriverDetailsClick"
     android:layout_gravity="bottom"
@@ -81,7 +81,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
                 android:scaleType="centerInside"
-                android:background="@drawable/bg_car_details"
+                android:background="@color/white"
                 android:padding="10dp"/>
 
             <ImageView
@@ -105,17 +105,41 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="5dp"
+        android:layout_height="3dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:background="@drawable/dashed_line_landing_page"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:minHeight="50dp"
+        android:orientation="horizontal">
+
+      <TextView
+          android:textColor="@color/black"
+          android:id="@+id/ctrip_code_label"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Trip Confirmation Code :"/>
+        <TextView
+            android:textSize="14dp"
+            android:textColor="@color/green_my"
+            android:id="@+id/customer_confirmation_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2426"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="5dp"
         android:gravity="center"
         android:minHeight="50dp"
         android:orientation="horizontal">
@@ -125,7 +149,7 @@
             android:layout_width="100dp"
             android:layout_height="30dp"
             android:layout_marginRight="10dp"
-            android:background="@drawable/bg_round_edges"
+            android:background="@drawable/bg_round_edges_orange"
             android:onClick="onContactButtonClick"
             android:text="@string/btn_contact"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -136,21 +160,23 @@
             android:layout_width="100dp"
             android:layout_height="30dp"
             android:layout_marginLeft="10dp"
-            android:background="@drawable/bg_round_edges_white"
+            android:background="@drawable/bg_round_edges"
             android:onClick="onCancelButtonClick"
             android:text="@string/btn_cancel"
             android:textAllCaps="true"
+            android:textColor="@color/white"
             android:textAppearance="?android:attr/textAppearanceSmall"/>
 
 
     </LinearLayout>
 
     <ImageView
+        android:visibility="gone"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="bottom|center"
         android:layout_marginBottom="10dp"
         android:scaleType="centerInside"
         android:src="@drawable/ic_payment"
-        android:tint="@color/colorPrimary"/>
+        android:tint="@color/red"/>
 </LinearLayout>

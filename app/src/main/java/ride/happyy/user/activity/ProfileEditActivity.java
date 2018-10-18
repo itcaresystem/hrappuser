@@ -35,6 +35,7 @@ import java.util.List;
 
 import ride.happyy.user.R;
 import ride.happyy.user.app.App;
+import ride.happyy.user.config.Config;
 import ride.happyy.user.listeners.BasicListener;
 import ride.happyy.user.listeners.EditProfileListener;
 import ride.happyy.user.model.BasicBean;
@@ -219,11 +220,7 @@ public class ProfileEditActivity extends BaseAppCompatNoDrawerActivity {
 
         try {
             postData.put("name", name);
-            if (!email.equalsIgnoreCase(bean.getEmail()))
-                postData.put("email", email);
-            if (!phone.equalsIgnoreCase(bean.getMobileNumber()))
-                postData.put("phone", phone);
-
+            postData.put("phone", Config.getInstance().getPhone());
         } catch (JSONException e) {
             e.printStackTrace();
         }

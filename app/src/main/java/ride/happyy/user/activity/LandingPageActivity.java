@@ -5,11 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -88,6 +91,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import ride.happyy.user.R;
+import ride.happyy.user.ShowVehiclesOnMapActivity;
 import ride.happyy.user.adapter.CarTypeRecyclerAdapter;
 import ride.happyy.user.app.App;
 import ride.happyy.user.config.Config;
@@ -126,7 +130,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         GoogleMap.OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListener,
-        android.location.LocationListener {
+        android.location.LocationListener,GoogleMap.OnMarkerClickListener {
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
     private static final int UPDATE_INTERVAL = 10000;
@@ -241,10 +245,12 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
     private Button bikeRequestBtn,cngRequestBtn, carRequestBtn,ambulanceRequestBtn, carOneHourRequestBtn, carTwoHoursRequestBtn, carFourHoursRequestBtn, carDayPrimioRequestBtn, carDayNoahRequestBtn, carDayHiceRequestBtn;
     private Button outOfDhakaService, packageService,distinationConfirmButton;
     PricePolicyDialog pricePolicyDialog;
+    TextView bikeInfoTv,cngInfoTV,carInfoTv,ambulanceInfoTv,premioInfoTv,noahInfoTv,hiaceInfoTv,hirecarInfoTv;
 
     private ImageButton notificatinImageButton, menubarHome,outOfdhakaPage;
     private NotificationBadge mNotificationBadge;
     private int countNotification =0;
+    HashMap fareHashMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -300,7 +306,6 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         mNotificationBadge      = findViewById(R.id.notificationBadgeHome);
         countNotification = 4;
         mNotificationBadge.setNumber(countNotification);
-
 
         initFCM();
 
@@ -358,7 +363,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         AccountHeader headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.bg_header)
-                .addProfiles(new ProfileDrawerItem().withName("Rajib Hossain").withEmail("01623473041").withIcon(getResources().getDrawable(R.drawable.carperfect11)))
+                .addProfiles(new ProfileDrawerItem().withName(Config.getInstance().getName()).withEmail(Config.getInstance().getPhone()).withIcon(getResources().getDrawable(R.drawable.ic_profile_photo_default)))
                 .withOnAccountHeaderProfileImageListener(new AccountHeader.OnAccountHeaderProfileImageListener() {
                     @Override
                     public boolean onProfileImageClick(View view, IProfile profile, boolean current) {
@@ -435,7 +440,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                         break;
 
                     case 2:
-                        Intent historyIntent = new Intent(getApplicationContext(),HistoryActivityWithTabs.class);
+                        Intent historyIntent = new Intent(getApplicationContext(),TripsActivity.class);
                         startActivity(historyIntent);
                         Toast.makeText(getApplicationContext(), "History", Toast.LENGTH_SHORT).show();
 
@@ -646,6 +651,15 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
     public void initViews() {
 
 
+    //info tv
+        bikeInfoTv =findViewById(R.id.bikeInfoTv);
+        cngInfoTV =findViewById(R.id.cngInfoTv);
+        carInfoTv =findViewById(R.id.carInfoTv);
+        ambulanceInfoTv=findViewById(R.id.ambulanceInfoTv);
+        hirecarInfoTv=findViewById(R.id.hirecarInfoTv);
+        premioInfoTv =findViewById(R.id.premioInfoTvLP);
+        noahInfoTv=findViewById(R.id.noahInfoTvLP);
+        hiaceInfoTv=findViewById(R.id.hiaceInfoTvLP);
 
 
 
@@ -658,6 +672,8 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         bikeFareTextView        = findViewById(R.id.confirm_request_bike_fare_tv);
         bikeInfoImageButton     = findViewById(R.id.confirm_request_bike_info_imbtn);
         bikeRequestBtn          = findViewById(R.id.btn_request_for_bike);
+
+
 
         //END
         //CNG Start cngLinearLayout
@@ -1070,11 +1086,63 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
 
         //start info button click event
 
-        bikeInfoImageButton.setOnClickListener(new View.OnClickListener() {
+        bikeInfoTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                pricePolicyDialog = new PricePolicyDialog(LandingPageActivity.this);
                pricePolicyDialog.showBikePricePolicy();
+            }
+        });
+
+        cngInfoTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pricePolicyDialog = new PricePolicyDialog(LandingPageActivity.this);
+                pricePolicyDialog.showCngPricePolicy();
+            }
+        });
+        carInfoTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pricePolicyDialog = new PricePolicyDialog(LandingPageActivity.this);
+                pricePolicyDialog.showCarPricePolicy();
+            }
+        });
+        ambulanceInfoTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pricePolicyDialog = new PricePolicyDialog(LandingPageActivity.this);
+                pricePolicyDialog.showAmbulancePricePolicy();
+            }
+        });
+
+        hirecarInfoTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pricePolicyDialog = new PricePolicyDialog(LandingPageActivity.this);
+                pricePolicyDialog.showHirecarPricePolicy();
+            }
+        });
+
+        premioInfoTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pricePolicyDialog = new PricePolicyDialog(LandingPageActivity.this);
+                pricePolicyDialog.showPremioPricePolicy();
+            }
+        });
+        noahInfoTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pricePolicyDialog = new PricePolicyDialog(LandingPageActivity.this);
+                pricePolicyDialog.showNoahPricePolicy();
+            }
+        });
+        hiaceInfoTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pricePolicyDialog = new PricePolicyDialog(LandingPageActivity.this);
+                pricePolicyDialog.showHiacePricePolicy();
             }
         });
 
@@ -1200,7 +1268,16 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
     }
     String massage="";
     FareCalculation fareCalculation = new FareCalculation();
+    LandingPageBean carInfoBean = null;
+    ArrayList<CarBean> carBeanArrayList =null;
     public void onClickDoneButton(View view){
+        fetchLandingPageDetails();
+        fetchCarDetails();
+
+
+        carInfoBean = new LandingPageBean();
+        carBeanArrayList = carInfoBean.getCars();
+
         if (txtSource.getText().toString()==null){
             massage ="Please select sourch";
 
@@ -1211,22 +1288,25 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
      //   Toast.makeText(this,massage,Toast.LENGTH_SHORT).show();
 
 
-        if(txtSource.getText().toString()!=null || txtDestination.getText().toString()!=null) {
+        if(txtSource.getText().toString()!=null && txtDestination.getText().toString()!=null) {
             happyyFareWithService.setVisibility(View.VISIBLE);
+            ivLocationButton.setVisibility(View.GONE);
+            ivBottomMarker.setVisibility(View.GONE);
+            destinationTV.setVisibility(View.GONE);
 
 
         }
-        mapAutoZoom();
-        fetchPolyPoints(true);
-       // onPlotLocation(true, LOCATION_DESTINATION, destinationBean.getDLatitude(), destinationBean.getDLongitude());
+
+
+       // mapAutoZoom();
+       // fetchPolyPoints(true);
+    //  onPlotLocation(true, LOCATION_DESTINATION, destinationBean.getDLatitude(), destinationBean.getDLongitude());
 
 
       //  onDestinationSelect();
-        ivLocationButton.setVisibility(View.GONE);
-        ivBottomMarker.setVisibility(View.GONE);
-        destinationTV.setVisibility(View.GONE);
+
       //  mMap.getUiSettings().setScrollGesturesEnabled(false);
-       mMap.getUiSettings().setAllGesturesEnabled(false);
+     //  mMap.getUiSettings().setAllGesturesEnabled(false);
 
         // testing purpose
         /*
@@ -1237,10 +1317,88 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         mMap.getUiSettings().setRotateGesturesEnabled(false);
         */
 
+
+        if (sourceBean != null && destinationBean != null) {
+            newLatLng1 = new LatLng(sourceBean.getDLatitude(), sourceBean.getDLongitude());
+            newLatLng2 = new LatLng(destinationBean.getDLatitude(), destinationBean.getDLongitude());
+            mMap.clear();
+            mMap.isMyLocationEnabled();
+          //  populatePath();
+            MarkerOptions pickupMarker = new MarkerOptions().position(newLatLng1).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_pickup));
+            MarkerOptions destinationMarker = new MarkerOptions().position(newLatLng2).icon(BitmapDescriptorFactory.fromResource(R.drawable.destinationfinaldone));
+            mMap.addMarker(pickupMarker);
+            mMap.addMarker(destinationMarker);
+
+        //    MarkerOptions pickupMarker1 = new MarkerOptions().position(newLatLng1).icon(BitmapDescriptorFactory.fromResource(R.drawable.destinationrout));
+        //    MarkerOptions destinationMarker2 = new MarkerOptions().position(newLatLng2).icon(BitmapDescriptorFactory.fromResource(R.drawable.pickup_png));
+        //    mMap.addMarker(pickupMarker1);
+        //    mMap.addMarker(destinationMarker2);
+
+
+            fetchPolyPoints(true);
+            mapAutoZoom();
+
+
+        }
+
+
+        LatLng carLatLng =null;
+        if(carBeanArrayList!=null) {
+            for (int i=0;i<carBeanArrayList.size();i++){
+                MarkerOptions carMarker = new MarkerOptions().position(new LatLng( carBeanArrayList.get(i).getVehicle_lat(),carBeanArrayList.get(i).getVehicle_lat())).icon((BitmapDescriptorFactory.fromResource(R.drawable.pickuplocationtest1)));
+                Double d =carBeanArrayList.get(i).getVehicle_lat();
+                String s = d.toString();
+                Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+                mMap.addMarker(carMarker);
+            }
+        }else{
+            Toast.makeText(getApplicationContext(),"No car is found! Car Bean",Toast.LENGTH_LONG).show();
+        }
+
+
         distinationConfirmButton.setVisibility(View.GONE);
+
+     //BackgroundTask backgroundTask = new BackgroundTask();
+    //  backgroundTask.execute(this);
+      //  Toast.makeText(getApplicationContext(),"Nor for test",Toast.LENGTH_LONG).show();
+
+
 
 
     }
+Marker markerCar;
+    DriverBean driverBean=new DriverBean();
+    ArrayList<CarBean> availableCarsList = new ArrayList<>();
+    private void onPlotDriverCar() {
+
+        try {
+//           mMap.addMarker(new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_driver_car_landing_page)));
+
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_driver_details_car);
+            Bitmap b = bitmapDrawable.getBitmap();
+            Bitmap smallMarker = Bitmap.createScaledBitmap(b, 50, 50, false);
+
+            if (mMap != null) {
+                if (markerCar == null) {
+                    markerCar = mMap.addMarker(new MarkerOptions()
+                            .position(driverBean.getCarLatLng())
+                            .icon(BitmapDescriptorFactory.fromBitmap(smallMarker))
+                            .flat(true));
+                } else {
+                    markerCar.setPosition(driverBean.getCarLatLng());
+                }
+                mapAutoZoom();
+                fetchPolyPoints(true);
+            }
+
+
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+
+        }
+    }
+
+
 
     public void setBottomSheetBehavior() {
 
@@ -1349,9 +1507,11 @@ LatLng newLatLng=null;
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 } */
 
+
+
                 if (!isConfirmationPage) {
                    // mMap.getUiSettings().setScrollGesturesEnabled(true);
-                    mMap.setMaxZoomPreference(18f);
+                    mMap.setMaxZoomPreference(17f);
                    // framePickup.setVisibility(View.INVISIBLE);
                     ivBottomMarker.setVisibility(View.VISIBLE);
                     destinationTV.setVisibility(View.VISIBLE);
@@ -1418,7 +1578,7 @@ LatLng newLatLng=null;
                         sourceBean.setLongitude(Config.getInstance().getCurrentLongitude());
                         newLatLng = new LatLng(sourceBean.getDLatitude(),sourceBean.getDLongitude());
                         mMap.clear();
-                       MarkerOptions marker = new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.pickup_png_black));
+                       MarkerOptions marker = new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_pickup));
 
 
                       mMap.addMarker(marker);
@@ -1451,7 +1611,7 @@ LatLng newLatLng=null;
                         destinationBean.setLongitude(String.valueOf(center.longitude));
 
                         if (App.isNetworkAvailable()) {
-                            fetchLandingPageDetails();
+                         //   fetchLandingPageDetails();
 //                            fetchCarDetails();
                         } else {
                             Snackbar.make(coordinatorLayout, AppConstants.NO_NETWORK_AVAILABLE, Snackbar.LENGTH_LONG)
@@ -1509,7 +1669,7 @@ LatLng newLatLng=null;
 
         try {
             postData.put("fcm_token", fcmToken);
-//            postData.put("user_id", userBean.getUserID());
+        postData.put("phone", Config.getInstance().getPhone());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -2210,10 +2370,13 @@ LatLng newLatLng=null;
 
         HashMap<String, String> urlParams = new HashMap<>();
         urlParams.put("car_type", carType);
+        urlParams.put("car_type_id", carType);
         urlParams.put("latitude", sourceBean.getLatitude());
         urlParams.put("longitude", sourceBean.getLongitude());
 
-        DataManager.fetchCarAvailability(urlParams, new CarInfoListener() {
+        JSONObject postData = getJsonData();
+
+        DataManager.fetchCarAvailability(postData, new CarInfoListener() {
             @Override
             public void onLoadCompleted(CarBean carBeanWS) {
                 swipeView.setRefreshing(false);
@@ -2231,6 +2394,18 @@ LatLng newLatLng=null;
 
             }
         });
+    }
+
+    public JSONObject getJsonData() {
+        JSONObject jsonData = new JSONObject();
+        try {
+            jsonData.put("car_type",carType);
+            jsonData.put("latitude",sourceBean.getLatitude());
+            jsonData.put("longitude",sourceBean.getLongitude());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonData;
     }
 
     private void populateCarDetails(CarBean carBean) {
@@ -2280,7 +2455,30 @@ LatLng newLatLng=null;
             e.printStackTrace();
         }
 
-        DataManager.fetchTotalFare(urlParams, new TotalFareListener() {
+        JSONObject jsonObjectData = new JSONObject();
+        try {
+            if (sourceBean.getName() != null && !sourceBean.getName().equals("")) {
+                urlParams.put("source", sourceBean.getName());
+                jsonObjectData.put("source", sourceBean.getName());
+            }
+            if (destinationBean.getName() != null && destinationBean.getName().equals("")) {
+                urlParams.put("destination", destinationBean.getName());
+                jsonObjectData.put("destination", destinationBean.getName());
+            }
+
+            jsonObjectData.put("car_type", String.valueOf(carType));
+            jsonObjectData.put("source_latitude", sourceBean.getLatitude());
+            jsonObjectData.put("source_longitude", sourceBean.getLongitude());
+            jsonObjectData.put("destination_latitude", destinationBean.getLatitude());
+            jsonObjectData.put("destination_longitude", destinationBean.getLongitude());
+            jsonObjectData.put("distance", String.valueOf(distance));
+            jsonObjectData.put("time", String.valueOf(time));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        DataManager.fetchTotalFare(jsonObjectData, new TotalFareListener() {
 
             @Override
             public void onLoadCompleted(FareBean fareBeanWS) {
@@ -2388,7 +2586,24 @@ LatLng newLatLng=null;
 
         Log.i(TAG, "getEstimatedFare: Time " + time);
 
-        DataManager.fetchTotalFare(urlParams, new TotalFareListener() {
+        JSONObject jsonObjectData = new JSONObject();
+        try {
+            jsonObjectData.put("source", source);
+            jsonObjectData.put("destination", destination);
+            jsonObjectData.put("car_type", String.valueOf(carType));
+            jsonObjectData.put("source_latitude", sourceBean.getLatitude());
+            jsonObjectData.put("source_longitude", sourceBean.getLongitude());
+            jsonObjectData.put("destination_latitude", destinationBean.getLatitude());
+            jsonObjectData.put("destination_longitude", destinationBean.getLongitude());
+            jsonObjectData.put("distance", String.valueOf(distance));
+            jsonObjectData.put("time", String.valueOf(time));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        DataManager.fetchTotalFare(jsonObjectData, new TotalFareListener() {
 
             @Override
             public void onLoadCompleted(FareBean fareBean) {
@@ -2403,6 +2618,9 @@ LatLng newLatLng=null;
             }
         });
     }
+
+
+
 
     public void populateEstimatedFare(FareBean fareBean) {
 
@@ -2454,23 +2672,81 @@ LatLng newLatLng=null;
     //Bike Request
    public void onRequestRideClickBike(View view){
        view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-        Toast.makeText(this,"No Bike Available",Toast.LENGTH_SHORT).show();
+        Intent requestAcIntent = new Intent(this,RequestingPageActivity.class);
+       requestAcIntent.putExtra("fare",fareHashMap.get("bikeFare").toString());
+       requestAcIntent.putExtra("fare_bean", fareBean);
+       requestAcIntent.putExtra("car_type","1");
+       requestAcIntent.putExtra("car_type_id","1");
+       requestAcIntent.putExtra("source_bean", sourceBean);
+       requestAcIntent.putExtra("destination_bean", destinationBean);
+       requestAcIntent.putExtra("distance", String.valueOf(distance));
+       requestAcIntent.putExtra("time", String.valueOf(time));
+
+        startActivity(requestAcIntent);
+
+
+     //   Toast.makeText(this,"No Bike Available",Toast.LENGTH_SHORT).show();
    }
 //CNG onRequestRideClickCNG
 
     public void onRequestRideClickCNG(View view){
         view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-        Toast.makeText(this,"No CNG Available",Toast.LENGTH_SHORT).show();
+        Intent requestAcIntent = new Intent(this,RequestingPageActivity.class);
+        requestAcIntent.putExtra("fare",fareHashMap.get("cngFare").toString());
+        requestAcIntent.putExtra("fare_bean", fareBean);
+        requestAcIntent.putExtra("car_type","2");
+        requestAcIntent.putExtra("car_type_id","2");
+        requestAcIntent.putExtra("source_bean", sourceBean);
+        requestAcIntent.putExtra("destination_bean", destinationBean);
+        requestAcIntent.putExtra("distance", String.valueOf(distance));
+        requestAcIntent.putExtra("time", String.valueOf(time));
+
+        startActivity(requestAcIntent);
     }
    // onRequestRideClickCar
     public void onRequestRideClickCar(View view){
         view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-        Toast.makeText(this,"No Car Available",Toast.LENGTH_SHORT).show();
+        Intent requestAcIntent = new Intent(this,RequestingPageActivity.class);
+        requestAcIntent.putExtra("fare",fareHashMap.get("carFare").toString());
+        requestAcIntent.putExtra("fare_bean", fareBean);
+        requestAcIntent.putExtra("car_type","3");
+        requestAcIntent.putExtra("car_type_id","3");
+        requestAcIntent.putExtra("source_bean", sourceBean);
+        requestAcIntent.putExtra("destination_bean", destinationBean);
+        requestAcIntent.putExtra("distance", String.valueOf(distance));
+        requestAcIntent.putExtra("time", String.valueOf(time));
+
+        startActivity(requestAcIntent);
+
+    }
+
+    public void onRequestRideClickAmbulance(View view){
+        view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+        Intent requestAcIntent = new Intent(this,RequestingPageActivity.class);
+        requestAcIntent.putExtra("fare",fareHashMap.get("ambulanceFare").toString());
+        requestAcIntent.putExtra("fare_bean", fareBean);
+        requestAcIntent.putExtra("car_type","4");
+        requestAcIntent.putExtra("car_type_id","4");
+        requestAcIntent.putExtra("source_bean", sourceBean);
+        requestAcIntent.putExtra("destination_bean", destinationBean);
+        requestAcIntent.putExtra("distance", String.valueOf(distance));
+        requestAcIntent.putExtra("time", String.valueOf(time));
+        startActivity(requestAcIntent);
 
     }
     public void onRequestRideClickCarOneHoure(View view){
         view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-        Toast.makeText(this,"No Car Available",Toast.LENGTH_SHORT).show();
+        Intent requestAcIntent = new Intent(this,RequestingPageActivity.class);
+        requestAcIntent.putExtra("fare",fareHashMap.get("carHireFare").toString());
+        requestAcIntent.putExtra("fare_bean", fareBean);
+        requestAcIntent.putExtra("car_type","3");
+        requestAcIntent.putExtra("car_type_id","5");
+        requestAcIntent.putExtra("source_bean", sourceBean);
+        requestAcIntent.putExtra("destination_bean", destinationBean);
+        requestAcIntent.putExtra("distance", String.valueOf(distance));
+        requestAcIntent.putExtra("time", String.valueOf(time));
+
+        startActivity(requestAcIntent);
     }
     public void onRequestRideClickCarTwoHours(View view){
         view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
@@ -2482,39 +2758,70 @@ LatLng newLatLng=null;
     }
     public void onRequestRideClickCarDayPrimio(View view){
         view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-        Toast.makeText(this,"No Premio Car Available",Toast.LENGTH_SHORT).show();
+        Intent requestAcIntent = new Intent(this,RequestingPageActivity.class);
+        requestAcIntent.putExtra("fare",fareHashMap.get("ondayHirePremioFare").toString());
+        requestAcIntent.putExtra("fare_bean", fareBean);
+        requestAcIntent.putExtra("car_type","3");
+        requestAcIntent.putExtra("car_type_id","6");
+        requestAcIntent.putExtra("source_bean", sourceBean);
+        requestAcIntent.putExtra("destination_bean", destinationBean);
+        requestAcIntent.putExtra("distance", String.valueOf(distance));
+        requestAcIntent.putExtra("time", String.valueOf(time));
+        startActivity(requestAcIntent);
     }
     public void onRequestRideClickCarDayNoah(View view){
         view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-        Toast.makeText(this,"No Noah Car Available",Toast.LENGTH_SHORT).show();
+        Intent requestAcIntent = new Intent(this,RequestingPageActivity.class);
+        requestAcIntent.putExtra("fare",fareHashMap.get("onedayHireNoahFare").toString());
+        requestAcIntent.putExtra("fare_bean", fareBean);
+        requestAcIntent.putExtra("car_type","3");
+        requestAcIntent.putExtra("car_type_id","7");
+        requestAcIntent.putExtra("source_bean", sourceBean);
+        requestAcIntent.putExtra("destination_bean", destinationBean);
+        requestAcIntent.putExtra("distance", String.valueOf(distance));
+        requestAcIntent.putExtra("time", String.valueOf(time));
+        startActivity(requestAcIntent);
     }
     public void onRequestRideClickCarHice(View view){
         view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-        Toast.makeText(this,"No Hiace Car Available",Toast.LENGTH_SHORT).show();
+        Intent requestAcIntent = new Intent(this,RequestingPageActivity.class);
+        requestAcIntent.putExtra("fare",fareHashMap.get("onedayHireHiaceFare").toString());
+        requestAcIntent.putExtra("fare_bean", fareBean);
+        requestAcIntent.putExtra("car_type","3");
+        requestAcIntent.putExtra("car_type_id","8");
+        requestAcIntent.putExtra("source_bean", sourceBean);
+        requestAcIntent.putExtra("destination_bean", destinationBean);
+        requestAcIntent.putExtra("distance", String.valueOf(distance));
+        requestAcIntent.putExtra("time", String.valueOf(time));
+        startActivity(requestAcIntent);
     }
 
-    public void onRequestRideClickAmbulance(View view){
-        view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-        Toast.makeText(this,"No Ambulance Available",Toast.LENGTH_SHORT).show();
 
-    }
 
 
     public void fetchLandingPageDetails() {
 
-        Log.i(TAG, "fetchLandingPageDetails: AuthToken" + Config.getInstance().getAuthToken());
+        Log.i(TAG, "fetchLandingPageDetails: AuthToken" + Config.getInstance().getPhone());
 
         HashMap<String, String> urlParams = new HashMap<>();
+        JSONObject postData = new JSONObject();
+        try {
 
-        if (mMap != null) {
-            LatLng center = mMap.getCameraPosition().target;
-            urlParams.put("latitude", String.valueOf(center.latitude));
-            urlParams.put("longitude", String.valueOf(center.longitude));
-        } else {
-            urlParams.put("latitude", Config.getInstance().getCurrentLatitude());
-            urlParams.put("longitude", Config.getInstance().getCurrentLongitude());
+            if (mMap != null) {
+                LatLng center = mMap.getCameraPosition().target;
+                postData.put("latitude",Config.getInstance().getCurrentLatitude());
+                postData.put("latitude", String.valueOf(center.latitude));
+                postData.put("longitude", String.valueOf(center.longitude));
+            } else {
+                postData.put("latitude", Config.getInstance().getCurrentLatitude());
+                postData.put("longitude", Config.getInstance().getCurrentLongitude());
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        DataManager.fetchLandingPageDetails(urlParams, new LandingPageListener() {
+
+
+        DataManager.fetchLandingPageDetails(postData, new LandingPageListener() {
 
             @Override
             public void onLoadCompleted(LandingPageBean landingPageBeanWS) {
@@ -2605,22 +2912,26 @@ LatLng newLatLng=null;
 
     public void onPlotLocation(boolean isMarkerNeeded, int type, double latitude, double longitude) {
 
+LandingPageBean landingPageBean = new LandingPageBean();
+ArrayList<CarBean> carBeanArrayList =landingPageBean.getCars();
         LatLng newLatLng = null;
         try {
             newLatLng = new LatLng(latitude, longitude);
             if (isMarkerNeeded) {
                 switch (type) {
                     case LOCATION_SOURCE:
-                        mMap.addMarker(new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.pickup_png_black)));
+                        mMap.addMarker(new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_pickup)));
                         break;
                     case LOCATION_DESTINATION:
-                        mMap.addMarker(new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_destination_marker)));
+                        mMap.addMarker(new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.destinationfinaldone)));
                         break;
                     default:
                         mMap.addMarker(new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.defaultMarker()));
                         break;
                 }
             }
+
+
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(newLatLng, 18));
             Log.i(TAG, "onPlotLocation: Position" + newLatLng);
 
@@ -2628,6 +2939,8 @@ LatLng newLatLng=null;
             e.printStackTrace();
 
         }
+
+
     }
 
 
@@ -2654,7 +2967,7 @@ LatLng newLatLng=null;
 
                 Log.i(TAG, "onLoadCompleted: Time Taken" + polyPointsBean.getTimeText());
                 Log.i(TAG, "onLoadCompleted: Distance" + polyPointsBean.getDistanceText());
-                HashMap fareHashMap =new HashMap();
+                 fareHashMap =new HashMap();
                 // & polyPointsBean.getDistanceText()!=null & polyPointsBean.getDistanceText()!="" & polyPointsBean.getDistanceText()!=" "
                 Float distancedinroundfigur=1f;
                 if(polyPointsBean.getDistanceText().length()>3) {
@@ -2728,6 +3041,9 @@ LatLng newLatLng=null;
         }
 
         polyLine = mMap.addPolyline(polyLineOptions);
+
+      //  mMap.addMarker(new MarkerOptions())
+
     }
 
     public void mapAutoZoom() {
@@ -2743,15 +3059,20 @@ LatLng newLatLng=null;
         builder.include(newLatLng2);
         bounds = builder.build();
 
-//        mMap.setPadding(0, (int) (height - getStatusBarHeight() - mActionBarHeight - (px * 160)), 0, (int) (height - getStatusBarHeight() - mActionBarHeight - (px * 120)));
+
+     //   mMap.setPadding(0, (int) (height - getStatusBarHeight() - mActionBarHeight - (px * 160)), 0, (int) (height - getStatusBarHeight() - mActionBarHeight - (px * 120)));
 
 //        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (40 * px)));
+
         if (mapFragment.getView() != null) {
             if (mapFragment.getView().getHeight() > 150 * px)
-                mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (20 * px)));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (40 * px))); //20
             else
-                mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (5 * px)));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (4 * px))); //5
         }
+
+      mapFragment.getView().setPadding(10,120,10,150);
+      //  mMap.setPadding(20,75,20,150);
 
     }
 
@@ -2932,6 +3253,50 @@ LatLng newLatLng=null;
     @Override
     public void onConnectionSuspended(int arg0) {
 
+    }
+
+    private static final int SPLASH_TIME = 3000;
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        return false;
+    }
+
+
+    private class BackgroundTask extends AsyncTask {
+        Intent intent;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            intent = new Intent(LandingPageActivity.this, ShowVehiclesOnMapActivity.class);
+        }
+
+        @Override
+        protected Object doInBackground(Object[] params) {
+
+            /*  Use this method to load background
+             * data that your app needs. */
+
+            try {
+                Thread.sleep(SPLASH_TIME);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+//            Pass your loaded data here using Intent
+
+//            intent.putExtra("data_key", "");
+            startActivity(intent);
+           // finish();
+        }
     }
 }
 

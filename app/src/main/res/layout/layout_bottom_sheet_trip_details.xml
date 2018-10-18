@@ -257,7 +257,7 @@
                 android:layout_weight="1"
                 android:text="@string/label_cash"
                 android:textColor="#6B6B6B"
-                android:textSize="16sp"/>
+                android:textSize="20sp"/>
 
             <ride.happyy.user.widgets.CustomTextView
                 android:id="@+id/txt_total_rate_trip_details"
@@ -267,7 +267,7 @@
                 android:paddingLeft="20dp"
                 android:text="@string/sample_fare"
                 android:textColor="@color/black"
-                android:textSize="16sp"/>
+                android:textSize="20sp"/>
 
         </LinearLayout>
 

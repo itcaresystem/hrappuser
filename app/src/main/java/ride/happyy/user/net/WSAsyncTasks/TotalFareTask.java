@@ -3,6 +3,8 @@ package ride.happyy.user.net.WSAsyncTasks;
 
 import android.os.AsyncTask;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 
 import ride.happyy.user.model.FareBean;
@@ -13,17 +15,18 @@ public class TotalFareTask extends AsyncTask<String, Integer, FareBean> {
     private TotalFareTask.TotalFareTaskListener totalFareTaskListener;
 
     private HashMap<String, String> urlParams;
+    private JSONObject postData;
 
-    public TotalFareTask(HashMap<String, String> urlParams) {
+    public TotalFareTask(JSONObject postData) {
         super();
-        this.urlParams = urlParams;
+        this.postData = postData;
     }
 
     @Override
     protected FareBean doInBackground(String... params) {
 
         System.out.println(">>>>>>>>>doInBackground");
-        TotalFareInvoker totalFareInvoker = new TotalFareInvoker(urlParams, null);
+        TotalFareInvoker totalFareInvoker = new TotalFareInvoker(null, postData);
         return totalFareInvoker.invokeTotalFareWS();
 
     }

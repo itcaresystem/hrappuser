@@ -54,7 +54,6 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-
         <service android:name=".services.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -169,7 +168,8 @@
         <activity android:name=".activity.HelpSimpleActivity" />
         <activity android:name=".activity.OutOfDhakaActivity" />
         <activity android:name=".activity.DocumentUpActivity" />
-        <activity android:name=".activity.DiagnosticOfferRequestActivity"></activity>
+        <activity android:name=".activity.DiagnosticOfferRequestActivity" />
+        <activity android:name=".ShowVehiclesOnMapActivity"></activity>
     </application>
 
 </manifest>

@@ -19,6 +19,14 @@
         <item name="material_drawer_header_selection_text">@color/material_drawer_header_selection_text</item>
     </style>
 
+    <style name="RegistrationItemUnderline">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:background">@color/gray_transparent_70</item>
+    </style>
+
     <style name="NestedScrollBarStyle">
         <item name="android:scrollbarFadeDuration">2</item>
         <item name="android:scrollbars">vertical</item>

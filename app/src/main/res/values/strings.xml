@@ -124,7 +124,7 @@
 
     <string name="label_promotion">Promotion</string>
     <string name="label_rate_nyour_trip">RATE YOUR TRIP</string>
-    <string name="label_requesting">Requesting…</string>
+    <string name="label_requesting">Requesting…plese wait.</string>
     <string name="label_resend_code_in">Re send code in</string>
     <string name="label_say_thanks">Say Thanks!</string>
     <string name="label_select">Select :</string>
@@ -253,10 +253,50 @@
 
     <string name="pp_title">Pricing Policy</string>
     <string name="pp_shortdescriptipn">Fare for your trip will be based on our pricing policy and other necessary adjustments.</string>
+    //for bike
     <string name="pp_basefare">Base Fare.........৳25.0</string>
-       <string name="pp_perkm">Per Kilometer.....৳12.0</string>
+    <string name="pp_perkm">Per Kilometer.....৳12.0</string>
     <string name="pp_perminute">Per Minute.......৳0.5</string>
     <string name="pp_minimumfare">Minimum Fare...৳30</string>
+
+    //for cng
+    <string name="cng_pp_basefare">Base Fare.........৳40.0</string>
+    <string name="cng_pp_perkm">Per Kilometer.....৳15.0</string>
+    <string name="cng_pp_perminute">Per Minute.......৳1.5</string>
+    <string name="cng_pp_minimumfare">Minimum Fare...৳50.0</string>
+    //for car
+    <string name="car_pp_basefare">Base Fare.........৳50.0</string>
+    <string name="car_pp_perkm">Per Kilometer.....৳20.0</string>
+    <string name="car_pp_perminute">Per Minute.......৳2.5</string>
+    <string name="car_pp_minimumfare">Minimum Fare...৳80.0</string>
+    //for ambulance
+    <string name="ambulance_pp_basefare">Base Fare.........৳750.0</string>
+    <string name="ambulance_pp_perkm">Per Kilometer.....৳0.10</string>
+    <string name="ambulance_pp_perminute">Per Minute.......৳7.0</string>
+    <string name="ambulance_pp_minimumfare">Minimum Fare...৳750.0</string>
+
+    //for hire_car
+    <string name="hire_car_pp_basefare">Base Fare.........৳250.0</string>
+    <string name="hire_car_pp_perkm">Per Kilometer.....৳22.00</string>
+    <string name="hire_car_pp_perminute">Per Minute.......৳4.0</string>
+    <string name="hire_car_pp_minimumfare">Minimum Fare...৳450.0</string>
+    //for premio
+    <string name="premio_pp_basefare">Base Fare.........৳3500.0</string>
+    <string name="premio_pp_perkm">Per Kilometer after day over.....৳22.0</string>
+    <string name="premio_pp_perminute">Per Minute after day over.......৳4.0</string>
+    <string name="premio_pp_minimumfare">Minimum Fare...৳3500.0</string>
+    //for noah
+    <string name="noah_pp_basefare">Base Fare.........৳4000.0</string>
+    <string name="noah_pp_perkm">Per Kilometer after day over.....৳24.0</string>
+    <string name="noah_pp_perminute">Per Minute after day over.......৳4.50</string>
+    <string name="noah_pp_minimumfare">Minimum Fare...৳4000.0</string>
+    //for hiace
+    <string name="hiace_pp_basefare">Base Fare.........৳4500.0</string>
+    <string name="hiace_pp_perkm">Per Kilometer after day over.....৳25.0</string>
+    <string name="hiace_pp_perminute">Per Minute after day over.......৳4.5</string>
+    <string name="hiace_pp_minimumfare">Minimum Fare...৳4500.0</string>
+
+
     <string name="pp_note">*Prices may vary</string>
 
     <!-- TODO: Remove or change this placeholder text -->

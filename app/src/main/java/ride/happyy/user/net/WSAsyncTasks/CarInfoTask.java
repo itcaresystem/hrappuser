@@ -3,6 +3,8 @@ package ride.happyy.user.net.WSAsyncTasks;
 
 import android.os.AsyncTask;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 
 import ride.happyy.user.model.CarBean;
@@ -13,10 +15,11 @@ public class CarInfoTask extends AsyncTask<String, Integer, CarBean> {
     private CarInfoTask.CarInfoTaskListener carInfoTaskListener;
 
     private HashMap<String, String> urlParams;
+    JSONObject postData;
 
-    public CarInfoTask(HashMap<String, String> urlParams) {
+    public CarInfoTask(JSONObject postData) {
         super();
-        this.urlParams = urlParams;
+        this.postData = postData;
     }
 
     /*public CarInfoTask(JSONObject urlParams) {
@@ -27,7 +30,7 @@ public class CarInfoTask extends AsyncTask<String, Integer, CarBean> {
     protected CarBean doInBackground(String... params) {
 
         System.out.println(">>>>>>>>>doInBackground");
-        CarInfoInvoker carInfoInvoker = new CarInfoInvoker(urlParams, null);
+        CarInfoInvoker carInfoInvoker = new CarInfoInvoker(null, postData);
         return carInfoInvoker.invokeCarInfoWS();
     }
 

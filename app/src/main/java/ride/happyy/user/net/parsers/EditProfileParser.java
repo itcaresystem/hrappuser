@@ -92,8 +92,8 @@ public class EditProfileParser {
                                 if (userObj.has("email")) {
                                     userBean.setEmail(userObj.optString("email"));
                                 }
-                                if (userObj.has("number")) {
-                                    userBean.setMobileNumber(userObj.optString("number"));
+                                if (userObj.has("mobile_number")) {
+                                    userBean.setMobileNumber(userObj.optString("mobile_number"));
                                 }
                             }
                         }

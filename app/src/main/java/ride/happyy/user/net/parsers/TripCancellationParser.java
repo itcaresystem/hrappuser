@@ -94,8 +94,10 @@ public class TripCancellationParser {
 
                 if (dataJSObject != null) {
                     try {
-                        if (dataJSObject.has("trip_ID")) {
+                        if (dataJSObject.has("trip_id")) {
 //                            tripCancellationBean.setFeedBackType(dataJSObject.optString("feedback_type"));
+
+                            tripCancellationBean.setTripID("trip_id");
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

@@ -3,6 +3,8 @@ package ride.happyy.user.net.WSAsyncTasks;
 
 import android.os.AsyncTask;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 
 import ride.happyy.user.model.LandingPageBean;
@@ -13,17 +15,18 @@ public class LandingPageDetailsTask extends AsyncTask<String, Integer, LandingPa
     private LandingPageDetailsTaskListener landingPageDetailsTaskListener;
 
     private HashMap<String, String> urlParams;
+    private JSONObject postData;
 
-    public LandingPageDetailsTask(HashMap<String, String> urlParams) {
+    public LandingPageDetailsTask(JSONObject postData) {
         super();
-        this.urlParams = urlParams;
+        this.postData = postData;
     }
 
     @Override
     protected LandingPageBean doInBackground(String... params) {
 
         System.out.println(">>>>>>>>>doInBackground");
-        LandingPageDetailsInvoker landingPageDetailsInvoker = new LandingPageDetailsInvoker(urlParams, null);
+        LandingPageDetailsInvoker landingPageDetailsInvoker = new LandingPageDetailsInvoker(null, postData);
         return landingPageDetailsInvoker.invokeLandingPageDetailsWS();
     }
 

@@ -43,6 +43,7 @@ import ride.happyy.user.R;
 import ride.happyy.user.app.App;
 import ride.happyy.user.listeners.PolyPointsListener;
 import ride.happyy.user.listeners.TripDetailsListener;
+import ride.happyy.user.model.DriverBean;
 import ride.happyy.user.model.PolyPointsBean;
 import ride.happyy.user.model.TripBean;
 import ride.happyy.user.model.TripDetailsBean;
@@ -89,6 +90,7 @@ public class TripDetailsActivity extends BaseAppCompatNoDrawerActivity {
     private BottomSheetBehavior<LinearLayout> bottomSheetBehavior;
     private ViewGroup.LayoutParams param;
     private TextView txtRating;
+    private DriverBean driverBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +98,11 @@ public class TripDetailsActivity extends BaseAppCompatNoDrawerActivity {
         setContentView(R.layout.activity_trip_details);
 
         tripBean = (TripBean) getIntent().getSerializableExtra("bean");
+        if(getIntent().hasExtra("driverdetails")){
+            driverBean = (DriverBean) getIntent().getSerializableExtra("driverdetails");
+        }
+
+
 
         initViews();
 
@@ -205,7 +212,8 @@ public class TripDetailsActivity extends BaseAppCompatNoDrawerActivity {
 
         HashMap<String, String> urlParams = new HashMap<>();
 
-        urlParams.put("id", tripBean.getId());
+     //   urlParams.put("id", tripBean.getId());
+        urlParams.put("trip_id", driverBean.getTripID());
 
         DataManager.fetchTripDetails(urlParams, new TripDetailsListener() {
             @Override
@@ -259,7 +267,7 @@ public class TripDetailsActivity extends BaseAppCompatNoDrawerActivity {
             txtDriverName.setText(tripDetailsBean.getDriverName());
             txtSubTotalFare.setText(tripDetailsBean.getSubTotalFare());
             txtPromotionFare.setText(tripDetailsBean.getPromotionFare());
-            txtTotalFare.setText(tripDetailsBean.getTotalFare());
+            txtTotalFare.setText("৳"+tripDetailsBean.getFare());
 
             ratingTrip.setRating(tripDetailsBean.getRating());
 
@@ -312,7 +320,7 @@ public class TripDetailsActivity extends BaseAppCompatNoDrawerActivity {
 
             newLatLng = new LatLng(destinationLatitude, destinationLongitude);
 //            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newLatLng, 11));
-            mMap.addMarker(new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_destination_marker)));
+            mMap.addMarker(new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.destinationfinaldone)));
 
         } catch (NumberFormatException e) {
             e.printStackTrace();

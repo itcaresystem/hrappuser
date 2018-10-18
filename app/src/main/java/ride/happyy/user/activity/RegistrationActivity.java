@@ -715,6 +715,20 @@ public class RegistrationActivity extends BaseAppCompatNoDrawerActivity {
                 swipeView.setRefreshing(false);
 //                setProgressScreenVisibility(false, false);
 
+                if (getIntent().hasExtra("forgetpass")) {
+
+                    if (!basicBean.isPhoneAvailable()) {
+                        // initiatePhoneVerification();
+                        Intent intentforgetPassword = new Intent(getBaseContext(),ForgotPasswordActivity.class);
+                        intentforgetPassword.putExtra("phone",registrationBean.getPhone());
+                        startActivity(intentforgetPassword);
+                    } else {
+                        Snackbar.make(coordinatorLayout, phone + "This Number is not Registered!!", Snackbar.LENGTH_LONG)
+                                .setAction(R.string.btn_dismiss, snackBarDismissOnClickListener).show();
+                    }
+
+                }
+
                 if (basicBean.isPhoneAvailable()) {
                     initiatePhoneVerification();
                 } else {

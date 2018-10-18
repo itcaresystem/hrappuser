@@ -14,5 +14,7 @@ public class NotificationsActivity extends BaseAppCompatNoDrawerActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Notifications");
+
+
     }
 }

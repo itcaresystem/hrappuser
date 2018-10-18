@@ -14,6 +14,7 @@ import java.util.HashMap;
 
 import ride.happyy.user.R;
 import ride.happyy.user.adapter.TripDetailsRecyclerAdapter;
+import ride.happyy.user.config.Config;
 import ride.happyy.user.listeners.TripListListener;
 import ride.happyy.user.model.TripBean;
 import ride.happyy.user.model.TripListBean;
@@ -72,6 +73,7 @@ public class TripsActivity extends BaseAppCompatNoDrawerActivity {
     public void fetchTripsList() {
 
         HashMap<String, String> urlParams = new HashMap<>();
+        urlParams.put("phone", Config.getInstance().getPhone());
 
         DataManager.fetchTripList(urlParams, new TripListListener() {
 

@@ -6,6 +6,9 @@ import com.google.android.gms.maps.model.LatLng
 class DriverBean : BaseBean() {
 
     var tripID: String = ""
+    var trip_status: String = ""
+    var request_id: String = ""
+    var trip_confirmation_code: String =""
     var appStatus: Int = 0
     var requestStatus: String = ""
     var driverName: String = ""
@@ -15,6 +18,9 @@ class DriverBean : BaseBean() {
     var carName: String = ""
     var carNumber: String = ""
     var time: String = ""
+    var fare: String = ""
+    var carType:String =""
+    var carTypeId:String =""
     var carPhoto: String = ""
     var sourceLatitude: String = ""
     var sourceLongitude: String = ""

@@ -95,6 +95,9 @@ public class RequestStatusParser {
                         if (dataJSObject.has("id")) {
                             requestBean.setId(dataJSObject.optString("id"));
                         }
+                        if (dataJSObject.has("request_id")) {
+                            requestBean.setRequest_id(dataJSObject.optString("request_id"));
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

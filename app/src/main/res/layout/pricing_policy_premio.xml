@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_margin="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:layout_gravity="center"
+    android:gravity="center"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ride.happyy.user.widgets.CustomTextView
+            android:id="@+id/pp_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pp_title"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp"
+            />
+        <ride.happyy.user.widgets.CustomTextView
+            android:id="@+id/pp_shortDescriptionTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textStyle="normal"
+            android:text="@string/pp_shortdescriptipn"
+            android:layout_marginBottom="10dp"/>
+        <ride.happyy.user.widgets.CustomTextView
+            android:id="@+id/pp_basefareTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textSize="10dp"
+            android:text="@string/premio_pp_basefare"/>
+
+        <ride.happyy.user.widgets.CustomTextView
+            android:id="@+id/pp_perkmTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textSize="10dp"
+            android:text="@string/premio_pp_perkm"/>
+        <ride.happyy.user.widgets.CustomTextView
+            android:id="@+id/pp_perminuteTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textSize="10dp"
+            android:text="@string/premio_pp_perminute"/>
+        <ride.happyy.user.widgets.CustomTextView
+            android:id="@+id/pp_minimumfareTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textSize="10dp"
+            android:text="@string/premio_pp_minimumfare"/>
+
+        <ride.happyy.user.widgets.CustomTextView
+            android:padding="10dp"
+            android:id="@+id/pp_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textSize="10dp"
+            android:text="@string/pp_note"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

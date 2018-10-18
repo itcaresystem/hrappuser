@@ -103,9 +103,9 @@ public class WebConnector {
 //            urlConnection.setRequestProperty("User-Agent", AppConstants.USER_AGENT_CCAVENUE);
             urlConnection.setRequestProperty("Content-Type", "application/json");
             urlConnection.setRequestProperty("Accept", "application/json");
-            if (Config.getInstance().getAuthToken() != null && !Config.getInstance().getAuthToken().equalsIgnoreCase(""))
+            if (Config.getInstance().getPhone() != null && !Config.getInstance().getPhone().equalsIgnoreCase(""))
 //                urlConnection.setRequestProperty("Authorization", /*"Bearer " +*/ Config.getInstance().getAuthToken());
-                urlConnection.setRequestProperty("Auth", /*"Bearer " +*/ Config.getInstance().getAuthToken());
+                urlConnection.setRequestProperty("Auth", /*"Bearer " +*/ Config.getInstance().getPhone());
             urlConnection.setConnectTimeout(60000);
             urlConnection.setReadTimeout(60000);
             urlConnection.setDoOutput(true);
@@ -198,7 +198,7 @@ public class WebConnector {
                 e.printStackTrace();
             }
         }
-        builder.addFormDataPart("auth_token", Config.getInstance().getAuthToken());
+        builder.addFormDataPart("phone", Config.getInstance().getPhone());
         switch (postName) {
             case "profile_update":
                 if (fileList != null && fileList.size() > 0 && !fileList.isEmpty()) {
@@ -236,9 +236,9 @@ public class WebConnector {
                 .addHeader("Connection", "Keep-Alive")
                 .addHeader("Content-type", "multipart/form-data; boundary=" + boundary)
                 .post(requestBody);
-        if (Config.getInstance().getAuthToken() != null && !Config.getInstance().getAuthToken().equalsIgnoreCase(""))
+        if (Config.getInstance().getPhone() != null && !Config.getInstance().getPhone().equalsIgnoreCase(""))
 //            rBuilder.addHeader("Authorization", /*"Bearer " +*/ Config.getInstance().getAuthToken());
-            rBuilder.addHeader("Auth", /*"Bearer " +*/ Config.getInstance().getAuthToken());
+            rBuilder.addHeader("Auth", /*"Bearer " +*/ Config.getInstance().getPhone());
 
 
         Request request = rBuilder.build();
@@ -285,9 +285,9 @@ public class WebConnector {
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0 ( compatible ) ");
             urlConnection.setRequestProperty("Accept", "application/json");
-            if (Config.getInstance().getAuthToken() != null && !Config.getInstance().getAuthToken().equalsIgnoreCase(""))
+            if (Config.getInstance().getPhone() != null && !Config.getInstance().getPhone().equalsIgnoreCase(""))
 //                urlConnection.setRequestProperty("Authorization", /*"Bearer " +*/ Config.getInstance().getAuthToken());
-                urlConnection.setRequestProperty("Auth", /*"Bearer " +*/ Config.getInstance().getAuthToken());
+                urlConnection.setRequestProperty("Auth", /*"Bearer " +*/ Config.getInstance().getPhone());
             urlConnection.setConnectTimeout(60000);
             urlConnection.setReadTimeout(60000);
             urlConnection.setDoOutput(false);
@@ -333,9 +333,9 @@ public class WebConnector {
             urlConnection.setRequestProperty("Content-Type", "application/json");
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0 ( compatible ) ");
             urlConnection.setRequestProperty("Accept", "application/json");
-            if (Config.getInstance().getAuthToken() != null && !Config.getInstance().getAuthToken().equalsIgnoreCase(""))
+            if (Config.getInstance().getPhone() != null && !Config.getInstance().getPhone().equalsIgnoreCase(""))
 //                urlConnection.setRequestProperty("Authorization", /*"Bearer " +*/ Config.getInstance().getAuthToken());
-                urlConnection.setRequestProperty("Auth", /*"Bearer " +*/ Config.getInstance().getAuthToken());
+                urlConnection.setRequestProperty("Auth", /*"Bearer " +*/ Config.getInstance().getPhone());
 
             urlConnection.setConnectTimeout(60000);
             urlConnection.setReadTimeout(60000);
@@ -402,9 +402,9 @@ public class WebConnector {
                 .addHeader("Accept", "application/json")
                 .addHeader("Content-type", "multipart/form-data; boundary=" + boundary)
                 .put(requestBody);
-        if (Config.getInstance().getAuthToken() != null && !Config.getInstance().getAuthToken().equalsIgnoreCase(""))
+        if (Config.getInstance().getPhone() != null && !Config.getInstance().getPhone().equalsIgnoreCase(""))
 //            rBuilder.addHeader("Authorization", /*"Bearer " +*/ Config.getInstance().getAuthToken());
-            rBuilder.addHeader("Auth", /*"Bearer " +*/ Config.getInstance().getAuthToken());
+            rBuilder.addHeader("Auth", /*"Bearer " +*/ Config.getInstance().getPhone());
         Request request = rBuilder.build();
         int statusCode = 0;
         try {
@@ -454,9 +454,9 @@ public class WebConnector {
                 .addHeader("Accept", "application/json")
 //                .addHeader("Connection", "Keep-Alive")
                 .addHeader("Content-type", "application/json");
-        if (Config.getInstance().getAuthToken() != null && !Config.getInstance().getAuthToken().equalsIgnoreCase(""))
+        if (Config.getInstance().getPhone() != null && !Config.getInstance().getPhone().equalsIgnoreCase(""))
 //            rBuilder.addHeader("Authorization", /*"Bearer " +*/ Config.getInstance().getAuthToken());
-            rBuilder.addHeader("Auth", /*"Bearer " +*/ Config.getInstance().getAuthToken());
+            rBuilder.addHeader("Auth", /*"Bearer " +*/ Config.getInstance().getPhone());
 
         rBuilder.get();
 
@@ -544,9 +544,9 @@ public class WebConnector {
                 .addHeader("Connection", "Keep-Alive")
                 .addHeader("Content-Type", "application/json")
                 .addHeader("User-Agent", "Mozilla/5.0 ( compatible ) ");
-        if (Config.getInstance().getAuthToken() != null && !Config.getInstance().getAuthToken().equalsIgnoreCase(""))
+        if (Config.getInstance().getPhone() != null && !Config.getInstance().getPhone().equalsIgnoreCase(""))
 //            rBuilder.addHeader("Authorization", /*"Bearer " +*/ Config.getInstance().getAuthToken());
-            rBuilder.addHeader("Auth", /*"Bearer " +*/ Config.getInstance().getAuthToken());
+            rBuilder.addHeader("Auth", /*"Bearer " +*/ Config.getInstance().getPhone());
 
         Request request = rBuilder.build();
 

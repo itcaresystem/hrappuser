@@ -129,7 +129,72 @@ public class LandingPageDetailsParser {
                             }
                             if (carObj.has("max_size")) {
                                 carBean.setMaxSize(carObj.optString("max_size"));
+                               // carBean.setVehicle_lat(carObj.optDouble("vehicle_lat"));
                             }
+
+                            if (carObj.has("id")) {
+                                carBean.setId(carObj.optString("id"));
+                            }
+                            if (carObj.has("vehicle_type")) {
+                                carBean.setVehicle_type(carObj.optString("vehicle_type"));
+                            }
+
+                            if (carObj.has("service_type")) {
+                                carBean.setService_type(carObj.optString("service_type"));
+                            }
+                            if (carObj.has("driver_id")) {
+                                carBean.setDriver_id(carObj.optString("driver_id"));
+                            }
+                            if (carObj.has("phone")) {
+                                carBean.setPhone(carObj.optString("phone"));
+                            }
+
+                            if (carObj.has("vehicle_lat")) {
+                               // carBean.setMaxSize(carObj.optString("vehicle_lat"));
+                                carBean.setVehicle_lat(carObj.optDouble("vehicle_lat"));
+                            }
+                            if (carObj.has("vehicle_lon")) {
+                                carBean.setVehicle_lon(carObj.optDouble("vehicle_lon"));
+                            }
+
+                            if (carObj.has("is_verified")) {
+                                carBean.set_verified(carObj.optBoolean("is_verified"));
+                            }
+                            if (carObj.has("is_active")) {
+                                carBean.set_active(carObj.optBoolean("is_active"));
+                            }
+                            if (carObj.has("is_online")) {
+                                carBean.set_online(carObj.optBoolean("is_online"));
+                            }
+                            if (carObj.has("trip_status")) {
+                                carBean.setTrip_status(carObj.optBoolean("trip_status"));
+                            }
+                            if (carObj.has("on_trip")) {
+                                carBean.setOn_trip(carObj.optBoolean("on_trip"));
+                            }
+                            if (carObj.has("is_bike_service")) {
+                                carBean.set_bike_service(carObj.optBoolean("is_bike_service"));
+                            }
+                            if (carObj.has("is_cng_service")) {
+                                carBean.set_cng_service(carObj.optBoolean("is_cng_service"));
+                            }
+                            if (carObj.has("is_car_service")) {
+                                carBean.set_car_service(carObj.optBoolean("is_car_service"));
+                            }
+
+                            if (carObj.has("is_ambulance_service")) {
+                                carBean.set_ambulance_service(carObj.optBoolean("is_ambulance_service"));
+                            }
+                            if (carObj.has("is_car_premio_service")) {
+                                carBean.set_car_premio_service(carObj.optBoolean("is_car_premio_service"));
+                            }
+                            if (carObj.has("is_car_noah_service")) {
+                                carBean.set_car_noah_service(carObj.optBoolean("is_car_noah_service"));
+                            }
+                            if (carObj.has("is_car_hiace_service")) {
+                                carBean.set_car_noah_service(carObj.optBoolean("is_car_hiace_service"));
+                            }
+
 
                             Log.i(TAG, "parseLandingPageDetailsResponse: " + new Gson().toJson(carBean));
 

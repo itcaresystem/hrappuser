@@ -98,6 +98,9 @@ public class TripDetailsParser {
                         if (dataJSObject.has("id")) {
                             tripDetailsBean.setId(dataJSObject.optString("id"));
                         }
+                        if (dataJSObject.has("trip_id")) {
+                            tripDetailsBean.setTrip_id(dataJSObject.optString("trip_id"));
+                        }
                         if (dataJSObject.has("trip_status")) {
                             tripDetailsBean.setTripStatus(dataJSObject.optString("trip_status"));
                         }
@@ -136,6 +139,9 @@ public class TripDetailsParser {
                         }
                         if (dataJSObject.has("total_fare")) {
                             tripDetailsBean.setTotalFare(dataJSObject.optString("total_fare"));
+                        }
+                        if (dataJSObject.has("fare")) {
+                            tripDetailsBean.setFare(dataJSObject.optString("fare"));
                         }
                         if (dataJSObject.has("source_latitude")) {
                             tripDetailsBean.setSourceLatitude(dataJSObject.optString("source_latitude"));
