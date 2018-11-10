@@ -703,21 +703,24 @@ public class DataManager {
             @Override
             public void dataDownloadedSuccessfully(PolyPointsBean polyPointsBean) {
                 if (polyPointsBean == null)
-                    polyPointsListener.onLoadFailed(AppConstants.WEB_ERROR_MSG);
+                   // polyPointsListener.onLoadFailed(AppConstants.WEB_ERROR_MSG);
+                polyPointsListener.onLoadFailed("Polypoints bean null problem");
                 else {
                     if (polyPointsBean.getStatus().equalsIgnoreCase("Success")) {
                         polyPointsListener.onLoadCompleted(polyPointsBean);
                     } else if (polyPointsBean.getStatus().equalsIgnoreCase("Error")) {
                         polyPointsListener.onLoadFailed(polyPointsBean.getErrorMsg());
                     } else {
-                        polyPointsListener.onLoadFailed(AppConstants.WEB_ERROR_MSG);
+                       // polyPointsListener.onLoadFailed(AppConstants.WEB_ERROR_MSG);
+                        polyPointsListener.onLoadFailed("Load fail  problem");
                     }
                 }
             }
 
             @Override
             public void dataDownloadFailed() {
-                polyPointsListener.onLoadFailed(AppConstants.WEB_ERROR_MSG);
+               // polyPointsListener.onLoadFailed(AppConstants.WEB_ERROR_MSG);
+                polyPointsListener.onLoadFailed("Download fail  problem");
             }
         });
         polyPointsTask.execute();

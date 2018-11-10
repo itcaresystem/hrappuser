@@ -23,5 +23,6 @@
 
     <dimen name="infologo_width_h">15sp</dimen>
     <dimen name="map_marker_diameter">100</dimen>
-
+    <dimen name="dest_width">96dp</dimen>
+    <dimen name="dest_height">100dp</dimen>
 </resources>

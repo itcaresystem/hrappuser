@@ -310,6 +310,12 @@ public class SettingsPageActivity extends BaseAppCompatNoDrawerActivity {
         return postData;
     }
 
+   public void onPasswordChangeClick(View view){
+        Intent intent=new Intent(this,ChangePasswordActivity.class);
+        startActivity(intent);
+
+    }
+
     public void onSignOutClick(MenuItem item) {
 
         App.logout();

@@ -31,6 +31,8 @@ import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.AutocompletePredictionBuffer;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,6 +59,9 @@ public class SearchPageActivity extends BaseAppCompatNoDrawerActivity
     private static final int REQ_SEARCH_WORK = 1;
     private static final int HOME_LOCATION = 0;
     private static final int WORK_LOCATION = 1;
+    //Address: dhaka
+    //North Latitude: 23.900002 South Latitude: 23.661270 East Longitude: 90.509105 West Longitude: 90.329547
+    private static final LatLngBounds BOUNDS_OF_DHAKA_CITY = new LatLngBounds(new LatLng(23.661270,90.329547), new LatLng(23.900002,90.509105));
 
     private int locationSelect = AppConstants.LOCATION_SELECTED_ONITEMCLICK;
     private Toolbar toolbarSearch;
@@ -326,7 +331,7 @@ public class SearchPageActivity extends BaseAppCompatNoDrawerActivity
                 // contain the results when the query completes.
                 PendingResult<AutocompletePredictionBuffer> results =
                         Places.GeoDataApi
-                                .getAutocompletePredictions(mGoogleApiClient, strAddress, null,
+                                .getAutocompletePredictions(mGoogleApiClient, strAddress, BOUNDS_OF_DHAKA_CITY,
                                         typeFilter);
 
 

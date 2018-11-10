@@ -14,6 +14,7 @@ class DriverBean : BaseBean() {
     var driverName: String = ""
     var driverPhoto: String = ""
     var driverNumber: String = ""
+    var driverStatus:Int =0
     var rating: Float = 0f
     var carName: String = ""
     var carNumber: String = ""
@@ -22,6 +23,7 @@ class DriverBean : BaseBean() {
     var carType:String =""
     var carTypeId:String =""
     var carPhoto: String = ""
+    var sourcseLocation: String = ""
     var sourceLatitude: String = ""
     var sourceLongitude: String = ""
     var sourceLatLng: LatLng? = null
@@ -29,6 +31,7 @@ class DriverBean : BaseBean() {
             this.sourceLatLng = LatLng(dSourceLatitude, dSourceLongitude)
             return field
         }
+    var destinationLocation: String = ""
     var destinationLatitude: String = ""
     var destinationLongitude: String = ""
     var destinationLatLng: LatLng? = null

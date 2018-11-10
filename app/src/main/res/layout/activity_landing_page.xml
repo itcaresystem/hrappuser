@@ -13,19 +13,15 @@
 
    <!-- <include layout="@layout/layout_actionbar_title_extra_w">  </include>-->
 
-    <include
-        layout="@layout/fragment_map"
-        app:layout_anchor="@+id/ll_trip_details_driver_info"
-        app:layout_anchorGravity="top"/>
+    <include layout="@layout/fragment_map" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_location_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="70dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="150dp"
         android:layout_marginRight="10dp"
         android:focusable="true"
-        android:onClick="onLocationButtonClick"
         android:scaleType="centerInside"
         android:src="@drawable/ic_location"
         android:tint="@color/white"
@@ -34,22 +30,7 @@
         android:visibility="visible"
         android:layout_gravity="bottom|end"
         />
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_location_button1"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="110dp"
-        android:layout_marginBottom="40dp"
-        android:layout_marginRight="10dp"
-        android:focusable="true"
-        android:scaleType="fitCenter"
-        android:src="@drawable/outofdhakalogoselected"
-        android:tint="@color/white"
-        app:backgroundTint="@color/parpel"
-        app:fabSize="auto"
-        android:layout_gravity="bottom|end"
-        android:visibility="gone"
-        />
+
     <Button
         android:id="@+id/distinationconfirm"
         android:visibility="visible"
@@ -64,60 +45,97 @@
         android:background="@color/blue_transparent_50"
         android:textStyle="bold|italic"
         android:layout_marginBottom="30dp"/>
+    <ImageButton
+        android:visibility="gone"
+        android:id="@+id/outOfDhakaServ"
+        android:layout_width="45dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:minWidth="40dp"
+        android:minHeight="40dp"
+        android:padding="5dp"
+        android:gravity="center"
+        android:layout_gravity="bottom|center"
+        android:scaleType="fitCenter"
+        android:onClick="onClickOutsideDhaka"
+        android:background="@drawable/circle_gray"
+        android:src="@drawable/outofdhakalofinalselectedpng"/>
 
     <include layout="@layout/layout_confirmation"/>
+
     <FrameLayout
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:id="@+id/container"/>
 
     <FrameLayout
-        android:id="@+id/fl_landing_page"
-        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:id="@+id/destination_select_fl"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="300dp"
-        app:layout_anchor="@+id/ll_landing_estimation_bottom_sheet"
         app:layout_anchorGravity="top|center_horizontal">
 
-        <ImageView
-            android:id="@+id/iv_marker"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="300dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/pickup"
-            android:visibility="gone"/>
 
-
-<TextView
-    android:id="@+id/dest_top_part"
-    android:background="@drawable/btn_click_black_rectangle_with_semicircle_edge"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_marginTop="1dp"
-    android:padding="3dp"
-    android:scaleType="centerInside"
-    android:textColor="@color/white"
-    android:text="DESTINATION"
-    android:textSize="11dp"
-    />
-        <ImageView
-            android:id="@+id/iv_bottom_marker"
+        <TextView
+            android:id="@+id/dest_top_part"
+            android:background="@drawable/btn_click_black_rectangle_with_semicircle_edge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="top|center"
+            android:padding="6dp"
+            android:scaleType="centerInside"
+            android:textColor="@color/white"
+            android:text="DESTINATION"
+            android:layout_marginBottom="50dp"
+            android:textSize="11dp"
+            />
+        <ImageView
+            android:id="@+id/iv_bottom_marker"
+            android:layout_width="96dp"
+            android:layout_height="110dp"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="0dp"
             android:scaleType="centerInside"
             android:src="@drawable/destination"
             android:visibility="visible"/>
 
     </FrameLayout>
 
-    <include
+    <ProgressBar
+        android:visibility="gone"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:id="@+id/doneProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:indeterminateTint="@color/red"
+        android:layout_gravity="center"
+        android:progress="50"
+        android:padding="5dp" style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:indeterminate="true"/>
+
+    <ImageView
+        android:visibility="visible"
+        android:id="@+id/pickup_select_marker"
+        android:layout_width="90dp"
+        android:layout_height="100dp"
+        android:src="@drawable/pickup_here"
+        android:layout_gravity="center"/>
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/destination_select_marker"
+        android:layout_width="96dp"
+        android:layout_height="110dp"
+        android:src="@drawable/ic_destination_trips"
+        android:layout_gravity="center"/>
+
+
+
+   <!-- <include
         android:id="@+id/ll_landing_estimation_bottom_sheet"
-        layout="@layout/layout_bottomsheet_landing"        />
+        layout="@layout/layout_bottomsheet_landing"        /> -->
 
 </android.support.design.widget.CoordinatorLayout>

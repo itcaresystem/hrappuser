@@ -129,7 +129,7 @@ public class LoginActivity extends BaseAppCompatNoDrawerActivity {
             @Override
             public void onLoadFailed(String error) {
 
-                Snackbar.make(coordinatorLayout, R.string.message_login_failed, Snackbar.LENGTH_LONG)
+                Snackbar.make(coordinatorLayout, R.string.message_wrong_password_or_mobile_number, Snackbar.LENGTH_LONG)
                         .setAction(R.string.btn_dismiss, snackBarDismissOnClickListener).show();
                 swipeView.setRefreshing(false);
 

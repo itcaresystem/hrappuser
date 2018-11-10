@@ -65,6 +65,7 @@
                     android:layout_gravity="right"
                     android:onClick="onPhotoEditClick"
                     android:src="@drawable/ic_edit_button"/>
+                
 
             </FrameLayout>
 

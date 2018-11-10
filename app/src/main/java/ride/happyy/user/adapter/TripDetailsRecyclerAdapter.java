@@ -8,6 +8,7 @@ import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ import com.google.gson.Gson;
 import java.util.HashSet;
 
 import ride.happyy.user.R;
+import ride.happyy.user.activity.LandingPageActivity;
 import ride.happyy.user.activity.TripDetailsActivity;
 import ride.happyy.user.app.App;
 import ride.happyy.user.model.TripBean;
@@ -120,10 +122,10 @@ public class TripDetailsRecyclerAdapter extends RecyclerView.Adapter<TripDetails
             holder.txtRate.setVisibility(View.GONE);
         }
 
-        holder.txtDate.setText(App.getUserDateFromUnix(String.valueOf(bean.getTime())));
-        holder.txtTime.setText(App.getUserTimeFromUnix(String.valueOf(bean.getTime())));
+        holder.txtDate.setText(App.getUserDateFromUnix(String.valueOf(bean.getStart_time())));
+        holder.txtTime.setText(App.getUserTimeFromUnix(String.valueOf(bean.getStart_time())));
         holder.txtCarName.setText(bean.getCarName());
-        holder.txtRate.setText(bean.getRate());
+        holder.txtRate.setText("৳"+bean.getRate());
 
         Glide.with(mContext.getApplicationContext())
                 .load(bean.getDriverPhoto())
@@ -133,6 +135,16 @@ public class TripDetailsRecyclerAdapter extends RecyclerView.Adapter<TripDetails
                         .centerCrop()
                         .circleCrop())
                 .into(holder.ivDriverPhoto);
+        holder.rerequestBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent landPageIntent=new Intent(mContext, LandingPageActivity.class);
+                String driv_phone_re_req =bean.getDriver_phone();
+                landPageIntent.putExtra("dri_phone_re_req",driv_phone_re_req);
+                mContext.startActivity(landPageIntent);
+
+            }
+        });
 
         holder.initializeMapView();
 
@@ -150,6 +162,7 @@ public class TripDetailsRecyclerAdapter extends RecyclerView.Adapter<TripDetails
         private ImageView ivDriverPhoto;
         private TextView txtTime;
         private TextView txtCancelled;
+        private Button rerequestBtn;
 
         public MapView mapView;
         GoogleMap map;
@@ -188,7 +201,7 @@ public class TripDetailsRecyclerAdapter extends RecyclerView.Adapter<TripDetails
             txtCarName = (TextView) lytItem.findViewById(R.id.txt_car_name);
             txtRate = (TextView) lytItem.findViewById(R.id.txt_rate);
             txtCancelled = (TextView) lytItem.findViewById(R.id.txt_cancelled);
-
+            rerequestBtn=(Button)lytItem.findViewById(R.id.rerequestBtn);
             ivDriverPhoto = (ImageView) lytItem.findViewById(R.id.iv_driver_photo);
 
             mapView = (MapView) lytItem.findViewById(R.id.list_map_view);

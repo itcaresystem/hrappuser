@@ -169,7 +169,8 @@
         <activity android:name=".activity.OutOfDhakaActivity" />
         <activity android:name=".activity.DocumentUpActivity" />
         <activity android:name=".activity.DiagnosticOfferRequestActivity" />
-        <activity android:name=".ShowVehiclesOnMapActivity"></activity>
+        <activity android:name=".ShowVehiclesOnMapActivity" />
+        <activity android:name=".activity.ChangePasswordActivity"></activity>
     </application>
 
 </manifest>

@@ -64,7 +64,7 @@ public class SplashActivity extends BaseAppCompatNoDrawerActivity {
 
         initViews();
 
-        new Handler().postDelayed(checkDriverTask, 500);
+        new Handler().postDelayed(checkDriverTask, 3000);
 //        new Handler().postDelayed(splashTask, 2000);
     }
 
@@ -110,7 +110,7 @@ public class SplashActivity extends BaseAppCompatNoDrawerActivity {
                     && tripID.equalsIgnoreCase("")) {
                 getData(false);
             } else {
-                new Handler().postDelayed(splashTask, 2000);
+                new Handler().postDelayed(splashTask, 3000);
             }
         }
     };

@@ -111,6 +111,15 @@ public class TripListParser {
                             if (tripObj.has("time")) {
                                 tripBean.setTime(tripObj.optLong("time"));
                             }
+                            if (tripObj.has("start_time")) {
+                                tripBean.setStart_time(tripObj.optLong("start_time"));
+                            }
+                            if (tripObj.has("end_time")) {
+                                tripBean.setEnd_time(tripObj.optLong("end-time"));
+                            }
+                            if (tripObj.has("time")) {
+                                tripBean.setTime(tripObj.optLong("time"));
+                            }
                             if (tripObj.has("fare")) {
                                 tripBean.setRate(tripObj.optString("fare"));
                             }
@@ -133,6 +142,10 @@ public class TripListParser {
                             }
                             if (tripObj.has("driver_photo")) {
                                 tripBean.setDriverPhoto(App.getImagePath(tripObj.optString("driver_photo")));
+                            }
+
+                            if (tripObj.has("driver_phone")) {
+                                tripBean.setDriver_phone(tripObj.optString("driver_phone"));
                             }
 
                             tripList.add(tripBean);

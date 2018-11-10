@@ -13,9 +13,12 @@ class TripBean : BaseBean(), Comparable<TripBean> {
     var car_type: String = ""
     var car_type_id: String = ""
     var time: Long = 0
+    var start_time: Long = 0
+    var end_time: Long = 0
     var rate: String = ""
     var fare: String = ""
     var driverPhoto: String = ""
+    var driver_phone: String = ""
     var sourceLatitude: String = ""
     var sourceLongitude: String = ""
     var destinationLatitude: String = ""

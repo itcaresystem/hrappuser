@@ -165,7 +165,9 @@
     <string name="message_invalid_verification_code">Invalid Verification Code. Please Try Again!</string>
     <string name="message_is_already_registered">Is Already Registered. Please Try Again With Another Number</string>
     <string name="message_login_failed">Login Failed</string>
+    <string name="message_wrong_password_or_mobile_number">Wrong password or mobile number!!</string>
     <string name="message_login_is_successful">Login is Successful</string>
+
     <string name="message_name_is_required">Name is required</string>
     <string name="message_no_cars_available_for_the_location">No Cars Available for the given Location.</string>
     <string name="message_no_driver_available">No Driver is Available. Please try again later</string>

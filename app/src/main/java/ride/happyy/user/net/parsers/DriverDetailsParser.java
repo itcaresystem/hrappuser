@@ -124,6 +124,11 @@ public class DriverDetailsParser {
                         if (dataObj.has("driver_phone")) {
                             driverBean.setDriverNumber(dataObj.optString("driver_phone"));
                         }
+                        if (dataObj.has("driver_status")) {
+                            driverBean.setDriverStatus(dataObj.optInt("driver_status"));
+                        }
+
+
                         if (dataObj.has("car_name")) {
                             driverBean.setCarName(dataObj.optString("car_name"));
                         }
@@ -136,11 +141,17 @@ public class DriverDetailsParser {
                         if (dataObj.has("time")) {
                             driverBean.setTime(dataObj.optString("time"));
                         }
+                        if (dataObj.has("source_location")) {
+                            driverBean.setSourcseLocation(dataObj.optString("source_location"));
+                        }
                         if (dataObj.has("source_latitude")) {
                             driverBean.setSourceLatitude(dataObj.optString("source_latitude"));
                         }
                         if (dataObj.has("source_longitude")) {
                             driverBean.setSourceLongitude(dataObj.optString("source_longitude"));
+                        }
+                        if (dataObj.has("destination_location")) {
+                            driverBean.setDestinationLocation(dataObj.optString("destination_location"));
                         }
                         if (dataObj.has("destination_latitude")) {
                             driverBean.setDestinationLatitude(dataObj.optString("destination_latitude"));

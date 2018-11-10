@@ -60,6 +60,8 @@ public class RequestingPageActivity extends BaseAppCompatNoDrawerActivity {
     private PlaceBean destinationBean;
     private String request_id;
     private View.OnClickListener snackBarRefreshOnClickListener;
+    private String dri_phone_re_req="";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +77,7 @@ public class RequestingPageActivity extends BaseAppCompatNoDrawerActivity {
         fare =getIntent().getStringExtra("fare");
         distance=getIntent().getStringExtra("distance");
         time=getIntent().getStringExtra("time");
-
+        dri_phone_re_req =getIntent().getStringExtra("dri_phone_re_req");
 
 
 /*        sourceLatitude = Double.parseDouble(getIntent().getStringExtra("source_latitude"));
@@ -230,6 +232,7 @@ public class RequestingPageActivity extends BaseAppCompatNoDrawerActivity {
             postData.put("destination_location",destinationBean.getAddress());
             postData.put("destination_latitude",destinationBean.getDLatitude());
             postData.put("destination_longitude",destinationBean.getDLongitude());
+            postData.put("dri_phone_re_req",dri_phone_re_req);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -239,10 +242,8 @@ public class RequestingPageActivity extends BaseAppCompatNoDrawerActivity {
     }
 
     public void performRequestTriggering() {
-
         swipeView.setRefreshing(true);
         JSONObject postData = getRequestTriggeringJSObj();
-
         DataManager.performRequestTriggering(postData, new BasicListener() {
 
             @Override
@@ -402,6 +403,8 @@ public class RequestingPageActivity extends BaseAppCompatNoDrawerActivity {
     */
 
     public void performRequestCancel() {
+        dri_phone_re_req="";
+
 
         swipeView.setRefreshing(true);
         JSONObject postData = getRequestCancelJSObj();

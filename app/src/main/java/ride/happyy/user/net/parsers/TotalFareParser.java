@@ -98,7 +98,31 @@ public class TotalFareParser {
                         if (dataJSObject.has("estimated_fare")) {
                             fareBean.setEstimatedFare(dataJSObject.optString("estimated_fare"));
                         }
-                    } catch (Exception e) {
+                        if (dataJSObject.has("bikeFare")) {
+                            fareBean.setBikeFare(dataJSObject.optString("bikeFare"));
+                        }
+                        if (dataJSObject.has("cngFare")) {
+                            fareBean.setCngFare(dataJSObject.optString("cngFare"));
+                        }
+                        if (dataJSObject.has("carFare")) {
+                            fareBean.setCarFare(dataJSObject.optString("carFare"));
+                        }
+                        if (dataJSObject.has("ambulanceFare")) {
+                            fareBean.setAmbulanceFare(dataJSObject.optString("ambulanceFare"));
+                        }
+                        if (dataJSObject.has("carHireFare")) {
+                            fareBean.setCarHireFare(dataJSObject.optString("carHireFare"));
+                        }
+                        if (dataJSObject.has("ondayHirePremioFare")) {
+                            fareBean.setOndayHirePremioFare(dataJSObject.optString("ondayHirePremioFare"));
+                        }
+                        if (dataJSObject.has("onedayHireNoahFare")) {
+                            fareBean.setOnedayHireNoahFare(dataJSObject.optString("onedayHireNoahFare"));
+                        }
+                        if (dataJSObject.has("onedayHireHiaceFare")) {
+                            fareBean.setOnedayHireHiaceFare(dataJSObject.optString("onedayHireHiaceFare"));
+                        }
+                   } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }

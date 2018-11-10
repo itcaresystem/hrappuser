@@ -38,13 +38,13 @@ public class LocationNameParser {
                         } else if (Type.equalsIgnoreCase("sublocality")) {
                             address += long_name + ", ";
                         } else if (Type.equalsIgnoreCase("locality")) {
-                            // Address2 = Address2 + long_name + ", ";
+                           // address +=   long_name + ", ";
                             address += long_name + ", ";
-                        } /*else if (Type.equalsIgnoreCase("administrative_area_level_2")) {
+                        } else if (Type.equalsIgnoreCase("administrative_area_level_2")) {
                             address += long_name + ", ";
                         } else if (Type.equalsIgnoreCase("administrative_area_level_1")) {
                             address += long_name + ", ";
-                        } else if (Type.equalsIgnoreCase("country")) {
+                        }/* else if (Type.equalsIgnoreCase("country")) {
                             address += long_name;
                         }*/
                     }

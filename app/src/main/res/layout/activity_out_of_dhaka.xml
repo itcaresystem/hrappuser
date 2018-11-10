@@ -394,12 +394,26 @@
             android:textStyle="bold"
             android:textSize="14dp"
             android:text=" "/>
+        <!--
         <ProgressBar
             android:id="@+id/requestprogressbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="gone"/>
+            android:visibility="gone"/> -->
+
+
+        <ProgressBar
+            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            android:id="@+id/requestprogressbar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:indeterminateTint="@color/red"
+            android:progress="50"
+            android:padding="10dp" style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:indeterminate="true"/>
         <Button
             android:id="@+id/requestBtnForPrimio"
             android:padding="5dp"
