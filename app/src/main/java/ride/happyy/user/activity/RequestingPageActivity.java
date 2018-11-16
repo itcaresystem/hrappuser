@@ -3,6 +3,7 @@ package ride.happyy.user.activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -61,6 +62,7 @@ public class RequestingPageActivity extends BaseAppCompatNoDrawerActivity {
     private String request_id;
     private View.OnClickListener snackBarRefreshOnClickListener;
     private String dri_phone_re_req="";
+    private CountDownTimer cdt;
 
 
     @Override
@@ -96,8 +98,13 @@ public class RequestingPageActivity extends BaseAppCompatNoDrawerActivity {
 
         getSupportActionBar().hide();
         swipeView.setPadding(0, 0, 0, 0);
+        if(App.isNetworkAvailable()) {
+            performRequestRide();
+        }
 
-        performRequestRide();
+        timeCountDown();
+
+
 
     }
 
@@ -165,6 +172,34 @@ public class RequestingPageActivity extends BaseAppCompatNoDrawerActivity {
             }
         }
     };
+
+    public void timeCountDown(){
+
+        if(cdt!=null){
+            cdt.cancel();
+            cdt=null;
+
+        }
+
+
+        cdt = new CountDownTimer(30* 1000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                Log.i(TAG, millisUntilFinished +" millis left");
+            }
+
+            @Override
+            public void onFinish() {
+                Log.i(TAG, "Timer finished");
+
+                    if(App.isNetworkAvailable()) {
+                        performRequestRide();
+                    }
+            }
+        };
+
+        cdt.start();
+    }
 
     public void performRequestRide() {
 
@@ -311,6 +346,9 @@ public class RequestingPageActivity extends BaseAppCompatNoDrawerActivity {
                     if (driverBean != null && driverBean.getAppStatus() == 0) {
                         startActivity(new Intent(RequestingPageActivity.this, LandingPageActivity.class));
                     } else {
+                        if(cdt!=null){
+                            cdt.cancel();
+                        }
                         Log.i(TAG, "navigate: TripBean : " + new Gson().toJson(driverBean));
                         startActivity(new Intent(RequestingPageActivity.this, OnTripActivity.class)
                                 .putExtra("bean", driverBean));
@@ -405,7 +443,6 @@ public class RequestingPageActivity extends BaseAppCompatNoDrawerActivity {
     public void performRequestCancel() {
         dri_phone_re_req="";
 
-
         swipeView.setRefreshing(true);
         JSONObject postData = getRequestCancelJSObj();
 
@@ -460,6 +497,7 @@ public class RequestingPageActivity extends BaseAppCompatNoDrawerActivity {
         try {
             if (requestBean != null) {
                 postData.put("request_id", requestBean.getId());
+                postData.put("phone",Config.getInstance().getPhone());
             }
 
         } catch (JSONException e) {
