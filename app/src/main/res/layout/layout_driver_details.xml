@@ -194,7 +194,7 @@
             android:id="@+id/customer_confirmation_code_old"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2426"/>
+            android:text="0"/>
 
     </LinearLayout>
 

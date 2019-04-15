@@ -27,6 +27,12 @@ public class OutOfDhakaServiceModel {
     String document;
     @SerializedName("reques_time_location")
     String requestTimeLocationAddres;
+    @SerializedName("booking_date")
+    String booking_date;
+    @SerializedName("car_qt")
+    String carQuantity;
+
+
 
     public OutOfDhakaServiceModel() {
     }
@@ -140,5 +146,19 @@ public class OutOfDhakaServiceModel {
 
     public void setRequestTimeLocationAddres(String requestTimeLocationAddres) {
         this.requestTimeLocationAddres = requestTimeLocationAddres;
+    }
+    public String getBooking_date() {
+        return booking_date;
+    }
+
+    public void setBooking_date(String booking_date) {
+        this.booking_date = booking_date;
+    }
+    public String getCarQuantity() {
+        return carQuantity;
+    }
+
+    public void setCarQuantity(String carQuantity) {
+        this.carQuantity = carQuantity;
     }
 }

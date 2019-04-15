@@ -22,7 +22,9 @@ public class ServiceNames {
 
     /*END POINTS*/
     public static final String LOCATION_NAME = "https://maps.googleapis.com/maps/api/geocode/json?";
+   // public static final String LOCATION_NAME = "https://maps.googleapis.com/maps/api/place/details/json?";
     public static final String POLY_POINTS = "https://maps.googleapis.com/maps/api/directions/json?";
+   // https://maps.googleapis.com/maps/api/place/details/output?parameters
 
    // public static final String DUMMY = API + "/dummy?";
 
@@ -42,8 +44,10 @@ public class ServiceNames {
    // public static final String NEW_PASSWORD = API + "/forgot_password.php";
     public static final String UPDATE_FCM_TOKEN = API + "/update_fcm_token.php";
     //public static final String UPDATE_FCM_TOKEN = API + "/save_fcmtoken.php";
-    public static final String EDIT_PROFILE = API + "/update_profile.php";
+   // public static final String EDIT_PROFILE = API + "/update_profile.php";
+    public static final String EDIT_PROFILE = "http://happyyride.com/happyyrideapi/v1/images/myapi/update_profile_user.php";
     //public static final String EDIT_PROFILE = API + "/edit_user.php";
+   // "http://happyyride.com/happyyrideapi/v1/images/myapi/profile_photo_upload.php";
 
     public static final String USER_INFO = API + "/get_profile.php";
    // public static final String USER_INFO = API + "/user_details.php";

@@ -34,6 +34,7 @@ import ride.happyy.user.model.FareBean;
 import ride.happyy.user.model.PlaceBean;
 import ride.happyy.user.model.RequestBean;
 import ride.happyy.user.net.DataManager;
+import ride.happyy.user.net.WSAsyncTasks.FCMRegistrationTask;
 
 ;
 
@@ -63,6 +64,7 @@ public class RequestingPageActivity extends BaseAppCompatNoDrawerActivity {
     private View.OnClickListener snackBarRefreshOnClickListener;
     private String dri_phone_re_req="";
     private CountDownTimer cdt;
+    private String fcm_tocken_fr="";
 
 
     @Override
@@ -99,6 +101,7 @@ public class RequestingPageActivity extends BaseAppCompatNoDrawerActivity {
         getSupportActionBar().hide();
         swipeView.setPadding(0, 0, 0, 0);
         if(App.isNetworkAvailable()) {
+            initFCM();
             performRequestRide();
         }
 
@@ -193,7 +196,7 @@ public class RequestingPageActivity extends BaseAppCompatNoDrawerActivity {
                 Log.i(TAG, "Timer finished");
 
                     if(App.isNetworkAvailable()) {
-                        performRequestRide();
+                       // performRequestRide();
                     }
             }
         };
@@ -259,6 +262,7 @@ public class RequestingPageActivity extends BaseAppCompatNoDrawerActivity {
             postData.put("car_type",carType);
             postData.put("car_type_id",car_type_id);
             postData.put("customer_phone",Config.getInstance().getPhone());
+            postData.put("fcm_token",fcm_tocken_fr);
             postData.put("customer_name",Config.getInstance().getName());
             postData.put("customer_photo",Config.getInstance().getProfilePhoto());
             postData.put("customer_location",sourceBean.getAddress());
@@ -274,6 +278,27 @@ public class RequestingPageActivity extends BaseAppCompatNoDrawerActivity {
         }
 
         return postData;
+    }
+
+    private void initFCM() {
+
+        FCMRegistrationTask fcmRegistrationTask = new FCMRegistrationTask();
+        fcmRegistrationTask.setFCMRegistrationTaskListener(new FCMRegistrationTask.FCMRegistrationTaskListener() {
+            @Override
+            public void dataDownloadedSuccessfully(String fcmToken) {
+
+                Log.i(TAG, "dataDownloadedSuccessfully: FCM TOKEN : " + fcmToken);
+                fcm_tocken_fr=fcmToken;
+
+            }
+
+            @Override
+            public void dataDownloadFailed() {
+
+            }
+        });
+        fcmRegistrationTask.execute();
+
     }
 
     public void performRequestTriggering() {

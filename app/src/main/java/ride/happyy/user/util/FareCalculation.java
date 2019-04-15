@@ -19,11 +19,13 @@ public class FareCalculation {
     public HashMap estimateFare= new HashMap();
     FareBean fareBean = new FareBean();
 
-    public FareBean estimateFareCalculation(float distance, float time ){
+    public FareBean
+    estimateFareCalculation(float distance, float time ){
         fareBean = new FareBean();
        float distanceInKm=Math.round(distance/1000);
         float timeinminute = Math.round(time/60);
         //bike calculation_start
+        /*
         float normalBikeFareDistance =Math.round(appConstants.BIKE_BASE_FARE+(distanceInKm*appConstants.BIKE_PER_KM_FARE));
         normalBikeFareDistance=normalBikeFareDistance+Math.round((normalBikeFareDistance*10)/100);
         float normalFareTime =appConstants.BIKE_BASE_FARE+(timeinminute*appConstants.BIKE_PER_MIN_FARE);
@@ -91,8 +93,8 @@ public class FareCalculation {
         fareBean.setOnedayHireHiaceFare(String.valueOf(appConstants.CAR_TEN_HOURS_PACKAGE_BASE_FARE_HIACE));
 
         //fare calculation fromserver
+*/
 
-        /*
         JSONObject postData = getJsonData(distanceInKm ,timeinminute);
         DataManager.fetchTotalFare(postData, new TotalFareListener() {
             @Override
@@ -106,9 +108,9 @@ public class FareCalculation {
 
             }
         });
-        */
 
-        return fareBean;
+
+       return fareBean;
 
     }
 

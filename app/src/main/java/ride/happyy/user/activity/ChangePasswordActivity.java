@@ -73,7 +73,7 @@ public class ChangePasswordActivity extends BaseAppCompatNoDrawerActivity {
             Toast.makeText(this,"Please enter old password!!",Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(oldPasswordETX.getText().length()<8){
+        if(oldPasswordETX.getText().length()<4){
           Toast.makeText(this,"Please enter correct password",Toast.LENGTH_SHORT).show();
           return false;
         }
@@ -82,8 +82,8 @@ public class ChangePasswordActivity extends BaseAppCompatNoDrawerActivity {
           Toast.makeText(this,"Please enter new password!!",Toast.LENGTH_SHORT).show();
           return false;
       }
-      if(newPasswordETX.getText().length()<8){
-          Toast.makeText(this,"Password lenth minimum 8!!",Toast.LENGTH_SHORT).show();
+      if(newPasswordETX.getText().length()<4){
+          Toast.makeText(this,"Password lenth minimum 4 char!",Toast.LENGTH_SHORT).show();
           return false;
       }
 /*

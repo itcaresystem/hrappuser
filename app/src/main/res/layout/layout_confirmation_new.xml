@@ -129,6 +129,7 @@
 
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:background="@color/transparent"
                     android:id="@+id/confirm_request_cng_ll"
                     android:paddingTop="@dimen/confirm_card_view_padding_top"

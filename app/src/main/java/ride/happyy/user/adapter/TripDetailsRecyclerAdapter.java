@@ -211,13 +211,13 @@ public class TripDetailsRecyclerAdapter extends RecyclerView.Adapter<TripDetails
                 @Override
                 public void onClick(View v) {
 
-                    v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+                  //  v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
                     //                    mVibrator.vibrate(25);
 
-                    bean = tripListBean.getTrips().get(getLayoutPosition());
+                  //  bean = tripListBean.getTrips().get(getLayoutPosition());
 
-                    mContext.startActivity(new Intent(mContext, TripDetailsActivity.class)
-                            .putExtra("bean", bean));
+                   // mContext.startActivity(new Intent(mContext, TripDetailsActivity.class)
+                         //   .putExtra("bean", bean));
                 }
             });
         }
@@ -238,8 +238,8 @@ public class TripDetailsRecyclerAdapter extends RecyclerView.Adapter<TripDetails
             @Override
             public void onMapClick(LatLng latLng) {
 
-                mContext.startActivity(new Intent(mContext, TripDetailsActivity.class)
-                        .putExtra("bean", tripBean));
+               // mContext.startActivity(new Intent(mContext, TripDetailsActivity.class)
+                    //    .putExtra("bean", tripBean));
             }
         });
 

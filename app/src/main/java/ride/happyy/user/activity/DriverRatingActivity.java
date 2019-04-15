@@ -58,6 +58,7 @@ public class DriverRatingActivity extends BaseAppCompatNoDrawerActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_rating);
+        getSupportActionBar().hide();
 
         tripID = getIntent().getStringExtra("trip_id");
         driverBean =(DriverBean) getIntent().getSerializableExtra("driverdetails");

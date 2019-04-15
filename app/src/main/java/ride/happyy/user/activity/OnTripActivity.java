@@ -95,6 +95,7 @@ public class OnTripActivity extends BaseAppCompatNoDrawerActivity implements
     private TextView trip_source_nameTV,trip_destination_nameTV,ontrip_fareTV;
     private Location mLocation;
     private Button btn_driver_cancel;
+    private boolean photo_once=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +120,7 @@ public class OnTripActivity extends BaseAppCompatNoDrawerActivity implements
         setProgressScreenVisibility(true, true);
 
     }
+
 
     private void initViews() {
         extra_info_for_trip_ll=findViewById(R.id.extra_info_for_trip_ll);
@@ -359,49 +361,50 @@ public void onClickTripInfo(View view){
         }else {
             btn_driver_cancel.setVisibility(View.VISIBLE);
         }
+if(photo_once) {
+    switch (driverBean.getCarType()) {
+        case "1":
+            Glide.with(getApplicationContext())
+                    .load(driverBean.getCarPhoto())
+                    .apply(new RequestOptions()
+                            .error(R.drawable.bikeperfectlogoselected)
+                            .fallback(R.drawable.bikeperfectlogoselected))
+                    .into(ivCarPhoto);
+            break;
+        case "2":
+            Glide.with(getApplicationContext())
+                    .load(driverBean.getCarPhoto())
+                    .apply(new RequestOptions()
+                            .error(R.drawable.cng)
+                            .fallback(R.drawable.cng))
+                    .into(ivCarPhoto);
+            break;
+        case "3":
+            Glide.with(getApplicationContext())
+                    .load(driverBean.getCarPhoto())
+                    .apply(new RequestOptions()
+                            .error(R.drawable.carlogo111)
+                            .fallback(R.drawable.carlogo111))
+                    .into(ivCarPhoto);
+            break;
+        case "4":
+            Glide.with(getApplicationContext())
+                    .load(driverBean.getCarPhoto())
+                    .apply(new RequestOptions()
+                            .error(R.drawable.ambulancetestimagepng)
+                            .fallback(R.drawable.ambulancetestimagepng))
+                    .into(ivCarPhoto);
+            break;
+        default:
+            Glide.with(getApplicationContext())
+                    .load(driverBean.getCarPhoto())
+                    .apply(new RequestOptions()
+                            .error(R.drawable.carlogo111)
+                            .fallback(R.drawable.carlogo111))
+                    .into(ivCarPhoto);
 
-        switch (driverBean.getCarType()){
-            case "1":
-                Glide.with(getApplicationContext())
-                        .load(driverBean.getCarPhoto())
-                        .apply(new RequestOptions()
-                                .error(R.drawable.bikeperfectlogoselected)
-                                .fallback(R.drawable.bikeperfectlogoselected))
-                        .into(ivCarPhoto);
-                break;
-            case  "2":
-                Glide.with(getApplicationContext())
-                        .load(driverBean.getCarPhoto())
-                        .apply(new RequestOptions()
-                                .error(R.drawable.cng)
-                                .fallback(R.drawable.cng))
-                        .into(ivCarPhoto);
-                break;
-            case "3":
-                Glide.with(getApplicationContext())
-                        .load(driverBean.getCarPhoto())
-                        .apply(new RequestOptions()
-                                .error(R.drawable.carlogo111)
-                                .fallback(R.drawable.carlogo111))
-                        .into(ivCarPhoto);
-                break;
-            case "4":
-                Glide.with(getApplicationContext())
-                        .load(driverBean.getCarPhoto())
-                        .apply(new RequestOptions()
-                                .error(R.drawable.ambulancetestimagepng)
-                                .fallback(R.drawable.ambulancetestimagepng))
-                        .into(ivCarPhoto);
-                break;
-                default:
-                    Glide.with(getApplicationContext())
-                            .load(driverBean.getCarPhoto())
-                            .apply(new RequestOptions()
-                                    .error(R.drawable.carlogo111)
-                                    .fallback(R.drawable.carlogo111))
-                            .into(ivCarPhoto);
+    }
 
-        }
 
 
 
@@ -417,6 +420,8 @@ public void onClickTripInfo(View view){
                 .into(ivDriverPhoto);
 
         Log.i(TAG, "populateDriverDetails: CarPhoto " + driverBean.getCarPhoto());
+    photo_once=false;
+}
 
         setProgressScreenVisibility(false, false);
 //        fetchAppStatus();
@@ -635,9 +640,9 @@ boolean carZoomBefor=true;
         Bitmap onTripMarker=null;
         switch (cartype){
             case "1":
-                BitmapDrawable bitmapDrawableBike = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_bike_trip);
+                BitmapDrawable bitmapDrawableBike = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_marker_bike);
                 Bitmap bike = bitmapDrawableBike.getBitmap();
-                onTripMarker = Bitmap.createScaledBitmap(bike, 50, 50, false);
+                onTripMarker = Bitmap.createScaledBitmap(bike, 60, 95, false);
                 break;
             case "2":
                 BitmapDrawable bitmapDrawableCng = (BitmapDrawable) getResources().getDrawable(R.drawable.cng);
@@ -645,12 +650,12 @@ boolean carZoomBefor=true;
                 onTripMarker = Bitmap.createScaledBitmap(cng, 50, 50, false);
                 break;
             case "3":
-                BitmapDrawable bitmapDrawableCar = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_driver_details_car);
+                BitmapDrawable bitmapDrawableCar = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_marker_car);
                 Bitmap car = bitmapDrawableCar.getBitmap();
-                onTripMarker = Bitmap.createScaledBitmap(car, 50, 50, false);
+                onTripMarker = Bitmap.createScaledBitmap(car, 60, 90, false);
                 break;
             case "4":
-                BitmapDrawable bitmapDrawableAmbulance = (BitmapDrawable) getResources().getDrawable(R.drawable.ambulanc_png);
+                BitmapDrawable bitmapDrawableAmbulance = (BitmapDrawable) getResources().getDrawable(R.drawable.ambulancetestimagepng);
                 Bitmap ambulance = bitmapDrawableAmbulance.getBitmap();
                 onTripMarker = Bitmap.createScaledBitmap(ambulance, 50, 50, false);
                 break;
@@ -738,8 +743,8 @@ int intPath=0;
             @Override
             public void onLoadFailed(String error) {
                 swipeView.setRefreshing(false);
-                Snackbar.make(coordinatorLayout, error, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.btn_dismiss, snackBarDismissOnClickListener).show();
+               // Snackbar.make(coordinatorLayout, error, Snackbar.LENGTH_LONG)
+                      //  .setAction(R.string.btn_dismiss, snackBarDismissOnClickListener).show();
             }
         });
     }

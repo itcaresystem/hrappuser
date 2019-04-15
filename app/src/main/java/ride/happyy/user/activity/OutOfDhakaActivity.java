@@ -1,14 +1,19 @@
 package ride.happyy.user.activity;
 
+import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
@@ -16,25 +21,44 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.jjobes.slidedatetimepicker.SlideDateTimeListener;
+import com.github.jjobes.slidedatetimepicker.SlideDateTimePicker;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import ride.happyy.user.R;
+import ride.happyy.user.config.Config;
+import ride.happyy.user.model.OutOfDhakaFare;
 import ride.happyy.user.model.OutOfDhakaServiceModel;
+import ride.happyy.user.model.OutofDhakaFareCalModel;
 import ride.happyy.user.model.OutofDhakaServerresponse;
 import ride.happyy.user.net.MyApiService;
 import ride.happyy.user.net.NetworkCall;
 import ride.happyy.user.net.ResponseCallback;
 
 public class OutOfDhakaActivity extends BaseAppCompatNoDrawerActivity {
-    OutOfDhakaServiceModel  outOfDhakaServiceModel;
-    MyApiService myApiService = new NetworkCall();
-Fragment fragment;
-ProgressBar reqProgressBar;
-FrameLayout primioFrameLayout,noahFrameLayout,hiaceFrameLayout;
-TextView fromTv,toTv,pickUpTv,dropOffAddress,responseMessageTv;
-TextView primioRentTv,noahRentTv,hiaceRentTv;
-TextView primioInfoTv,noahInfoTv,hiaceInfoTv;
-EditText picuppAddress,phoneNumberEditText;
-Spinner divisionSpinner,districSpinner;
-Button primioRequestButton,noahRequestButton,hiaceRequestButton;
+    private OutOfDhakaServiceModel  outOfDhakaServiceModel;
+    private MyApiService myApiService = new NetworkCall();
+    private Fragment fragment;
+    private ProgressBar reqProgressBar;
+    private FrameLayout primioFrameLayout,noahFrameLayout,hiaceFrameLayout;
+    private TextView fromTv,toTv,pickUpTv,dropOffAddress,responseMessageTv;
+    private TextView primioRentTv,noahRentTv,hiaceRentTv;
+    private TextView primioInfoTv,noahInfoTv,hiaceInfoTv,mDisplayDate,booking_timeEt;
+    private EditText picuppAddress,phoneNumberEditText;
+    private Spinner districtSpinerfrom,divisionSpinner,districSpinner,bookinig_time_hour,bookinig_time_minute,bookinig_time_am_pm,car_quantity;
+    private Button primioRequestButton,noahRequestButton,hiaceRequestButton;
+    private DatePickerDialog.OnDateSetListener mDateSetListener;
+    private static final String TAG = "OutOfDhakaActivity";
+
+    private SimpleDateFormat mFormatter = new SimpleDateFormat("MMMM dd yyyy hh:mm aa");
+    private Button mButton;
+
+    private SlideDateTimeListener listener =null;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +69,68 @@ Button primioRequestButton,noahRequestButton,hiaceRequestButton;
             //init view
         initView();
         outOfDhakaServiceModel  =new OutOfDhakaServiceModel();
+        mDisplayDate = (TextView) findViewById(R.id.booking_date_outof_dha);
+        booking_timeEt = findViewById(R.id.booking_date_outof_dha_et);
+        listener = new SlideDateTimeListener() {
+
+            @Override
+            public void onDateTimeSet(Date date)
+            {
+                String formatedDate = mFormatter.format(date);
+                mDisplayDate.setText(formatedDate);
+            }
+
+            // Optional cancel listener
+            @Override
+            public void onDateTimeCancel()
+            {
+
+            }
+        };
+
+        mDisplayDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                /*
+
+                new SlideDateTimePicker.Builder(getSupportFragmentManager())
+                        .setListener(listener)
+                        .setInitialDate(new Date())
+                        //.setMinDate(minDate)
+                        //.setMaxDate(maxDate)
+                        //.setIs24HourTime(true)
+                        //.setTheme(SlideDateTimePicker.HOLO_DARK)
+                        //.setIndicatorColor(Color.parseColor("#990000"))
+                        .build()
+                        .show();
+                */
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dialog = new DatePickerDialog(
+                        OutOfDhakaActivity.this,
+                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                        mDateSetListener,
+                        year,month,day);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+
+            }
+        });
+
+        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                month = month + 1;
+                Log.d(TAG, "onDateSet: mm/dd/yyy: " + month + "/" + day + "/" + year);
+
+                String date = day + "/" + month + "/" + year;
+                mDisplayDate.setText(date);
+            }
+        };
 
     }
 
@@ -52,8 +138,13 @@ Button primioRequestButton,noahRequestButton,hiaceRequestButton;
         responseMessageTv   = findViewById(R.id.responsemessagetv);
         reqProgressBar=findViewById(R.id.requestprogressbar);
       //spinner for division and District
+      districtSpinerfrom = findViewById(R.id.districtSpinerfrom);
       divisionSpinner   =   findViewById(R.id.divisionSpinerOutOfDhaka);
       districSpinner    =   findViewById(R.id.districtSpinerOutOfDhaka);
+      bookinig_time_hour = findViewById(R.id.bookinig_time_houre);
+      bookinig_time_minute =findViewById(R.id.bookinig_time_minute);
+      bookinig_time_am_pm =findViewById(R.id.bookinig_time_am_pm);
+      car_quantity = findViewById(R.id.car_quantity);
 
         //frame layout
       primioFrameLayout     =   findViewById(R.id.frameLayoutForPrimio);
@@ -146,9 +237,10 @@ Button primioRequestButton,noahRequestButton,hiaceRequestButton;
               if (checkFields()) {
                   responseMessageTv.setVisibility(View.GONE);
                   reqProgressBar.setVisibility(View.VISIBLE);
-                  outOfDhakaServiceModel.setUserId("1");
+
+                  outOfDhakaServiceModel.setUserId(Config.getInstance().getPhone());
                   outOfDhakaServiceModel.setServiceType("9");
-                  outOfDhakaServiceModel.setPickupAddress(picuppAddress.getText().toString());
+                  outOfDhakaServiceModel.setPickupAddress(picuppAddress.getText().toString()+","+districtSpinerfrom.getSelectedItem().toString());
                   outOfDhakaServiceModel.setDropOffAddress(dropOffAddress.getText().toString());
                   outOfDhakaServiceModel.setDivision(divisionSpinner.getSelectedItem().toString());
                   outOfDhakaServiceModel.setDistrict(districSpinner.getSelectedItem().toString());
@@ -156,7 +248,9 @@ Button primioRequestButton,noahRequestButton,hiaceRequestButton;
                   outOfDhakaServiceModel.setCarType("1");
                   outOfDhakaServiceModel.setRent(primioRentTv.getText().toString().substring(1));
                   outOfDhakaServiceModel.setDocument("Nothing");
-                  outOfDhakaServiceModel.setRequestTimeLocationAddres("Kollanpur");
+                  outOfDhakaServiceModel.setRequestTimeLocationAddres(Config.getInstance().getCurrentLocation());
+                  outOfDhakaServiceModel.setBooking_date(mDisplayDate.getText().toString()+":"+bookinig_time_hour.getSelectedItem().toString()+":"+bookinig_time_minute.getSelectedItem().toString()+":"+bookinig_time_am_pm.getSelectedItem().toString());
+                  outOfDhakaServiceModel.setCarQuantity(car_quantity.getSelectedItem().toString());
 
 
 
@@ -201,9 +295,9 @@ Button primioRequestButton,noahRequestButton,hiaceRequestButton;
               if (checkFields()) {
                   responseMessageTv.setVisibility(View.GONE);
                   reqProgressBar.setVisibility(View.VISIBLE);
-                  outOfDhakaServiceModel.setUserId("2");
+                  outOfDhakaServiceModel.setUserId(Config.getInstance().getPhone());
                   outOfDhakaServiceModel.setServiceType("9");
-                  outOfDhakaServiceModel.setPickupAddress(picuppAddress.getText().toString());
+                  outOfDhakaServiceModel.setPickupAddress(picuppAddress.getText().toString()+","+districtSpinerfrom.getSelectedItem().toString());
                   outOfDhakaServiceModel.setDropOffAddress(dropOffAddress.getText().toString());
                   outOfDhakaServiceModel.setDivision(divisionSpinner.getSelectedItem().toString());
                   outOfDhakaServiceModel.setDistrict(districSpinner.getSelectedItem().toString());
@@ -211,7 +305,9 @@ Button primioRequestButton,noahRequestButton,hiaceRequestButton;
                   outOfDhakaServiceModel.setCarType("2");
                   outOfDhakaServiceModel.setRent(noahRentTv.getText().toString().substring(1));
                   outOfDhakaServiceModel.setDocument("Nothing");
-                  outOfDhakaServiceModel.setRequestTimeLocationAddres("Kollanpur");
+                  outOfDhakaServiceModel.setRequestTimeLocationAddres(Config.getInstance().getCurrentLocation());
+                  outOfDhakaServiceModel.setBooking_date(mDisplayDate.getText().toString()+":"+bookinig_time_hour.getSelectedItem().toString()+":"+bookinig_time_minute.getSelectedItem().toString()+":"+bookinig_time_am_pm.getSelectedItem().toString());
+                  outOfDhakaServiceModel.setCarQuantity(car_quantity.getSelectedItem().toString());
 
                myApiService.sendOutOfdhakaRequest(outOfDhakaServiceModel, new ResponseCallback<String>() {
                    @Override
@@ -247,9 +343,9 @@ Button primioRequestButton,noahRequestButton,hiaceRequestButton;
               if (checkFields()) {
                   responseMessageTv.setVisibility(View.GONE);
                   reqProgressBar.setVisibility(View.VISIBLE);
-                  outOfDhakaServiceModel.setUserId("3");
+                  outOfDhakaServiceModel.setUserId(Config.getInstance().getPhone());
                   outOfDhakaServiceModel.setServiceType("9");
-                  outOfDhakaServiceModel.setPickupAddress(picuppAddress.getText().toString());
+                  outOfDhakaServiceModel.setPickupAddress(picuppAddress.getText().toString()+","+districtSpinerfrom.getSelectedItem().toString());
                   outOfDhakaServiceModel.setDropOffAddress(dropOffAddress.getText().toString());
                   outOfDhakaServiceModel.setDivision(divisionSpinner.getSelectedItem().toString());
                   outOfDhakaServiceModel.setDistrict(districSpinner.getSelectedItem().toString());
@@ -257,8 +353,9 @@ Button primioRequestButton,noahRequestButton,hiaceRequestButton;
                   outOfDhakaServiceModel.setCarType("3");
                   outOfDhakaServiceModel.setRent(hiaceRentTv.getText().toString().substring(1));
                   outOfDhakaServiceModel.setDocument("Nothing");
-                  outOfDhakaServiceModel.setRequestTimeLocationAddres("Kollanpur");
-
+                  outOfDhakaServiceModel.setRequestTimeLocationAddres(Config.getInstance().getCurrentLocation());
+                  outOfDhakaServiceModel.setBooking_date(mDisplayDate.getText().toString()+":"+bookinig_time_hour.getSelectedItem().toString()+":"+bookinig_time_minute.getSelectedItem().toString()+":"+bookinig_time_am_pm.getSelectedItem().toString());
+                  outOfDhakaServiceModel.setCarQuantity(car_quantity.getSelectedItem().toString());
                   myApiService.sendOutOfdhakaRequest(outOfDhakaServiceModel, new ResponseCallback<String>() {
                       @Override
                       public void onSuccess(String data) {
@@ -341,7 +438,30 @@ Button primioRequestButton,noahRequestButton,hiaceRequestButton;
         districSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-          String toDistrict =      districSpinner.getSelectedItem().toString();
+                reqProgressBar.setVisibility(View.VISIBLE);
+
+                OutofDhakaFareCalModel fareCalModel = new OutofDhakaFareCalModel();
+                String toDistrict =      districSpinner.getSelectedItem().toString();
+                String fromDistrict = districtSpinerfrom.getSelectedItem().toString();
+                fareCalModel.setDistrict_from(fromDistrict);
+                fareCalModel.setDistrict_to(toDistrict);
+
+                myApiService.getOutOfDhakaFare(toDistrict,fromDistrict, new ResponseCallback<OutOfDhakaFare>() {
+                    @Override
+                    public void onSuccess(OutOfDhakaFare data) {
+                        primioRentTv.setText(data.getPrimioRent());
+                        noahRentTv.setText(data.getNoahRent());
+                        hiaceRentTv.setText(data.getHiaceRent());
+                        dropOffAddress.setText(data.getDropOffAddress());
+                        reqProgressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError(Throwable th) {
+
+                    }
+                });
+/*
           switch (toDistrict){
               case "Faridpur":
                   primioRentTv.setText("৳6000");
@@ -693,6 +813,7 @@ Button primioRequestButton,noahRequestButton,hiaceRequestButton;
 
 
           }
+          */
             }
 
             @Override
@@ -718,6 +839,10 @@ Button primioRequestButton,noahRequestButton,hiaceRequestButton;
        }
        if(phoneNumberEditText.getText().toString()==""||phoneNumberEditText.getText().toString()==null||phoneNumberEditText.getText().toString().length()!=11){
            Toast.makeText(this,"Please Enter Valid phone number!!",Toast.LENGTH_SHORT).show();
+           return false;
+       }
+       if(mDisplayDate.getText().toString()==""||mDisplayDate.getText().toString()==null){
+           Toast.makeText(this,"Please select booking date!!",Toast.LENGTH_SHORT).show();
            return false;
        }
        return true;

@@ -36,7 +36,18 @@
         android:textColor="@color/blue"
         android:textStyle="bold"
         android:text="From"/>
+    <Spinner
+        android:layout_marginRight="14dp"
+        android:layout_weight="1"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:id="@+id/districtSpinerfrom"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:entries="@array/spinnerDistrict_all"
+        android:background="@drawable/spinner_border"/>
     <ride.happyy.user.widgets.CustomTextView
+        android:visibility="gone"
         android:id="@+id/outOfDhakaFromTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -213,6 +224,118 @@
 
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_margin="5dp"
+            android:background="@color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <ride.happyy.user.widgets.CustomTextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textSize="18dp"
+                android:textColor="@color/black"
+                android:text="Booking Date"/>
+            <TextView
+                android:id="@+id/booking_date_outof_dha"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:text=""
+                android:hint="SELECT"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_margin="5dp"
+            android:background="@color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <ride.happyy.user.widgets.CustomTextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textSize="18dp"
+                android:textColor="@color/black"
+                android:text="Time"/>
+
+            <Spinner
+                android:layout_marginRight="0dp"
+                android:layout_weight="1"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:id="@+id/bookinig_time_houre"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@drawable/spinner_border"
+                android:entries="@array/spinner_houre"/>
+            <Spinner
+                android:layout_marginRight="0dp"
+                android:layout_weight="1"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:id="@+id/bookinig_time_minute"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@drawable/spinner_border"
+                android:entries="@array/spinner_minute"/>
+            <Spinner
+                android:layout_marginRight="0dp"
+                android:layout_weight="1"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:id="@+id/bookinig_time_am_pm"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@drawable/spinner_border"
+                android:entries="@array/spinner_am_pm"/>
+            <EditText
+                android:visibility="gone"
+                android:id="@+id/booking_date_outof_dha_et"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:text=""
+                android:hint="_ _:_ _:PM/AM"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_margin="5dp"
+            android:background="@color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <ride.happyy.user.widgets.CustomTextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textSize="18dp"
+                android:textColor="@color/black"
+                android:text="Car Need(Qnt)"/>
+
+            <Spinner
+                android:layout_marginRight="0dp"
+                android:layout_weight="1"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:id="@+id/car_quantity"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@drawable/spinner_border"
+                android:entries="@array/spiner_car_quentity"/>
+
+
+
+        </LinearLayout>
+
     <LinearLayout
         android:layout_marginLeft="35dp"
         android:layout_marginRight="35dp"
@@ -271,7 +394,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 android:textSize="20dp"
-                android:text="৳0000"/>
+                android:text="৳"/>
 
             <ride.happyy.user.widgets.CustomTextView
                 android:background="@drawable/ic_info_outline_red_24dp"
@@ -318,7 +441,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 android:textSize="20dp"
-                android:text="৳7500"/>
+                android:text="৳"/>
             <ride.happyy.user.widgets.CustomTextView
                 android:background="@drawable/ic_info_outline_red_24dp"
                 android:id="@+id/noahInfoTv"
@@ -363,7 +486,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 android:textSize="20dp"
-                android:text="৳8000"/>
+                android:text="৳"/>
             <ride.happyy.user.widgets.CustomTextView
                 android:id="@+id/hiaceInfoTv"
                 android:background="@drawable/ic_info_outline_red_24dp"

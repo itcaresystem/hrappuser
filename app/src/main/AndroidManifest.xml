@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ride.happyy.user">
+    package="ride.happyy.user"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -10,8 +11,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+  <!--  <uses-permission android:name="android.permission.RECEIVE_SMS" /> -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" tools:node="remove" />
 
     <application
         android:name=".app.App"
@@ -27,7 +28,10 @@
         <!-- android:value="FABRIC_API_KEY"/> -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAxYEVKFJuMAeZCJjBnSAFFeVRexSJfBb4" />
+            android:value="AIzaSyCXJobvhbpvmBp8_JklIuM_IBRFo9p750I" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="655620341be3f6697026273fcd533e94c2a736ad" />
 
         <!--
      Set custom default icon. This is used when no icon is set for incoming notification messages.
@@ -154,11 +158,6 @@
             android:name=".activity.MobileVerificationActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="2d9c12368efeb2745613a2732df30f211c7d4e2c" />
-
         <activity android:name=".SearchPickupLoationActivity" />
         <activity android:name=".activity.HistoryActivityWithTabs" />
         <activity android:name=".activity.HistoryAmbulanceListActivity" />
@@ -170,7 +169,9 @@
         <activity android:name=".activity.DocumentUpActivity" />
         <activity android:name=".activity.DiagnosticOfferRequestActivity" />
         <activity android:name=".ShowVehiclesOnMapActivity" />
-        <activity android:name=".activity.ChangePasswordActivity"></activity>
+        <activity android:name=".activity.ChangePasswordActivity" />
+        <activity android:name=".OneDayReqResult" />
+        <activity android:name=".OneDayReq"></activity>
     </application>
 
 </manifest>

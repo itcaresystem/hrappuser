@@ -187,13 +187,14 @@
                         android:background="@color/underline_color"/>
 
                     <ImageView
+                        android:visibility="gone"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_gravity="end"
                         android:layout_marginRight="30dp"
                         android:layout_marginTop="25dp"
                         android:onClick="onProfileEditPhoneClick"
-                        android:src="@drawable/ic_edit_button"/>
+                        android:src="@drawable/ic_edit_red_24dp"/>
 
                 </FrameLayout>
 
@@ -201,15 +202,16 @@
 
         </LinearLayout>
 
-        <ImageView
-            android:layout_width="50dp"
+        <Button
+            android:background="@drawable/btn_click_black_rectangle_with_semicircle_edge"
+            android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
             android:layout_margin="20dp"
             android:layout_weight="1"
+            android:textColor="@color/white"
             android:onClick="onSuccessButtonClick"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_success"/>
+            android:text="Update"/>
 
     </LinearLayout>
 

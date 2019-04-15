@@ -62,6 +62,7 @@ public class SearchPageActivity extends BaseAppCompatNoDrawerActivity
     //Address: dhaka
     //North Latitude: 23.900002 South Latitude: 23.661270 East Longitude: 90.509105 West Longitude: 90.329547
     private static final LatLngBounds BOUNDS_OF_DHAKA_CITY = new LatLngBounds(new LatLng(23.661270,90.329547), new LatLng(23.900002,90.509105));
+    //private LatLngBounds lngBounds = new LatLngBounds(new LatLng(23.661270,90.329547),new LatLng(23.661270,90.329547));
 
     private int locationSelect = AppConstants.LOCATION_SELECTED_ONITEMCLICK;
     private Toolbar toolbarSearch;
@@ -333,7 +334,6 @@ public class SearchPageActivity extends BaseAppCompatNoDrawerActivity
                         Places.GeoDataApi
                                 .getAutocompletePredictions(mGoogleApiClient, strAddress, BOUNDS_OF_DHAKA_CITY,
                                         typeFilter);
-
 
                 // This method should have been called off the main UI thread. Block and wait for at most 60s
                 // for a result from the API.

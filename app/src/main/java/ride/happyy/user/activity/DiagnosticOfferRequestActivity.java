@@ -14,11 +14,11 @@ public class DiagnosticOfferRequestActivity extends BaseAppCompatNoDrawerActivit
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_daignostic_offer_request);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Diagnostic");
+        getSupportActionBar().setTitle("Diagnostic service Upcoming.......");
     }
 
     public void onClickDiagnosticRequestBtn(View view){
-        Toast.makeText(this,"Your request has been send to authority!You will get a discount code very soon",Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"This Service is not available still now.Will be available very Soon!!",Toast.LENGTH_LONG).show();
 
     }
 }

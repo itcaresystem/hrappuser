@@ -109,7 +109,7 @@ public class PromotionActivity extends BaseAppCompatNoDrawerActivity {
             public void onLoadFailed(String error) {
                 swipeView.setRefreshing(false);
 
-                Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Promo code not valid!!", Toast.LENGTH_LONG).show();
 
                 finish();
             }

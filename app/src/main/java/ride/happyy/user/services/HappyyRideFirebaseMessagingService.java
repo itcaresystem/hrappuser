@@ -17,6 +17,8 @@ import ride.happyy.user.MainActivity;
 import ride.happyy.user.R;
 import ride.happyy.user.activity.DriverRatingActivity;
 import ride.happyy.user.activity.NotificationsActivity;
+import ride.happyy.user.activity.OnTripActivity;
+import ride.happyy.user.activity.SplashActivity;
 import ride.happyy.user.model.BasicBean;
 import ride.happyy.user.model.SuccessBean;
 import ride.happyy.user.net.parsers.TripEndParser;
@@ -28,12 +30,38 @@ public class HappyyRideFirebaseMessagingService extends FirebaseMessagingService
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+
+        String request_id="";
+        // ...
+
+        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
+        Log.i(TAG, "From: " + remoteMessage.getFrom());
+
+        // Check if message contains a data payload.
+
+        if (remoteMessage.getData().size() > 0) {
+            Log.i(TAG, "Message data payload: " + remoteMessage.getData());
+            Log.i(TAG, "Response: " + remoteMessage.getData().get("response"));
+//happyriderequesttone
+            request_id = remoteMessage.getData().get("request_id");
+            initiateDriverRatingService(request_id);
+        }
+        // Check if message contains a notification payload.
+        if (remoteMessage.getNotification() != null) {
+            Log.i(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+            String body = remoteMessage.getNotification().getBody();
+
+
+            //   initiateDriverRatingService ("123");
+
+        }
+
         // ...
 
 //        Log.i(TAG, "onMessageReceived: Remote Message : " + remoteMessage.);
         // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-        Log.i(TAG, "From: " + remoteMessage.getFrom());
+      /*  Log.i(TAG, "From: " + remoteMessage.getFrom());
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
@@ -57,37 +85,38 @@ public class HappyyRideFirebaseMessagingService extends FirebaseMessagingService
                     stopSelf();
                 }
             }
+            */
 
-            if (/* Check if data needs to be processed by long running job */ true) {
+           // if (/* Check if data needs to be processed by long running job */ true) {
                 // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
 //                scheduleJob();
-            } else {
+           // } else {
                 // Handle message within 10 seconds
 //                handleNow();
-            }
+          //  }
 
-        }
+     //   }
 
 
         // Check if message contains a notification payload.
-        if (remoteMessage.getNotification() != null) {
-            String title = remoteMessage.getNotification().getTitle(); //get title
+      //  if (remoteMessage.getNotification() != null) {
+          //  String title = remoteMessage.getNotification().getTitle(); //get title
 
-            String message = remoteMessage.getNotification().getBody(); //get message
+          //  String message = remoteMessage.getNotification().getBody(); //get message
 
-            String click_action = remoteMessage.getNotification().getClickAction(); //get click_action
-
-
-
-            Log.d(TAG, "Message Notification Title: " + title);
-
-            Log.d(TAG, "Message Notification Body: " + message);
-
-            Log.d(TAG, "Message Notification click_action: " + click_action);
+          //  String click_action = remoteMessage.getNotification().getClickAction(); //get click_action
 
 
 
-            sendNotification(title, message,click_action);
+         //   Log.d(TAG, "Message Notification Title: " + title);
+
+          //  Log.d(TAG, "Message Notification Body: " + message);
+
+           // Log.d(TAG, "Message Notification click_action: " + click_action);
+
+
+
+          //  sendNotification(title, message,click_action);
             /*
 
             Log.i(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
@@ -111,13 +140,24 @@ public class HappyyRideFirebaseMessagingService extends FirebaseMessagingService
             }
 
 */
-        }
+     //   }
 
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
     }
 
+    public void initiateDriverRatingService (String requestID){
 
+        Log.i(TAG, "initiateDriverRatingService: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SERVICE STARTED>>>>>>>>>>>>>>>>>>>>>");
+
+        Intent intent = new Intent(this, SplashActivity.class);
+        intent.putExtra("request_id_from", requestID);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+
+    }
+
+/*
     public void initiateDriverRatingService(String id) {
 
         Log.i(TAG, "initiateDriverRatingService: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SERVICE STARTED>>>>>>>>>>>>>>>>>>>>>");
@@ -127,6 +167,8 @@ public class HappyyRideFirebaseMessagingService extends FirebaseMessagingService
                 .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
 
     }
+    */
+    /*
 
     protected void onMessage(Context context, Intent intent) {
         Log.i(TAG, "Received message");
@@ -143,7 +185,8 @@ public class HappyyRideFirebaseMessagingService extends FirebaseMessagingService
         // notifies user
       //  generateNotification (context, message);
     }
-
+    */
+/*
     private void sendNotification(String title,String messageBody, String click_action) {
 
       //  DataBaseHelper dataBaseHelper = new DataBaseHelper(context);
@@ -177,9 +220,10 @@ public class HappyyRideFirebaseMessagingService extends FirebaseMessagingService
 
 
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0  Request code , intent,
 
                 PendingIntent.FLAG_ONE_SHOT);
+
 
 
 
@@ -207,7 +251,8 @@ public class HappyyRideFirebaseMessagingService extends FirebaseMessagingService
 
 
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        notificationManager.notify(0  ID of notification , notificationBuilder.build());
 
     }
+    */
 }

@@ -10,6 +10,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -17,6 +19,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomSheetBehavior;
@@ -50,10 +54,16 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.data.DataBufferUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.AutocompletePrediction;
+import com.google.android.gms.location.places.AutocompletePredictionBuffer;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
@@ -89,11 +99,15 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
+import ride.happyy.user.OneDayReq;
 import ride.happyy.user.R;
 import ride.happyy.user.ShowVehiclesOnMapActivity;
 import ride.happyy.user.adapter.CarTypeRecyclerAdapter;
@@ -115,21 +129,28 @@ import ride.happyy.user.menuFragments.NotificationFragment;
 import ride.happyy.user.menuFragments.PromotionsFragments;
 import ride.happyy.user.menuFragments.SettingsFragment;
 import ride.happyy.user.model.BasicBean;
+import ride.happyy.user.model.Car;
 import ride.happyy.user.model.CarBean;
 import ride.happyy.user.model.DestinationBean;
 import ride.happyy.user.model.DriverBean;
 import ride.happyy.user.model.FareBean;
 import ride.happyy.user.model.LandingPageBean;
+import ride.happyy.user.model.OnedayRequestModel;
+import ride.happyy.user.model.OnedayRequestResponse;
 import ride.happyy.user.model.PlaceBean;
 import ride.happyy.user.model.PolyPointsBean;
 import ride.happyy.user.model.SourceBean;
 import ride.happyy.user.model.UserBean;
 import ride.happyy.user.net.DataManager;
+import ride.happyy.user.net.NetworkCall;
+import ride.happyy.user.net.ResponseCallback;
 import ride.happyy.user.net.WSAsyncTasks.FCMRegistrationTask;
 import ride.happyy.user.net.WSAsyncTasks.LocationNameTask;
 import ride.happyy.user.net.WSAsyncTasks.LocationTask;
 import ride.happyy.user.util.AppConstants;
 import ride.happyy.user.util.FareCalculation;
+
+import static android.provider.Settings.Secure.LOCATION_MODE_HIGH_ACCURACY;
 
 
 public class LandingPageActivity extends BaseAppCompatActivity implements
@@ -143,7 +164,9 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
     private static final int FASTEST_INTERVAL = 5000;
     private static final int DISPLACEMENT = 10;
     private static final String TAG = "LandingPA";
+    private String fcm_tocken;
     private String dri_phone_re_req="";
+    String fcm_tocken_fr="";
 
     private static final LocationRequest mLocationRequest = LocationRequest.create()
             .setInterval(5000)         // 5 seconds
@@ -158,6 +181,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
     private static final int LOCATION_SOURCE = 0;
     private static final int LOCATION_DESTINATION = 1;
     private int click_pick_or_des =1;
+    private NetworkCall networkCall;
 
     private static GoogleMapOptions options = new GoogleMapOptions()
             .mapType(GoogleMap.MAP_TYPE_NORMAL)
@@ -169,6 +193,10 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
             .mapToolbarEnabled(true);
 
     //    private GoogleApiClient mGoogleApiClient;
+    private ArrayList<Car> carsLocation;
+    private ArrayList<Car> bikesLocation;
+    private ArrayList<Car> onlyCarsLocation;
+    private ArrayList<Car> ambulanceLocation;
     protected LocationManager locationManager;
     private Marker CurrentMarker;
     private double dLatitude;
@@ -268,12 +296,14 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
     ImageView destination_select_marker;
     private boolean backPressedToExitOnce;
     private boolean isLocNamFoAtu=false;
+   // private boolean isLocNamFoAtu_des=false;
     private String locNamFoAuto="";
     private ProgressBar doneProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        networkCall = new NetworkCall();
 
         setContentView(R.layout.activity_landing_page);
         outOfdhakaPage = findViewById(R.id.btnForOutofDhakaPage);
@@ -344,8 +374,6 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                 .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
                 .setTypeFilter(3)
                 .build();
-
-
 
 
     }
@@ -421,7 +449,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         final SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("History").withIcon(R.drawable.ic_history_red_24dp);
         SecondaryDrawerItem item3 = new SecondaryDrawerItem().withIdentifier(3).withName("Promotions").withIcon(R.drawable.ic_label_red_24dp);
         SecondaryDrawerItem item4 = new SecondaryDrawerItem().withIdentifier(4).withName("Get Discount").withIcon(R.drawable.ic_person_add_red_24dp);
-        SecondaryDrawerItem item10 = new SecondaryDrawerItem().withIdentifier(10).withName("Diagnostic Test Offer").withIcon(R.drawable.ic_local_hospital_red_24dp);
+        SecondaryDrawerItem item10 = new SecondaryDrawerItem().withIdentifier(10).withName("New Feature").withIcon(R.drawable.ic_local_hospital_red_24dp);
         final SecondaryDrawerItem item5 = new SecondaryDrawerItem().withIdentifier(5).withName("Notifications").withIcon(R.drawable.ic_notifications_none_red_24dp).withBadge("3").withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.red));;
         SecondaryDrawerItem item6 = new SecondaryDrawerItem().withIdentifier(6).withName("Help").withIcon(R.drawable.ic_help_outline_red_24dp);
         SecondaryDrawerItem item7 = new SecondaryDrawerItem().withIdentifier(7).withName("About").withIcon(R.drawable.ic_perm_device_information_red_24dp);
@@ -464,7 +492,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                 Fragment fragment = null;
                 switch ((int)drawerItem.getIdentifier()) {
                     case 1:
-                        Toast.makeText(getApplicationContext(), "HOME", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(getApplicationContext(), "HOME", Toast.LENGTH_SHORT).show();
                         Intent homeIntent = new Intent(getApplicationContext(),LandingPageActivity.class);
                         startActivity(homeIntent);
                         // finish();
@@ -473,27 +501,27 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                     case 2:
                         Intent historyIntent = new Intent(getApplicationContext(),TripsActivity.class);
                         startActivity(historyIntent);
-                        Toast.makeText(getApplicationContext(), "History", Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(getApplicationContext(), "History", Toast.LENGTH_SHORT).show();
 
                         break;
                     case 3:
                         Intent myPromIntent = new Intent(getApplicationContext(),PromotionActivity.class);
                         startActivity(myPromIntent);
-                        Toast.makeText(getApplicationContext(), "Promotion", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(getApplicationContext(), "Promotion", Toast.LENGTH_SHORT).show();
                         break;
                     case 4:
                         Intent discountIntent = new Intent(getApplicationContext(),DiscountActivity.class);
                         startActivity(discountIntent);
-                        Toast.makeText(getApplicationContext(), "Discount", Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(getApplicationContext(), "Discount", Toast.LENGTH_SHORT).show();
                         break;
                     case 10:
-                        Intent daignosticIntent = new Intent(getApplicationContext(),DiagnosticOfferRequestActivity.class);
-                        startActivity(daignosticIntent);
-                        Toast.makeText(getApplicationContext(), "Discount", Toast.LENGTH_SHORT).show();
+                       // Intent daignosticIntent = new Intent(getApplicationContext(),DiagnosticOfferRequestActivity.class);
+                        // startActivity(daignosticIntent);
+                        Toast.makeText(getApplicationContext(), "Coming soon....", Toast.LENGTH_LONG).show();
                         break;
                     case 5:
 
-                        Toast.makeText(getApplicationContext(), "Notification", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(getApplicationContext(), "Notification", Toast.LENGTH_SHORT).show();
                         item5.withName("Notifications").withBadge("0").withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.red));
                         Intent notificationIntent = new Intent(getApplicationContext(),NotificationsActivity.class);
                         startActivity(notificationIntent);
@@ -501,22 +529,28 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                     case 6:
                         Intent helpIntent = new Intent(getApplicationContext(),HelpSimpleActivity.class);
                         startActivity(helpIntent);
-                        Toast.makeText(getApplicationContext(), "Help", Toast.LENGTH_SHORT).show();
+                     //   Toast.makeText(getApplicationContext(), "Help", Toast.LENGTH_SHORT).show();
                         break;
                     case 7:
                         Intent aboutIntent = new Intent(getApplicationContext(),AboutsActivit.class);
                         startActivity(aboutIntent);
-                        Toast.makeText(getApplicationContext(), "About", Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(getApplicationContext(), "About", Toast.LENGTH_SHORT).show();
                         break;
                     case 8:
 
                         Intent settingIntent = new Intent(getApplicationContext(),SettingsPageActivity.class);
                         startActivity(settingIntent);
-                        Toast.makeText(getApplicationContext(), "Setting", Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(getApplicationContext(), "Setting", Toast.LENGTH_SHORT).show();
                         break;
                     case 9:
-                        Intent logoutIntent = new Intent(getApplicationContext(),WelcomeActivity.class);
-                        startActivity(logoutIntent);
+                      //  App.logout();
+                       // Intent logoutIntent = new Intent(getApplicationContext(),WelcomeActivity.class);
+                      //  startActivity(logoutIntent);
+
+                        App.logout();
+                        startActivity(new Intent(getApplicationContext(), SplashActivity.class)
+                                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+                        finish();
                         Toast.makeText(getApplicationContext(), "Log Out", Toast.LENGTH_SHORT).show();
                         break;
 
@@ -651,6 +685,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+        checkHighAcouracy();
         if (checkForLocationPermissions()) {
             if (happyyFareWithService.getVisibility()!=View.VISIBLE) {
                 if (checkPlayServices()) {
@@ -660,6 +695,224 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                 }
             }
         }
+        if (App.isNetworkAvailable()){
+            if(carsLocation==null) {
+                carsLocation = new ArrayList<>();
+            }
+
+        NetworkCall myNewNetworkCall= new NetworkCall();
+        myNewNetworkCall.getAllLocations("", new ResponseCallback<ArrayList<Car>>() {
+            @Override
+            public void onSuccess(ArrayList<Car> data) {
+                carsLocation=data;
+               if(happyyFareWithService.getVisibility()!=View.VISIBLE) {
+                   populateCarsLocation(carsLocation, 0);
+               }
+            }
+
+            @Override
+            public void onError(Throwable th) {
+
+            }
+        });
+        }
+    }
+
+    public void checkHighAcouracy(){
+        int locationMode = 0;
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+                locationMode = Settings.Secure.getInt(getContentResolver(), Settings.Secure.LOCATION_MODE);
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+        }
+        if(locationMode == LOCATION_MODE_HIGH_ACCURACY) {
+            //request location updates
+            // initViews();
+        } else { //redirect user to settings page
+            PopupMessage popupMessage = new PopupMessage(this);
+            popupMessage.show(getString(R.string.message_please_enable_location_service_from_the_settings),
+                    0, getString(R.string.btn_open_settings)," ");
+            popupMessage.setPopupActionListener(new PopupMessage.PopupActionListener() {
+                @Override
+                public void actionCompletedSuccessfully(boolean result) {
+                    Log.d(TAG, "actionCompletedSuccessfully: Settings Button clicked : ");
+                    Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(myIntent);
+                    // isLocationServiceEnableRequestShown = false;
+                }
+
+                @Override
+                public void actionFailed() {
+                    // isLocationServiceEnableRequestShown = false;
+                }
+            });
+            //startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+        }
+    }
+    public Bitmap resizeOnTropMarker(int cartype){
+        Bitmap onTripMarker=null;
+        switch (cartype){
+            case 1:
+                BitmapDrawable bitmapDrawableBike = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_marker_bike);
+                Bitmap bike = bitmapDrawableBike.getBitmap();
+                onTripMarker = Bitmap.createScaledBitmap(bike, 60, 95, false);
+                break;
+            case 2:
+                BitmapDrawable bitmapDrawableCng = (BitmapDrawable) getResources().getDrawable(R.drawable.cng);
+                Bitmap cng = bitmapDrawableCng.getBitmap();
+                onTripMarker = Bitmap.createScaledBitmap(cng, 50, 50, false);
+                break;
+            case 3:
+                BitmapDrawable bitmapDrawableCar = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_marker_car);
+                Bitmap car = bitmapDrawableCar.getBitmap();
+                onTripMarker = Bitmap.createScaledBitmap(car, 60, 90, false);
+                break;
+            case 4:
+                BitmapDrawable bitmapDrawableAmbulance = (BitmapDrawable) getResources().getDrawable(R.drawable.ambulancetestimagepng);
+                Bitmap ambulance = bitmapDrawableAmbulance.getBitmap();
+                onTripMarker = Bitmap.createScaledBitmap(ambulance, 50, 50, false);
+                break;
+            default:
+                break;
+        }
+
+        return onTripMarker;
+
+
+    }
+
+    private void populateBikeLocation(ArrayList<Car> bikeLoca,int req_type) {
+       mMap.clear();
+
+        if (sourceBean != null && destinationBean != null && checkLocationName()) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_destination_new);
+            Bitmap b = bitmapDrawable.getBitmap();
+            Bitmap smallMarker = Bitmap.createScaledBitmap(b, 185, 130, false);
+
+            BitmapDrawable bitmapDrawable_pick = (BitmapDrawable) getResources().getDrawable(R.drawable.pickupnewicone);
+            Bitmap b_pick = bitmapDrawable_pick.getBitmap();
+            Bitmap smallMarker_pick = Bitmap.createScaledBitmap(b_pick, 110, 110, false);
+
+          LatLng  newLatLng1 = new LatLng(sourceBean.getDLatitude(), sourceBean.getDLongitude());
+          LatLng  newLatLng2 = new LatLng(destinationBean.getDLatitude(), destinationBean.getDLongitude());
+            // MarkerOptions pickupMarker = new MarkerOptions().position(newLatLng1).icon(BitmapDescriptorFactory.fromResource(R.drawable.pickupnewicone));
+            MarkerOptions pickupMarker = new MarkerOptions().position(newLatLng1).icon(BitmapDescriptorFactory.fromBitmap(smallMarker_pick));
+            MarkerOptions destinationMarker = new MarkerOptions().position(newLatLng2).icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
+            mMap.addMarker(pickupMarker);
+            mMap.addMarker(destinationMarker);
+            fetchPolyPoints(true,false);
+            mapAutoZoom();
+        }
+        if(bikesLocation==null)
+            bikeLoca=new ArrayList<>();
+
+        if(bikeLoca.size()>0) {
+            Bitmap smallMarker = resizeOnTropMarker(1) ;
+
+            for (int i=0;i<bikeLoca.size();i++){
+                MarkerOptions carMarkerBike = new MarkerOptions().position(new LatLng(bikeLoca.get(i).getLatitude(), bikeLoca.get(i).getLongitute())).icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
+                mMap.addMarker(carMarkerBike);
+
+
+            }
+        }else{
+            // Toast.makeText(getApplicationContext(),"No carslocation found",Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    private void populateOnlyCarLocation(ArrayList<Car> onlyCarLoca,int req_type) {
+
+        mMap.clear();
+        LatLng carLatLng =null;
+        if (sourceBean != null && destinationBean != null && checkLocationName()) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_destination_new);
+            Bitmap b = bitmapDrawable.getBitmap();
+            Bitmap smallMarker = Bitmap.createScaledBitmap(b, 185, 130, false);
+
+            BitmapDrawable bitmapDrawable_pick = (BitmapDrawable) getResources().getDrawable(R.drawable.pickupnewicone);
+            Bitmap b_pick = bitmapDrawable_pick.getBitmap();
+            Bitmap smallMarker_pick = Bitmap.createScaledBitmap(b_pick, 110, 110, false);
+
+           LatLng newLatLng1 = new LatLng(sourceBean.getDLatitude(), sourceBean.getDLongitude());
+           LatLng newLatLng2 = new LatLng(destinationBean.getDLatitude(), destinationBean.getDLongitude());
+            // MarkerOptions pickupMarker = new MarkerOptions().position(newLatLng1).icon(BitmapDescriptorFactory.fromResource(R.drawable.pickupnewicone));
+            MarkerOptions pickupMarker = new MarkerOptions().position(newLatLng1).icon(BitmapDescriptorFactory.fromBitmap(smallMarker_pick));
+            MarkerOptions destinationMarker = new MarkerOptions().position(newLatLng2).icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
+            mMap.addMarker(pickupMarker);
+            mMap.addMarker(destinationMarker);
+            fetchPolyPoints(true,false);
+        }
+        if(onlyCarLoca.size()>0) {
+            Bitmap smallMarker = resizeOnTropMarker(3) ;
+
+            for (int i=0;i<onlyCarLoca.size();i++){
+                MarkerOptions carMarkerBike = new MarkerOptions().position(new LatLng(onlyCarLoca.get(i).getLatitude(), onlyCarLoca.get(i).getLongitute())).icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
+                mMap.addMarker(carMarkerBike);
+
+
+            }
+        }else{
+            // Toast.makeText(getApplicationContext(),"No carslocation found",Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    private void populateAmbulaLocation(ArrayList<Car> ambulaLoca,int req_type) {
+        mMap.clear();
+        LatLng carLatLng =null;
+        if (sourceBean != null && destinationBean != null && checkLocationName()) {
+
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_destination_new);
+            Bitmap b = bitmapDrawable.getBitmap();
+            Bitmap smallMarker = Bitmap.createScaledBitmap(b, 185, 130, false);
+
+            BitmapDrawable bitmapDrawable_pick = (BitmapDrawable) getResources().getDrawable(R.drawable.pickupnewicone);
+            Bitmap b_pick = bitmapDrawable_pick.getBitmap();
+            Bitmap smallMarker_pick = Bitmap.createScaledBitmap(b_pick, 110, 110, false);
+            LatLng newLatLng1 = new LatLng(sourceBean.getDLatitude(), sourceBean.getDLongitude());
+            LatLng newLatLng2 = new LatLng(destinationBean.getDLatitude(), destinationBean.getDLongitude());
+            // MarkerOptions pickupMarker = new MarkerOptions().position(newLatLng1).icon(BitmapDescriptorFactory.fromResource(R.drawable.pickupnewicone));
+            MarkerOptions pickupMarker = new MarkerOptions().position(newLatLng1).icon(BitmapDescriptorFactory.fromBitmap(smallMarker_pick));
+            MarkerOptions destinationMarker = new MarkerOptions().position(newLatLng2).icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
+            mMap.addMarker(pickupMarker);
+            mMap.addMarker(destinationMarker);
+            fetchPolyPoints(true,false);
+        }
+
+        if(ambulaLoca.size()>0) {
+            Bitmap smallMarker = resizeOnTropMarker(4) ;
+
+            for (int i=0;i<ambulaLoca.size();i++){
+                MarkerOptions carMarkerBike = new MarkerOptions().position(new LatLng(ambulaLoca.get(i).getLatitude(), ambulaLoca.get(i).getLongitute())).icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
+                mMap.addMarker(carMarkerBike);
+            }
+        }else{
+            // Toast.makeText(getApplicationContext(),"No carslocation found",Toast.LENGTH_LONG).show();
+        }
+
+    }
+    boolean carsloconce=true;
+    private void populateCarsLocation(ArrayList<Car> carsLocation,int req_type) {
+        if(carsLocation.size()>0 && carsloconce) {
+            Bitmap smallMarker ;
+
+            for (int i=0;i<carsLocation.size();i++){
+
+                    smallMarker = resizeOnTropMarker(carsLocation.get(i).getCar_type());
+                    MarkerOptions carMarkerAll = new MarkerOptions().position(new LatLng(carsLocation.get(i).getLatitude(), carsLocation.get(i).getLongitute())).icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
+                   //  Double d =carsLocation.get(i).getLatitude();
+                  //   String s = d.toString();
+                   //  Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+                    mMap.addMarker(carMarkerAll);
+
+            }
+            carsloconce=false;
+        }else{
+          //  Toast.makeText(getApplicationContext(),"No carslocation found",Toast.LENGTH_LONG).show();
+        }
+
     }
 
     private boolean checkPlayServices() {
@@ -784,6 +1037,8 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         bikeLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(bikesLocation!=null)
+                populateBikeLocation(bikesLocation,1);
                 //  bikeRequestImageView.setBackground(getResources(R.drawable.bg_round_edges_black));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     //selected
@@ -817,6 +1072,8 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         cngLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+               // if(bikesLocation!=null)
+                  //  populateBikeLocation(bikesLocation,1);
                 //  bikeRequestImageView.setBackground(getResources(R.drawable.bg_round_edges_black));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 
@@ -833,6 +1090,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                     carDayHiceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
 
                 }
+
                 bikeRequestBtn.setVisibility(View.GONE);
                 cngRequestBtn.setVisibility(View.VISIBLE);
                 btnRequest.setVisibility(View.GONE);
@@ -851,6 +1109,9 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         carLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(onlyCarsLocation!=null) {
+                    populateOnlyCarLocation(onlyCarsLocation, 3);
+                }
                 //  bikeRequestImageView.setBackground(getResources(R.drawable.bg_round_edges_black));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     bikeRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
@@ -865,7 +1126,10 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                     carDayNoahRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
                     carDayHiceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
 
+
                 }
+
+
                 bikeRequestBtn.setVisibility(View.GONE);
                 cngRequestBtn.setVisibility(View.GONE);
                 btnRequest.setVisibility(View.GONE);
@@ -885,6 +1149,9 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         ambulanceLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(ambulanceLocation!=null) {
+                    populateAmbulaLocation(ambulanceLocation, 4);
+                }
                 //  bikeRequestImageView.setBackground(getResources(R.drawable.bg_round_edges_black));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     bikeRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
@@ -900,6 +1167,8 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                     carDayHiceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
 
                 }
+
+
                 bikeRequestBtn.setVisibility(View.GONE);
                 cngRequestBtn.setVisibility(View.GONE);
                 btnRequest.setVisibility(View.GONE);
@@ -919,6 +1188,9 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         oneHourLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(onlyCarsLocation!=null) {
+                    populateOnlyCarLocation(onlyCarsLocation, 3);
+                }
                 //  bikeRequestImageView.setBackground(getResources(R.drawable.bg_round_edges_black));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     bikeRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
@@ -934,6 +1206,8 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                     carDayHiceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
 
                 }
+
+
                 bikeRequestBtn.setVisibility(View.GONE);
                 cngRequestBtn.setVisibility(View.GONE);
                 btnRequest.setVisibility(View.GONE);
@@ -1021,6 +1295,9 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         dayLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(onlyCarsLocation!=null) {
+                    populateOnlyCarLocation(onlyCarsLocation, 3);
+                }
                 //  bikeRequestImageView.setBackground(getResources(R.drawable.bg_round_edges_black));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     bikeRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
@@ -1038,6 +1315,9 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                     carDayHiceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
 
                 }
+
+
+
                 bikeRequestBtn.setVisibility(View.GONE);
                 cngRequestBtn.setVisibility(View.GONE);
                 btnRequest.setVisibility(View.GONE);
@@ -1055,6 +1335,9 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         dayNoahLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(onlyCarsLocation!=null) {
+                    populateOnlyCarLocation(onlyCarsLocation, 3);
+                }
                 //  bikeRequestImageView.setBackground(getResources(R.drawable.bg_round_edges_black));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     bikeRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
@@ -1072,6 +1355,8 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                     carDayHiceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
 
                 }
+
+
                 bikeRequestBtn.setVisibility(View.GONE);
                 cngRequestBtn.setVisibility(View.GONE);
                 btnRequest.setVisibility(View.GONE);
@@ -1089,6 +1374,9 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         dayHiaceLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(onlyCarsLocation!=null) {
+                    populateOnlyCarLocation(onlyCarsLocation, 3);
+                }
                 //  bikeRequestImageView.setBackground(getResources(R.drawable.bg_round_edges_black));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     bikeRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
@@ -1107,6 +1395,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                     carDayHiceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_black));
 
                 }
+
                 bikeRequestBtn.setVisibility(View.GONE);
                 cngRequestBtn.setVisibility(View.GONE);
                 btnRequest.setVisibility(View.GONE);
@@ -1347,96 +1636,88 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
     public void onClickDoneButton(View view){
         doneProgressBar.setVisibility(View.VISIBLE);
 
+        if(carsLocation==null) {
+            carsLocation = new ArrayList<>();
+        }else {
+            if(carsLocation.size()>0){
+                bikesLocation =new ArrayList<>();
+                onlyCarsLocation = new ArrayList<>();
+                ambulanceLocation = new ArrayList<>();
+                for (int i=0;i<carsLocation.size();i++){
+                    if(carsLocation.get(i).getCar_type()==1){
+                        bikesLocation.add(carsLocation.get(i));
+                    }
+                    if(carsLocation.get(i).getCar_type()==3){
+                        onlyCarsLocation.add(carsLocation.get(i));
+                    }
+                    if(carsLocation.get(i).getCar_type()==4){
+                        ambulanceLocation.add(carsLocation.get(i));
+                    }
+                }
+            }else {
+                bikesLocation =new ArrayList<>();
+                onlyCarsLocation = new ArrayList<>();
+                ambulanceLocation = new ArrayList<>();
+            }
+        }
 
 
-
-
-
-        // mapAutoZoom();
-        // fetchPolyPoints(true);
-        //  onPlotLocation(true, LOCATION_DESTINATION, destinationBean.getDLatitude(), destinationBean.getDLongitude());
-
-
-        //  onDestinationSelect();
-
-        //  mMap.getUiSettings().setScrollGesturesEnabled(false);
-        //  mMap.getUiSettings().setAllGesturesEnabled(false);
-
-        // testing purpose
-        /*
-        mMap.getUiSettings().setAllGesturesEnabled(false);
-        mMap.getUiSettings().setScrollGesturesEnabled(false);
-        mMap.getUiSettings().setZoomGesturesEnabled(false);
-        mMap.getUiSettings().setTiltGesturesEnabled(false);
-        mMap.getUiSettings().setRotateGesturesEnabled(false);
-        */
-      //  int height = 100;
-       // int width = 96;
-      //  BitmapDrawable bitmapdraw=(BitmapDrawable)getResources().getDrawable(R.drawable.ic_destination_new);
-      //  Bitmap b=bitmapdraw.getBitmap();
-       // Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
-
-
-        //Drawable circleDrawable = getResources().getDrawable(R.drawable.ic_destination_new);
-       // BitmapDescriptor  bitmapDescriptor=getMarkerIconFromDrawable(circleDrawable);
-
-        BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_destination_new);
-        Bitmap b = bitmapDrawable.getBitmap();
-        Bitmap smallMarker = Bitmap.createScaledBitmap(b, 185, 130, false);
-
-        BitmapDrawable bitmapDrawable_pick = (BitmapDrawable) getResources().getDrawable(R.drawable.pickupnewicone);
-        Bitmap b_pick = bitmapDrawable_pick.getBitmap();
-        Bitmap smallMarker_pick = Bitmap.createScaledBitmap(b_pick, 110, 110, false);
 
 
         if (sourceBean != null && destinationBean != null && checkLocationName()) {
 
 
-            newLatLng1 = new LatLng(sourceBean.getDLatitude(), sourceBean.getDLongitude());
-            newLatLng2 = new LatLng(destinationBean.getDLatitude(), destinationBean.getDLongitude());
+           // newLatLng1 = new LatLng(sourceBean.getDLatitude(), sourceBean.getDLongitude());
+           // newLatLng2 = new LatLng(destinationBean.getDLatitude(), destinationBean.getDLongitude());
             mMap.clear();
             mMap.isMyLocationEnabled();
            // MarkerOptions pickupMarker = new MarkerOptions().position(newLatLng1).icon(BitmapDescriptorFactory.fromResource(R.drawable.pickupnewicone));
-            MarkerOptions pickupMarker = new MarkerOptions().position(newLatLng1).icon(BitmapDescriptorFactory.fromBitmap(smallMarker_pick));
-            MarkerOptions destinationMarker = new MarkerOptions().position(newLatLng2).icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
-            mMap.addMarker(pickupMarker);
-            mMap.addMarker(destinationMarker);
-            fetchPolyPoints(true);
+          //  MarkerOptions pickupMarker = new MarkerOptions().position(newLatLng1).icon(BitmapDescriptorFactory.fromBitmap(smallMarker_pick));
+           // MarkerOptions destinationMarker = new MarkerOptions().position(newLatLng2).icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
+           // mMap.addMarker(pickupMarker);
+          //  mMap.addMarker(destinationMarker);
+
 
             //view
             pickup_select_marker_imv.setVisibility(View.GONE);
             destination_select_marker.setVisibility(View.GONE);
-            happyyFareWithService.setVisibility(View.VISIBLE);
-
-            mapAutoZoom();
             distinationConfirmButton.setVisibility(View.GONE);
-            doneProgressBar.setVisibility(View.GONE);
-
+            fetchPolyPoints(true,true);
+            populateBikeLocation(bikesLocation,1);
+            bikeDefault();
         }else {
             doneProgressBar.setVisibility(View.GONE);
         }
 
 
-        LatLng carLatLng =null;
-        if(carBeanArrayList!=null) {
-            for (int i=0;i<carBeanArrayList.size();i++){
-                MarkerOptions carMarker = new MarkerOptions().position(new LatLng( carBeanArrayList.get(i).getVehicle_lat(),carBeanArrayList.get(i).getVehicle_lat())).icon((BitmapDescriptorFactory.fromResource(R.drawable.pickuplocationtest1)));
-                Double d =carBeanArrayList.get(i).getVehicle_lat();
-                String s = d.toString();
-                Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
-                mMap.addMarker(carMarker);
-            }
-        }else{
-           // Toast.makeText(getApplicationContext(),"No car is found! Car Bean",Toast.LENGTH_LONG).show();
+    }
+
+    public void bikeDefault(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            //selected
+            bikeRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_black));
+            cngRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+            carRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+            ambulanceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+            carOneHourRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+            carTwoHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+            carFourHoursRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+            carDayPrimioRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+            carDayNoahRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+            carDayHiceRequestImageView.setBackground(getResources().getDrawable(R.drawable.bg_round_edges_gray));
+
         }
-
-
-
-
-        //BackgroundTask backgroundTask = new BackgroundTask();
-        //  backgroundTask.execute(this);
-        //  Toast.makeText(getApplicationContext(),"Nor for test",Toast.LENGTH_LONG).show();
-
+        bikeRequestBtn.setVisibility(View.VISIBLE);
+        cngRequestBtn.setVisibility(View.GONE);
+        btnRequest.setVisibility(View.GONE);
+        carRequestBtn.setVisibility(View.GONE);
+        ambulanceRequestBtn.setVisibility(View.GONE);
+        carOneHourRequestBtn.setVisibility(View.GONE);
+        carTwoHoursRequestBtn.setVisibility(View.GONE);
+        carFourHoursRequestBtn.setVisibility(View.GONE);
+        carDayPrimioRequestBtn.setVisibility(View.GONE);
+        carDayNoahRequestBtn.setVisibility(View.GONE);
+        carDayHiceRequestBtn.setVisibility(View.GONE);
     }
 
     private BitmapDescriptor getMarkerIconFromDrawable(Drawable drawable) {
@@ -1470,7 +1751,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                     markerCar.setPosition(driverBean.getCarLatLng());
                 }
                 mapAutoZoom();
-                fetchPolyPoints(true);
+                fetchPolyPoints(true,false);
             }
 
 
@@ -1574,7 +1855,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
             @Override
             public void onMapClick(LatLng latLng) {
 
-
+                mMap.setMaxZoomPreference(20f);
 
             }
         });
@@ -1601,7 +1882,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                     */
 
                     isCameraMoved = true;
-                    mMap.setMaxZoomPreference(15f);
+                    mMap.setMaxZoomPreference(18f); //15 prev...
                 }
             }
         });
@@ -1628,8 +1909,14 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                                     outOfDhakaServImBtn.setVisibility(View.GONE);
                                     sourceBean.setLatitude(String.valueOf(center.latitude));
                                     sourceBean.setLongitude(String.valueOf(center.longitude));
-                                    getLocationName(String.valueOf(sourceBean.getDLatitude()), String.valueOf(center.longitude));
-                                    distinationConfirmButton.setVisibility(View.VISIBLE);
+                                   //getLocationName(String.valueOf(sourceBean.getDLatitude()), String.valueOf(center.longitude));
+                                  // getlocationAuto(center.latitude,center.longitude);
+
+                                    getAddressFromLocation(center.latitude,center.longitude,getApplicationContext());
+                                    if(!txtSource.getText().equals("") && !txtDestination.getText().equals("")){
+                                        distinationConfirmButton.setVisibility(View.VISIBLE);
+                                    }
+
                                 }else{
                                     distinationConfirmButton.setVisibility(View.GONE);
                                     txtSource.setText("");
@@ -1655,8 +1942,11 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                                     outOfDhakaServImBtn.setVisibility(View.GONE);
                                     destinationBean.setLatitude(String.valueOf(center.latitude));
                                     destinationBean.setLongitude(String.valueOf(center.longitude));
-                                    getLocationNameDestination(String.valueOf(destinationBean.getDLatitude()), String.valueOf(destinationBean.getDLongitude()));
-                                    distinationConfirmButton.setVisibility(View.VISIBLE);
+                                    getAddressFromLocationDes(center.latitude,center.longitude,getApplicationContext());
+                                   // getLocationNameDestination(String.valueOf(destinationBean.getDLatitude()), String.valueOf(destinationBean.getDLongitude()));
+                                    if(!txtSource.getText().equals("") && !txtDestination.getText().equals("")){
+                                        distinationConfirmButton.setVisibility(View.VISIBLE);
+                                    }
                                 }else {
                                     distinationConfirmButton.setVisibility(View.GONE);
                                     txtDestination.setText("");
@@ -1717,6 +2007,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
             public void dataDownloadedSuccessfully(String fcmToken) {
 
                 Log.i(TAG, "dataDownloadedSuccessfully: FCM TOKEN : " + fcmToken);
+                fcm_tocken_fr = fcmToken;
 
                 JSONObject postData = getUpdateFCMTokenJSObj(fcmToken);
 
@@ -2113,10 +2404,34 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         }
     }
 
+    protected void getlocationAuto(double dLatitude,double dLongitude){
+        txtSource.setText("Loading...");
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+        builder.setLatLngBounds(new LatLngBounds(new LatLng(dLatitude,dLongitude),new LatLng(dLatitude,dLongitude)));
+        PlaceListTask placesListTask = new PlaceListTask(dLatitude,dLongitude);
+        //placesListTask.setStrAddress(txtInput);
+        placesListTask.setmLatitude(dLatitude);
+        placesListTask.setmLongitude(dLongitude);
+        placesListTask.execute();
+
+    }
+
+
+    public  void getAddressFromLocation(final double latitude, final double longitude, final Context context) {
+
+        txtSource.setText("Loading...");
+        BackGrounForLoca backGrounForLoca = new BackGrounForLoca(latitude,longitude,context);
+        backGrounForLoca.execute();
+
+
+    }
+
     protected void getLocationName(final String latitude, final String longitude) {
 
 //        swipeView.setRefreshing(true);
        txtSource.setText("Loading...");
+
+
         HashMap<String, String> urlParams = new HashMap<>();
         //	postData.put("uid", id);
         urlParams.put("latlng", latitude + "," + longitude);
@@ -2182,6 +2497,80 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
     }
 
     //for destination event
+
+    public  void getAddressFromLocationDes(final double latitude, final double longitude, final Context context) {
+        txtDestination.setText("Loading...");
+
+        BackGrounForDes backGrounForDes = new BackGrounForDes(latitude,longitude,context);
+        backGrounForDes.execute();
+
+        /*
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+                String result = null;
+                try {
+                    List < Address > addressList = geocoder.getFromLocation(latitude, longitude, 1);
+                    if (addressList != null && addressList.size() > 0) {
+                        Address address = addressList.get(0);
+                        StringBuilder sb = new StringBuilder();
+                        String knownName = address.getFeatureName();
+                        String addresslineee = address.getAddressLine(0);
+                        String subLocality = address.getSubLocality();
+                        String city = address.getLocality();
+                        // String state = address.getAdminArea();
+                        // String country = address.getCountryName();
+                        String postalCode = address.getPostalCode();
+
+
+                        result = knownName+" "+addresslineee+","+subLocality+","+city+","+","+postalCode+".";
+
+                        if(isLocNamFoAtu) {
+
+                            if (null != result) {
+                                txtDestination.setText(locNamFoAuto+","+result);
+                                System.out.println("Location Name Retrieved : " + locNamFoAuto+","+result);
+                                Config.getInstance().setCurrentLocation(locNamFoAuto+","+result);
+
+
+                                if (destinationBean == null) {
+                                    destinationBean = new PlaceBean();
+                                }
+                                destinationBean.setAddress(locNamFoAuto+","+result);
+                                // destinationBean.setName(address);
+                                // destinationBean.setLatitude(latitude);
+                                //  destinationBean.setLongitude(longitude);
+                            }
+                            isLocNamFoAtu=false;
+                            locNamFoAuto="";
+                        }else {
+                            txtDestination.setText(result);
+                            System.out.println("Location Name Retrieved : " + result);
+                            Config.getInstance().setCurrentLocation(result);
+
+
+                            if (destinationBean == null) {
+                                destinationBean = new PlaceBean();
+                            }
+                            destinationBean.setAddress(result);
+                        }
+
+
+
+
+                    }
+                } catch (IOException e) {
+                    Log.e("Location Address Loader", "Unable connect to Geocoder", e);
+                } finally {
+
+                }
+            }
+        };
+        thread.start();
+
+        */
+    }
 
     protected void getLocationNameDestination(final String latitude, final String longitude) {
 
@@ -2675,6 +3064,8 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
     }
     public void onRequestRideClickCarDayNoah(View view){
         view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+
+        /*
         Intent requestAcIntent = new Intent(this,RequestingPageActivity.class);
         requestAcIntent.putExtra("fare",fareBeanAfterCalculate.getOnedayHireNoahFare());
         requestAcIntent.putExtra("fare_bean", fareBeanAfterCalculate);
@@ -2688,9 +3079,56 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
             requestAcIntent.putExtra("dri_phone_re_req", dri_phone_re_req);
         }
         startActivity(requestAcIntent);
+        */
+
+        OnedayRequestModel onedayReqData = new OnedayRequestModel();
+        onedayReqData.setDistance(String.valueOf(distance));
+        onedayReqData.setTime(String.valueOf(time));
+        onedayReqData.setFare(fareBeanAfterCalculate.getOnedayHireHiaceFare());
+        onedayReqData.setCar_type("3");
+        onedayReqData.setCar_type_id("7");
+        onedayReqData.setCustomer_phone(Config.getInstance().getPhone());
+        onedayReqData.setFcm_token(fcm_tocken_fr);
+        onedayReqData.setCustomer_name(Config.getInstance().getName());
+        onedayReqData.setCustomer_photo(Config.getInstance().getProfilePhoto());
+        onedayReqData.setCustomer_location(sourceBean.getAddress());
+        onedayReqData.setCustomer_latitude(sourceBean.getLatitude());
+        onedayReqData.setCustomer_longitude(sourceBean.getLongitude());
+        onedayReqData.setDestination_location(destinationBean.getAddress());
+        onedayReqData.setDestination_latitude(destinationBean.getLatitude());
+        onedayReqData.setDestination_longitude(destinationBean.getLongitude());
+
+        if(!dri_phone_re_req.equals("")) {
+            // requestAcIntent.putExtra("dri_phone_re_req", dri_phone_re_req);
+            onedayReqData.setDri_phone_re_req(dri_phone_re_req);
+        }
+
+        networkCall.sendOndeDayReq(onedayReqData, new ResponseCallback<OnedayRequestResponse>() {
+            @Override
+            public void onSuccess(OnedayRequestResponse data) {
+                doneProgressBar.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(),"Your request has sent.",Toast.LENGTH_LONG).show();
+                Intent onedayRequestAc = new Intent(LandingPageActivity.this, OneDayReq.class);
+                startActivity(onedayRequestAc);
+                finish();
+
+
+            }
+
+            @Override
+            public void onError(Throwable th) {
+                doneProgressBar.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(),"Something Wrong!!!",Toast.LENGTH_LONG).show();
+                Intent onedayRequestAc = new Intent(LandingPageActivity.this, LandingPageActivity.class);
+                startActivity(onedayRequestAc);
+
+            }
+        });
     }
     public void onRequestRideClickCarHice(View view){
         view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+        doneProgressBar.setVisibility(View.VISIBLE);
+        /*
         Intent requestAcIntent = new Intent(this,RequestingPageActivity.class);
         requestAcIntent.putExtra("fare",fareBeanAfterCalculate.getOnedayHireHiaceFare());
         requestAcIntent.putExtra("fare_bean", fareBeanAfterCalculate);
@@ -2704,6 +3142,72 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
             requestAcIntent.putExtra("dri_phone_re_req", dri_phone_re_req);
         }
         startActivity(requestAcIntent);
+
+
+        postData.put("distance", distance);
+
+        postData.put("fare", fare);
+        postData.put("car_type",carType);
+        postData.put("car_type_id",car_type_id);
+        postData.put("customer_phone",Config.getInstance().getPhone());
+        postData.put("fcm_token",fcm_tocken_fr);
+        postData.put("customer_name",Config.getInstance().getName());
+        postData.put("customer_photo",Config.getInstance().getProfilePhoto());
+        postData.put("customer_location",sourceBean.getAddress());
+        postData.put("customer_latitude",sourceBean.getDLatitude());
+        postData.put("customer_longitude",sourceBean.getDLongitude());
+        postData.put("destination_location",destinationBean.getAddress());
+        postData.put("destination_latitude",destinationBean.getDLatitude());
+        postData.put("destination_longitude",destinationBean.getDLongitude());
+        postData.put("dri_phone_re_req",dri_phone_re_req);
+
+        */
+
+        OnedayRequestModel onedayReqData = new OnedayRequestModel();
+        onedayReqData.setDistance(String.valueOf(distance));
+        onedayReqData.setTime(String.valueOf(time));
+        onedayReqData.setFare(fareBeanAfterCalculate.getOnedayHireHiaceFare());
+        onedayReqData.setCar_type("3");
+        onedayReqData.setCar_type_id("8");
+        onedayReqData.setCustomer_phone(Config.getInstance().getPhone());
+        onedayReqData.setFcm_token(fcm_tocken_fr);
+        onedayReqData.setCustomer_name(Config.getInstance().getName());
+        onedayReqData.setCustomer_photo(Config.getInstance().getProfilePhoto());
+        onedayReqData.setCustomer_location(sourceBean.getAddress());
+        onedayReqData.setCustomer_latitude(sourceBean.getLatitude());
+        onedayReqData.setCustomer_longitude(sourceBean.getLongitude());
+        onedayReqData.setDestination_location(destinationBean.getAddress());
+        onedayReqData.setDestination_latitude(destinationBean.getLatitude());
+        onedayReqData.setDestination_longitude(destinationBean.getLongitude());
+
+        if(!dri_phone_re_req.equals("")) {
+           // requestAcIntent.putExtra("dri_phone_re_req", dri_phone_re_req);
+            onedayReqData.setDri_phone_re_req(dri_phone_re_req);
+        }
+
+        networkCall.sendOndeDayReq(onedayReqData, new ResponseCallback<OnedayRequestResponse>() {
+            @Override
+            public void onSuccess(OnedayRequestResponse data) {
+                doneProgressBar.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(),"Your request has sent.",Toast.LENGTH_LONG).show();
+                Intent onedayRequestAc = new Intent(LandingPageActivity.this, OneDayReq.class);
+                startActivity(onedayRequestAc);
+                finish();
+
+            }
+
+            @Override
+            public void onError(Throwable th) {
+                doneProgressBar.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(),"Something Wrong!!!",Toast.LENGTH_LONG).show();
+                Intent onedayRequestAc = new Intent(LandingPageActivity.this, LandingPageActivity.class);
+                startActivity(onedayRequestAc);
+
+            }
+        });
+
+
+
     }
 
 
@@ -2749,7 +3253,7 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
     }
 
 
-    public void fetchPolyPoints(final boolean isPolyLineNeeded) {
+    public void fetchPolyPoints(final boolean isPolyLineNeeded,final boolean isFareCalNeed) {
 
         HashMap<String, String> urlParams = new HashMap<>();
         urlParams.put("origin", sourceBean.getLatitude() + "," + sourceBean.getLongitude());
@@ -2776,17 +3280,38 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                 }
                 float distancefloat = distancedinroundfigur;
                 */
-                if(fareBeanAfterCalculate==null)
-                    fareBeanAfterCalculate = new FareBean();
-                fareBeanAfterCalculate =fareCalculation.estimateFareCalculation(polyPointsBean.getDistance(),polyPointsBean.getTime());
-                bikeFareTextView.setText("৳"+fareBeanAfterCalculate.getBikeFare());
-                cngFareTextView.setText("৳"+fareBeanAfterCalculate.getCngFare());
-                carFareTextView.setText("৳"+fareBeanAfterCalculate.getCarFare());
-                ambulanceFareTextView.setText("৳"+fareBeanAfterCalculate.getAmbulanceFare());
-                oneHourFareTextView.setText("৳"+fareBeanAfterCalculate.getCarHireFare());
-                dayFareTextView.setText("৳"+fareBeanAfterCalculate.getOndayHirePremioFare());
-                dayNoahFareTextView.setText("৳"+fareBeanAfterCalculate.getOnedayHireNoahFare());
-                dayHiaceFareTextView.setText("৳"+fareBeanAfterCalculate.getOnedayHireHiaceFare());
+                happyyFareWithService.setVisibility(View.VISIBLE);
+                doneProgressBar.setVisibility(View.GONE);
+                if(isFareCalNeed) {
+                    float distanceInKm=Math.round(polyPointsBean.getDistance()/1000);
+                    float timeinminute = Math.round(polyPointsBean.getTime()/60);
+                    JSONObject postData = getJsonData(distanceInKm ,timeinminute);
+                    DataManager.fetchTotalFare(postData, new TotalFareListener() {
+                        @Override
+                        public void onLoadCompleted(FareBean fareBeanWs) {
+
+                            if (fareBeanAfterCalculate == null)
+                                fareBeanAfterCalculate = new FareBean();
+                            fareBeanAfterCalculate = fareBeanWs;
+                            bikeFareTextView.setText("৳" + fareBeanAfterCalculate.getBikeFare());
+                            cngFareTextView.setText("৳" + fareBeanAfterCalculate.getCngFare());
+                            carFareTextView.setText("৳" + fareBeanAfterCalculate.getCarFare());
+                            ambulanceFareTextView.setText("৳" + fareBeanAfterCalculate.getAmbulanceFare());
+                            oneHourFareTextView.setText("৳" + fareBeanAfterCalculate.getCarHireFare());
+                            dayFareTextView.setText("৳" + fareBeanAfterCalculate.getOndayHirePremioFare());
+                            dayNoahFareTextView.setText("৳" + fareBeanAfterCalculate.getOnedayHireNoahFare());
+                            dayHiaceFareTextView.setText("৳" + fareBeanAfterCalculate.getOnedayHireHiaceFare());
+
+                            happyyFareWithService.setVisibility(View.VISIBLE);
+                            doneProgressBar.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onLoadFailed(String error) {
+
+                        }
+                    });
+                }
 
                 if (isPolyLineNeeded) {
                    // if (!isDestinationEstimateSelect)
@@ -2803,6 +3328,18 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
                         .setAction(R.string.btn_dismiss, snackBarDismissOnClickListener).show();
             }
         });
+    }
+    public JSONObject getJsonData(float distanceInKm,float timeinminute) {
+        JSONObject jsonData =new JSONObject();
+
+        try {
+            jsonData.put("distanceInKm",distanceInKm);
+            jsonData.put("timeinminute",timeinminute);
+            jsonData.put("promo_code","hr123");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonData;
     }
 
     private void populatePath() {
@@ -3130,8 +3667,369 @@ public class LandingPageActivity extends BaseAppCompatActivity implements
         }, 2000);
     }
 
+    private class PlaceListTask extends AsyncTask<String, Integer, ArrayList<AutocompletePrediction>> {
+
+        private String strAddress;
+        private double mLatitude;
+        private double mLongitude;
+
+        public PlaceListTask(double mLatitude, double mLongitude) {
+            super();
+            this.mLatitude = mLatitude;
+            this.mLongitude = mLongitude;
+
+        }
+
+        public double getmLatitude() {
+            return mLatitude;
+        }
+
+        public void setmLatitude(double mLatitude) {
+            this.mLatitude = mLatitude;
+        }
+
+        public double getmLongitude() {
+            return mLongitude;
+        }
+
+        public void setmLongitude(double mLongitude) {
+            this.mLongitude = mLongitude;
+        }
+
+
+        public String getStrAddress() {
+            return strAddress;
+        }
+
+        public void setStrAddress(String strAddress) {
+            this.strAddress = strAddress;
+        }
+
+        @Override
+        protected ArrayList<AutocompletePrediction> doInBackground(String... params) {
+            mGoogleApiClient = new GoogleApiClient
+                    .Builder(LandingPageActivity.this)
+                    .addApi(Places.GEO_DATA_API)
+                    .addApi(Places.PLACE_DETECTION_API)
+                    .enableAutoManage(LandingPageActivity.this, LandingPageActivity.this)
+                    .build();
+           // LatLngBounds BOUNDS_OF_DHAKA_CITY = new LatLngBounds(new LatLng(23.661270,90.329547), new LatLng(23.900002,90.509105));
+            LatLngBounds selectedLocation = new LatLngBounds(new LatLng(mLatitude,mLongitude), new LatLng(mLatitude,mLongitude));
+
+            if (mGoogleApiClient.isConnected()) {
+                Log.i(TAG, "Starting autocomplete query for: " + strAddress);
+                AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+                        .setCountry("BD")
+                        .build();
+
+                // Submit the query to the autocomplete API and retrieve a PendingResult that will
+                // contain the results when the query completes.
+                PendingResult<AutocompletePredictionBuffer> results =
+                        Places.GeoDataApi
+                                .getAutocompletePredictions(mGoogleApiClient, null, selectedLocation,
+                                        typeFilter);
+
+                // This method should have been called off the main UI thread. Block and wait for at most 60s
+                // for a result from the API.
+                AutocompletePredictionBuffer autocompletePredictions = results
+                        .await(60, TimeUnit.SECONDS);
+
+                // Confirm that the query completed successfully, otherwise return null
+                final com.google.android.gms.common.api.Status status = autocompletePredictions.getStatus();
+                if (!status.isSuccess()) {
+//                Toast.makeText(getContext(), "Error contacting API: " + status.toString(),
+//                        Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "Error getting autocomplete prediction API call: " + status.toString());
+                    autocompletePredictions.release();
+                    return null;
+                }
+
+                Log.i(TAG, "Query completed. Received " + autocompletePredictions.getCount()
+                        + " predictions.");
+
+                // Freeze the results immutable representation that can be stored safely.
+                return DataBufferUtils.freezeAndClose(autocompletePredictions);
+            }
+            Log.e(TAG, "Google API client is not connected for autocomplete query.");
+            return null;
+
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<AutocompletePrediction> result) {
+            super.onPostExecute(result);
+
+            if (result != null) {
+
+                if(isLocNamFoAtu) {
+                    if (result.size()>0) {
+                        String address = result.get(0).getPrimaryText(null)+","+result.get(0).getFullText(null);
+                        txtSource.setText(locNamFoAuto+","+address);
+                        System.out.println("Location Name Retrieved : " + address);
+                        Config.getInstance().setCurrentLocation(locNamFoAuto+","+address);
+
+                        //   txtActionSearch.setText(address);
+
+                        // txtDestination.setText(address);
+                        if (sourceBean == null) {
+                            sourceBean = new PlaceBean();
+                        }
+                        sourceBean.setAddress(locNamFoAuto+","+address);
+                        sourceBean.setName(locNamFoAuto+","+address);
+                        // sourceBean.setLatitude(latitude);
+                        // sourceBean.setLongitude(longitude);
+
+
+                    }
+                    isLocNamFoAtu=false;
+                    locNamFoAuto="";
+                }else{
+                    if (result.size()>0) {
+                        String address = result.get(0).getPrimaryText(null)+","+result.get(0).getFullText(null);
+                        txtSource.setText(address);
+                        System.out.println("Location Name Retrieved : " + address);
+                        Config.getInstance().setCurrentLocation(address);
+
+                        //   txtActionSearch.setText(address);
+
+                        // txtDestination.setText(address);
+                        if (sourceBean == null) {
+                            sourceBean = new PlaceBean();
+                        }
+                        sourceBean.setAddress(address);
+                        sourceBean.setName(address);
+                        // sourceBean.setLatitude(latitude);
+                        // sourceBean.setLongitude(longitude);
+
+
+                    }
+                }
+
+            } else {
+               // swipeView.setRefreshing(false);
+
+            }
+        }
+    }
+ private class  BackGrounForLoca extends AsyncTask {
+        double lat;
+        double lon;
+        Context myContex;
+     public BackGrounForLoca(double lat,double lon,Context myContex) {
+         this.lat = lat;
+         this.lon = lon;
+         this.myContex = myContex;
+     }
+
+     @Override
+     protected void onPreExecute() {
+         super.onPreExecute();
+
+
+     }
+
+     @Override
+     protected Object doInBackground(Object[] objects) {
+         Geocoder geocoder = new Geocoder(myContex, Locale.getDefault());
+         String result = null;
+         try {
+             List < Address > addressList = geocoder.getFromLocation(lat, lon, 1);
+             if (addressList != null && addressList.size() > 0) {
+                 Address address = addressList.get(0);
+
+                        /*
+                        StringBuilder sb = new StringBuilder();
+                        for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
+                            sb.append(address.getAddressLine(i)); //.append("\n");
+                        }
+                        sb.append(address.getFeatureName()).append(",");
+                        sb.append(address.getLocality()).append(",");
+                        sb.append(address.getPostalCode()).append(",");
+                        result = sb.toString();
+                        */
+                // String knownName = address.getFeatureName();
+                 String addresslineee = address.getAddressLine(0);
+                // String subLocality = address.getSubLocality();
+                // String city = address.getLocality();
+                 // String state = address.getAdminArea();
+                 // String country = address.getCountryName();
+                // String postalCode = address.getPostalCode();
+                 result = addresslineee+".";
+
+             }
+         } catch (IOException e) {
+             Log.e("Location Address Loader", "Unable connect to Geocoder", e);
+         } finally {
+
+         }
+         return result;
+     }
+
+     @Override
+     protected void onPostExecute(Object o) {
+         super.onPostExecute(o);
+         String result="";
+         if(o!=null){
+             result =o.toString();
+         }else {
+             result ="Unknown Place";
+         }
+         if(isLocNamFoAtu) {
+             if (null != result) {
+                 txtSource.setText(locNamFoAuto+","+result);
+                 System.out.println("Location Name Retrieved : " + result);
+                 Config.getInstance().setCurrentLocation(locNamFoAuto+","+result);
+
+                 //   txtActionSearch.setText(address);
+
+                 // txtDestination.setText(address);
+                 if (sourceBean == null) {
+                     sourceBean = new PlaceBean();
+                 }
+                 sourceBean.setAddress(locNamFoAuto+","+result);
+                 sourceBean.setName(locNamFoAuto+","+result);
+                 // sourceBean.setLatitude(latitude);
+                 // sourceBean.setLongitude(longitude);
+
+
+             }
+             isLocNamFoAtu=false;
+             locNamFoAuto="";
+         }else {
+
+             txtSource.setText(result);
+
+             Config.getInstance().setCurrentLocation(result);
+
+             //   txtActionSearch.setText(address);
+
+             // txtDestination.setText(address);
+             if (sourceBean == null) {
+                 sourceBean = new PlaceBean();
+             }
+             sourceBean.setAddress(result);
+             sourceBean.setName(result);
+
+         }
+     }
+ }
+
+
+    private class  BackGrounForDes extends AsyncTask {
+        double lat;
+        double lon;
+        Context myContex;
+        public BackGrounForDes(double lat,double lon,Context myContex) {
+            this.lat = lat;
+            this.lon = lon;
+            this.myContex = myContex;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+
+        }
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            Geocoder geocoder = new Geocoder(myContex, Locale.getDefault());
+            String result = null;
+            try {
+                List < Address > addressList = geocoder.getFromLocation(lat, lon, 1);
+                if (addressList != null && addressList.size() > 0) {
+                    Address address = addressList.get(0);
+
+                        /*
+                        StringBuilder sb = new StringBuilder();
+                        for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
+                            sb.append(address.getAddressLine(i)); //.append("\n");
+                        }
+                        sb.append(address.getFeatureName()).append(",");
+                        sb.append(address.getLocality()).append(",");
+                        sb.append(address.getPostalCode()).append(",");
+                        result = sb.toString();
+                        */
+                   // String knownName = address.getFeatureName();
+                    String addresslineee = address.getAddressLine(0);
+                    String subLocality = address.getSubLocality();
+                   // String city = address.getLocality();
+                    // String state = address.getAdminArea();
+                    // String country = address.getCountryName();
+                  //  String postalCode = address.getPostalCode();
+
+
+                    result = addresslineee+".";
+
+
+                }
+            } catch (IOException e) {
+                Log.e("Location Address Loader", "Unable connect to Geocoder", e);
+            } finally {
+
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            String result="";
+            if(o!=null){
+                 result =o.toString();
+            }else {
+                result ="Unknown Place";
+            }
+
+
+            if(isLocNamFoAtu) {
+
+                if (null != result) {
+                    txtDestination.setText(locNamFoAuto+","+result);
+                    System.out.println("Location Name Retrieved : " + locNamFoAuto+","+result);
+                    Config.getInstance().setCurrentLocation(locNamFoAuto+","+result);
+
+
+                    if (destinationBean == null) {
+                        destinationBean = new PlaceBean();
+                    }
+                    destinationBean.setAddress(locNamFoAuto+","+result);
+                    // destinationBean.setName(address);
+                    // destinationBean.setLatitude(latitude);
+                    //  destinationBean.setLongitude(longitude);
+                }
+                isLocNamFoAtu=false;
+                locNamFoAuto="";
+            }else {
+                txtDestination.setText(result);
+                System.out.println("Location Name Retrieved : " + result);
+                Config.getInstance().setCurrentLocation(result);
+
+
+                if (destinationBean == null) {
+                    destinationBean = new PlaceBean();
+                }
+                destinationBean.setAddress(result);
+            }
+
+        }
+    }
     private class BackgroundTask extends AsyncTask {
+
         Intent intent;
+        Geocoder geocoder = new Geocoder(getApplicationContext());
+       List<Address>  addresses;
+
+        {
+            try {
+                addresses = geocoder.getFromLocation(37.42279, -122.08506,1);
+               Address add= addresses.get(0);
+               add.getFeatureName();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         @Override
         protected void onPreExecute() {

@@ -31,20 +31,23 @@ public class LocationNameParser {
                     String Type = mtypes.optString(0);
 
                     if (!TextUtils.isEmpty(long_name) || !long_name.equals(null) || long_name.length() > 0 || !long_name.equals("")) {
-                        if (Type.equalsIgnoreCase("street_number")) {
+
+                        if(Type.equalsIgnoreCase("street_number")){
                             address = long_name + ", ";
-                        } else if (Type.equalsIgnoreCase("route")) {
-                            address += long_name + ", ";
+                        }else if (Type.equalsIgnoreCase("route")) {
+                            address = long_name + ", ";
                         } else if (Type.equalsIgnoreCase("sublocality")) {
                             address += long_name + ", ";
                         } else if (Type.equalsIgnoreCase("locality")) {
+                            address += long_name + ", ";
+                        } /* else if (Type.equalsIgnoreCase("administrative_area_level_2")) {
                            // address +=   long_name + ", ";
                             address += long_name + ", ";
                         } else if (Type.equalsIgnoreCase("administrative_area_level_2")) {
                             address += long_name + ", ";
                         } else if (Type.equalsIgnoreCase("administrative_area_level_1")) {
                             address += long_name + ", ";
-                        }/* else if (Type.equalsIgnoreCase("country")) {
+                        } else if (Type.equalsIgnoreCase("country")) {
                             address += long_name;
                         }*/
                     }

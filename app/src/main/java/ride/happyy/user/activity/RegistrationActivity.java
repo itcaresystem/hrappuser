@@ -732,7 +732,7 @@ public class RegistrationActivity extends BaseAppCompatNoDrawerActivity {
                 if (basicBean.isPhoneAvailable()) {
                     initiatePhoneVerification();
                 } else {
-                    Snackbar.make(coordinatorLayout, phone + " " + getString(R.string.message_is_already_registered), Snackbar.LENGTH_LONG)
+                    Snackbar.make(coordinatorLayout, /*phone + */" " + getString(R.string.message_is_already_registered), Snackbar.LENGTH_LONG)
                             .setAction(R.string.btn_dismiss, snackBarDismissOnClickListener).show();
                 }
             }
@@ -813,7 +813,7 @@ public class RegistrationActivity extends BaseAppCompatNoDrawerActivity {
             Snackbar.make(coordinatorLayout, R.string.message_password_is_required, Snackbar.LENGTH_LONG)
                     .setAction(R.string.btn_dismiss, snackBarDismissOnClickListener).show();
             return false;
-        } else if (registrationBean.getPassword().length() < 8) {
+        } else if (registrationBean.getPassword().length() < 4) {
             Snackbar.make(coordinatorLayout, R.string.message_password_minimum_character, Snackbar.LENGTH_LONG)
                     .setAction(R.string.btn_dismiss, snackBarDismissOnClickListener).show();
             return false;

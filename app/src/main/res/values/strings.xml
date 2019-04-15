@@ -2,13 +2,17 @@
     <string name="app_name">HAPPYY RIDE</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
+    <!-- AIzaSyBvQYLiSNAkV_PBaUXhrvohynkORmOc90o
     <string name="api_key">AIzaSyAxYEVKFJuMAeZCJjBnSAFFeVRexSJfBb4</string>
-    <string name="browser_api_key">AIzaSyDI2UrZm3O1elgT64mnbc_S7_P3nIil0zE</string>
+    <string name="browser_api_key">AIzaSyDI2UrZm3O1elgT64mnbc_S7_P3nIil0zE</string> -->
+
+
+    <string name="api_key">AIzaSyCXJobvhbpvmBp8_JklIuM_IBRFo9p750I</string>
+    <string name="browser_api_key">AIzaSyBvQYLiSNAkV_PBaUXhrvohynkORmOc90o</string>
 
     <string name="action_edit_account">Edit Account</string>
     <string name="action_sign_out">Sign Out</string>
-
+    <string name="message_please_enable_location_service_from_the_settings">Please enable High Accuracy mode on your device.</string>
     <string name="btn_add_code">Add Code</string>
     <string name="btn_add_home">Add Home</string>
     <string name="btn_add_work">Add Work</string>
@@ -163,11 +167,12 @@
     <string name="message_feedback_is_successfully_sent">Feedback is successfully sent</string>
     <string name="message_home_location_added">Home Location Added</string>
     <string name="message_invalid_verification_code">Invalid Verification Code. Please Try Again!</string>
-    <string name="message_is_already_registered">Is Already Registered. Please Try Again With Another Number</string>
+    <string name="message_is_already_registered">Already Registered. Please Try Again With Another Number</string>
     <string name="message_login_failed">Login Failed</string>
     <string name="message_wrong_password_or_mobile_number">Wrong password or mobile number!!</string>
     <string name="message_login_is_successful">Login is Successful</string>
-
+    <string name="label_share_message">Share this code with two of your friends and ask them to use the code for their first ride.</string>
+    <string name="label_share_invite_code"> Share your invite code</string>
     <string name="message_name_is_required">Name is required</string>
     <string name="message_no_cars_available_for_the_location">No Cars Available for the given Location.</string>
     <string name="message_no_driver_available">No Driver is Available. Please try again later</string>
@@ -175,7 +180,7 @@
     <string name="message_no_trips_taken_yet">No Trips Taken Yet</string>
     <string name="message_nothing_to_show">Nothing To Show</string>
     <string name="message_password_is_required">Password is Required</string>
-    <string name="message_password_minimum_character">Password should be atleast 8 Characters</string>
+    <string name="message_password_minimum_character">Password should be atleast 4 Characters</string>
     <string name="message_phone_number_already_exists">Phone Number Already Exists</string>
     <string name="message_phone_number_is_required">Phone number is required</string>
     <string name="message_phone_number_is_invalid">Phone number is invalid</string>
@@ -251,8 +256,10 @@
     <string name="settings">Settings</string>
     <string name="help">Help</string>
     <string name="about">About</string>
+    <string name="about_content">Happyy Ride is a ride sharing apps.Happyy Ride and the Happyy Ride logos are trademarks of Happyy Ride Limited.All rights reserved.</string>
     <string name="english">English</string>
-
+    <string name="label_termsand_condition">Terms of Service</string>
+    <string name="helpLine_content">999 is an official emergency telephone number in a number of countries which allows the caller to contact emergency services for urgent assistance. </string>
     <string name="pp_title">Pricing Policy</string>
     <string name="pp_shortdescriptipn">Fare for your trip will be based on our pricing policy and other necessary adjustments.</string>
     //for bike
@@ -333,6 +340,105 @@
     <string name="set_your_work_address">Set your work address</string>
     <string name="log_out">Log Out</string>
 
+    <string-array name="spiner_car_quentity">
+        <item>01</item>
+        <item>02</item>
+        <item>03</item>
+        <item>04</item>
+        <item>05</item>
+        <item>06</item>
+        <item>07</item>
+        <item>08</item>
+        <item>09</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
+
+    <string-array name="spinner_houre">
+        <item>01</item>
+        <item>02</item>
+        <item>03</item>
+        <item>04</item>
+        <item>05</item>
+        <item>06</item>
+        <item>07</item>
+        <item>08</item>
+        <item>09</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
+
+    <string-array name="spinner_minute">
+        <item>00</item>
+        <item>01</item>
+        <item>02</item>
+        <item>03</item>
+        <item>04</item>
+        <item>05</item>
+        <item>06</item>
+        <item>07</item>
+        <item>08</item>
+        <item>09</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>25</item>
+        <item>26</item>
+        <item>27</item>
+        <item>28</item>
+        <item>29</item>
+        <item>30</item>
+        <item>31</item>
+        <item>32</item>
+        <item>33</item>
+        <item>34</item>
+        <item>35</item>
+        <item>36</item>
+        <item>37</item>
+        <item>38</item>
+        <item>39</item>
+        <item>40</item>
+        <item>41</item>
+        <item>42</item>
+        <item>43</item>
+        <item>44</item>
+        <item>45</item>
+        <item>46</item>
+        <item>47</item>
+        <item>48</item>
+        <item>49</item>
+        <item>50</item>
+        <item>51</item>
+        <item>52</item>
+        <item>53</item>
+        <item>54</item>
+        <item>55</item>
+        <item>56</item>
+        <item>57</item>
+        <item>58</item>
+        <item>59</item>
+
+    </string-array>
+
+    <string-array name="spinner_am_pm">
+
+        <item>AM</item>
+        <item>PM</item>
+    </string-array>
 
     <string-array name="spinner_diagnostic">
         <item>Select</item>
@@ -448,6 +554,91 @@
         <item>Sherpur</item>
         <item>Jamalpur</item>
         <item>Netrakona</item>
+    </string-array>
+
+    <string-array name="spinnerDistrict">
+        <item>Select</item>
+        <item>Narsingdi</item>
+        <item>Gazipur</item>
+        <item>Shariatpur</item>
+        <item>Narayanganj</item>
+        <item>Tangail</item>
+        <item>Kishoregonj</item>
+        <item>Manikganj</item>
+        <item>Munshiganj</item>
+        <item>Rajbari</item>
+        <item>Madaripur</item>
+        <item>Gopalganj</item>
+        <item>Faridpur</item>
+    </string-array>
+
+    <string-array name="spinnerDistrict_all">
+        <item>Select</item>
+        <item>Bagerhat</item>
+        <item>Bandarban</item>
+        <item>Barguna</item>
+        <item>Barisal</item>
+        <item>Bogra</item>
+        <item>Bhola</item>
+        <item>Brahmanbaria</item>
+        <item>Chapainababganj</item>
+        <item>Chuadanga</item>
+        <item>Chandpur</item>
+        <item>Comilla</item>
+        <item>Cox's Bazar</item>
+        <item>Chittagong</item>
+        <item>Dinajpur</item>
+        <item>Dhaka</item>
+        <item>Feni</item>
+        <item>Faridpur</item>
+        <item>Gazipur</item>
+        <item>Gaibandha</item>
+        <item>Gopalganj</item>
+        <item>Habiganj</item>
+        <item>Jamalpur</item>
+        <item>Jaypurhat</item>
+        <item>Jhalokati</item>
+        <item>Jhenaidah</item>
+        <item>Jessore</item>
+        <item>Khagrachhari</item>
+        <item>Kishoregonj</item>
+        <item>Kurigram</item>
+        <item>Kushtia</item>
+        <item>Khulna</item>
+        <item>Lakshmipur</item>
+        <item>LalMonirhat</item>
+        <item>Magura</item>
+        <item>Madaripur</item>
+        <item>Meherpur</item>
+        <item>Mymensingh</item>
+        <item>Manikganj</item>
+        <item>Maulvibazar</item>
+        <item>Munshiganj</item>
+        <item>Narail</item>
+        <item>Natore</item>
+        <item>Naogaon</item>
+        <item>Narayanganj</item>
+        <item>Narsingdi</item>
+        <item>Netrakona</item>
+        <item>Noakhali</item>
+        <item>Nilphamari</item>
+        <item>Pabna</item>
+        <item>Panchagarh</item>
+        <item>Pirojpur</item>
+        <item>Patuakhali</item>
+        <item>Rajbari</item>
+        <item>Rajshahi</item>
+        <item>Rangamati</item>
+        <item>Rangpur</item>
+        <item>Satkhira</item>
+        <item>Sirajganj</item>
+        <item>Shariatpur</item>
+        <item>Sherpur</item>
+        <item>Sunamganj</item>
+        <item>Sylhet</item>
+        <item>Tangail</item>
+        <item>Thakurgaon</item>
+
     </string-array>
 
     <string-array name="countrymobilecode">

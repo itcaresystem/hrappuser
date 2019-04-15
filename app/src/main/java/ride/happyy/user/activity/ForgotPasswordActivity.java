@@ -556,8 +556,8 @@ public class ForgotPasswordActivity extends BaseAppCompatNoDrawerActivity {
     private boolean collectForgotPasswordData() {
 
 
-        if (etxPassword.getText().toString().equals("") || etxPassword.getText().length()<8) {
-            Snackbar.make(coordinatorLayout, "Password Field Requred!! and min 8 char!!", Snackbar.LENGTH_LONG)
+        if (etxPassword.getText().toString().equals("") || etxPassword.getText().length()<4) {
+            Snackbar.make(coordinatorLayout, "Password Field Requred!! and min 4 char!!", Snackbar.LENGTH_LONG)
                     .setAction(R.string.btn_dismiss, snackBarDismissOnClickListener).show();
             return false;
         }

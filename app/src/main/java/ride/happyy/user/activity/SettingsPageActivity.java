@@ -228,8 +228,8 @@ public class SettingsPageActivity extends BaseAppCompatNoDrawerActivity {
 
         Glide.with(getApplicationContext())
                 .load(userBean.getProfilePhoto())
-//                .fallback(R.drawable.ic_dummy_photo)
-//                .error(R.drawable.ic_dummy_photo)
+               // .fallback(R.drawable.ic_dummy_photo)
+             // .error(R.drawable.ic_dummy_photo)
                 .apply(new RequestOptions()
                         .centerCrop()
                         .circleCrop())
